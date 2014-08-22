@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 16:21:07
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:57
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-22 19:49:09
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -38,9 +38,9 @@ App.Settings = {
 
     _defaultSettings: {
         // Default to the first beta -- application version
-        "version": "0.1.0",
+        "version": "0.1.0-alpha",
         // database version
-        "dbVersion": "1.0",
+        "dbVersion": "1.0-alpha",
         // Database file name its replaced with install_token on first run
         "DBLocation": "chuppy.sqlite",
         "devDBLocation": "/home/login/documents/apps/science/application/databases/chuppy_v1.sqlite",

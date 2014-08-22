@@ -1,4 +1,5 @@
 .git
+CHANGELOG.TXT
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 builds/
 build/Release
