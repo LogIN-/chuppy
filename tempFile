@@ -65,3 +65,5 @@ http://cuemol.sourceforge.jp/en/
 
 ## Start server 
 pm2 -i max --name "Chuppy Tunnel" -e tunnel-err.log -o tunnel-out.log start ./bin/server -- --port 8085
+
+cloc  --exclude-dir=builds,tools,temp,node_modules,vendor ./
