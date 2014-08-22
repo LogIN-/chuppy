@@ -1,0 +1,557 @@
+@charset "UTF-8";
+
+/* Disable user select in app */
+
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none; 
+    -ms-user-select: none;
+    user-select: none;
+}
+::selection {
+    background: greenyellow;
+    color: rgba(53, 47, 47, 0.63); 
+}
+::-moz-selection {
+    background: greenyellow;
+    color: rgba(53, 47, 47, 0.63);
+}
+html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
+/* some rests */
+
+button::-moz-focus-inner, input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+::-webkit-scrollbar-thumb {
+    display: none;
+}
+#overlay .inactive:before {
+    color: #ffffff;
+    content: "focus to activate...";
+    display: inline-block;
+    font-size: 36px;
+    font-weight: bold;
+    height: 100px;
+    left: calc(50% - 160px);
+    position: absolute;
+    top: calc(50% - 35px);
+    vertical-align: middle;
+    width: 320px;
+}
+#overlay .inactive {
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.3);
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    z-index: 10;
+}
+.global-notofication {
+    width: 100%;
+    position: absolute;
+    overflow: visible;
+    z-index: 10100;
+    top: 30px;
+}
+.global-notofication .close {
+    padding-left: 15px;
+}
+.global-notofication .alert {
+    text-align: center;
+    -webkit-user-select: text;
+}
+/* Main rule for our two headers */
+
+header {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+/* Window native header */
+
+#windows-bar {
+    height: 20px;
+    background-color: #555555;
+    -webkit-app-region: drag;
+    color: #555555;
+    cursor: move;
+}
+#windows-bar nav {
+    height: 100%;
+    width: 90px;
+    -webkit-app-region: no-drag;
+    cursor: default;
+}
+#windows-bar nav > .bar-box {
+    border: 0 none;
+    height: 100%;
+    width: 30px;
+}
+#windows-bar nav > button.bar-box > span.glyphicon {
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+#windows-bar nav > .bar-box:focus {
+    outline: 0;
+}
+/* Our main header */
+
+#header-bar {
+    height: 85px;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+/* logo in our main header */
+
+#header-bar-logo {
+    cursor: default;
+    font-size: 36px;
+    height: 85px;
+    line-height: 85px;
+    text-align: center;
+    width: 100%;
+}
+#header-bar-content {
+    height: 85px;
+    min-width: 500px;
+    position: relative;
+    width: 500px;
+}
+#header-bar-content > div {
+    position: absolute;
+}
+/* Main search input styles */
+#header-search-input {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    -webkit-transition: all 0.2s ease-in-out 0s;
+}
+
+
+#header-bar-content > #header-search {
+    height: 35px;
+    top: 25px;
+    width: 360px;
+}
+#header-bar-content > #header-search .form-group {
+    margin: 0;
+    color: #555;
+}
+#header-bar-content > #header-search .form-control-feedback {
+    right: 0;
+}
+/* header user setting icon (bar) */
+
+#header-bar-content > #header-user-home {
+    height: 55px;
+    line-height: 55px;
+    padding-left: 20px;
+    right: 0;
+    text-align: center;
+    top: 15px;
+    width: 130px;
+}
+#header-bar-content > #header-user-home img {
+    box-shadow: 1px 5px 10px #CCC;
+}
+
+#header-bar-content > #header-user-home .btn-group button {
+    width: 30px;
+    height: 30px;
+    background-image: url(/lib/images/system-icons/system/holo_light/13_extra_actions_settings/drawable-xhdpi/ic_action_settings.png);
+    background-color: transparent;
+    background-size: 30px;
+    background-position: center;
+    margin-top: 12px;
+    border: none;
+}
+
+#header-bar-content > #header-user-home .btn-group.open button.dropdown-toggle{
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+}
+/* header user setting dropdown */
+
+#header-user-panel {
+    clear: both;
+    position: fixed;
+    top: 104px;
+    border-top: 0 none;
+    -webkit-box-shadow: -2px 1px 5px 0px rgba(0, 0, 0, 0.1);
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+/* breadcrumb styles */
+.breadcrumb {
+    margin-bottom: 0;
+    border-radius: 0;
+    height: 50px;
+}
+
+/* Footer */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background-color: #F5F5F5;
+    text-align: center;
+    z-index: 10;
+    color: #999;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    -webkit-app-region: drag;
+}
+footer > .small {
+    font-size: 13px;
+    line-height: 30px;
+}
+/* First run declaimer */
+
+#chuppy-firstrun {} .quitting:before {
+    color: #ffffff;
+    content: "Quitting application....";
+    display: inline-block;
+    font-size: 36px;
+    font-weight: bold;
+    height: 100px;
+    left: calc(50% - 195px);
+    position: absolute;
+    top: calc(50% - 35px);
+    vertical-align: middle;
+    width: 390px;
+}
+.quitting {
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.8);
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    z-index: 100;
+}
+/* SETUP MODAL STYLES */
+
+.croppic-avatar {
+    text-align: center;
+    position: absolute;
+    clear: both;
+    width: 93%;
+}
+#userSetupForm video {
+    float: left;
+    width: 150px;
+    height: 115px;
+    cursor: pointer;
+}
+#userSetupForm canvas {
+    float: right;
+    width: 150px;
+    height: 115px;
+}
+#chuppy-firstrun h4.modal-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+#chuppy-firstrun form legend {
+    border: 0;
+    text-decoration: underline;
+}
+/*
+#setup-step2 input[id^='configuration'] {
+  visibility: hidden;
+  display: none;
+}
+*/
+
+/* HELPERS */
+
+.display-none {
+    display: none;
+}
+.display-block {
+    display: block;
+}
+.hiddenfile {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}
+.loading_screen:before {
+    color: #ffffff;
+    content: "loading chuppy";
+    display: inline-block;
+    font-size: 36px;
+    font-weight: bold;
+    height: 100px;
+    left: calc(50% - 75px);
+    position: absolute;
+    top: calc(50% - 35px);
+    vertical-align: middle;
+    width: 150px;
+}
+.loading_screen {
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.9);
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    z-index: 10;
+}
+/* LOGIN FORM */
+
+#loginBox {
+    min-height: 100%;
+    min-width: 100%;
+    position: fixed;
+    top: 20px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 10;
+}
+#loginBox .container_row {
+    min-height: 60%;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    min-width: 40%;
+    max-width: 45%;
+    max-height: 65%;
+}
+#loginBox h4 {
+    text-align: center;
+    color: #ababab;
+    font-size: 32px;
+    font-weight: bold;
+    height: 75px;
+    line-height: 75px;
+}
+#loginContainerUserList {
+    background-color: rgba(255, 255, 255, 1);
+    padding-top: 15px;
+    padding-bottom: 20px;
+    height: 100%;
+    left: -50%;
+    position: absolute;
+    top: -50%;
+    width: 100%;
+    -webkit-border-top-right-radius: 50px;
+    -webkit-border-bottom-left-radius: 50px;
+    -moz-border-radius-topright: 50px;
+    -moz-border-radius-bottomleft: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+#loginContainerUserList .loginUserContainer {
+    width: calc(100% + 15px);
+    height: calc(100% - 75px);
+    padding: 0;
+    margin: 0 auto;
+    position: relative;
+    overflow-y: auto;
+}
+.loginUserChooser {
+    height: 95px;
+    margin-top: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: calc(100% - 15px);
+}
+.loginUserChooser:hover > span.glyphicon {
+    display: block;
+}
+.loginUserChooser .loginUserAvatar {
+    height: 85px;
+    width: 85px;
+}
+.loginUserChooser .username {
+    margin-left: 25px;
+    color: #222;
+    height: 85px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 85px;
+    width: 150px;
+}
+.loginUserChooser .glyphicon {
+    margin-right: 36px;
+    color: #666;
+    height: 85px;
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 85px;
+    width: 50px;
+    display: none;
+}
+/* User Login PROMPT */
+
+#loginContainerPrompt {
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 15px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+    height: 100%;
+    left: -50%;
+    position: absolute;
+    top: -50%;
+    width: 100%;
+    display: none;
+}
+#loginContainerPrompt .loginUserPromptInput {
+    width: 100%;
+    height: calc(100% - 175px);
+    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+}
+#loginContainerPrompt .loginUserAvatar {
+    text-align: center;
+    height: 150px;
+    line-height: 150px;
+}
+.loginUserPromptInput input {
+    width: 70%;
+    margin-bottom: 1.4rem;
+    padding: 1rem;
+    background-color: #ecf2f4;
+    border-radius: 0.2rem;
+    border: none;
+}
+.loginUserPromptInput .btn .glyphicon {
+    font-size: 3rem;
+    color: #fff;
+}
+#loginContainerPrompt .btn-login {
+    background-color: #2F7ACF;
+    width: 270px;
+    background-image: none;
+    height: 50px;
+    border-radius: 5px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+#loginContainerPrompt span.back {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    font-size: 24px;
+    top: calc(100% - 30px);
+    color: cadetblue;
+}
+/* Application Body MAIN WINDOW */
+#application-body {
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    position: relative;
+    min-height: 100%;
+    float: right;
+}
+
+/* Start of left content menu */
+
+#application-body .container {
+    width: 100%;
+}
+#application-body .container .page-header {
+    margin-top: 0;
+}
+
+.affix-row, .affix-container, .affix-content {
+    height: 100%;
+    overflow: hidden;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#left-navigation {
+    padding-right: 0;
+    font-size: small;
+    padding-left: 0;
+    float: left;
+    height: 100%;
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: #F5F5F5;
+}
+#left-navigation .sidebar-nav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+}
+#left-navigation .sidebar-nav .navbar {
+    border-radius: 0;
+    margin-bottom: 0;
+    border: 0;
+}
+#left-navigation .navbar ul {
+    float: none;
+    display: block;
+}
+/* MenuItem Styles */
+#left-navigation .navbar li {
+    float: left;
+    display: block;
+    min-height: 50px;
+    max-height: 50px;
+    cursor: pointer;
+    -moz-user-select: none;
+    width: 100%;
+    border-bottom: 1px solid whitesmoke;
+}
+#left-navigation .navbar li.active {
+    background-color: #555;
+    color: white;
+}
+.menuItemIcon {
+    width: 30%;
+    height: 100%;
+    text-align: center;
+}
+.menuItemIcon img {
+    margin: auto;
+    margin-top: 5px;
+}
+.menuItemName {
+    width: 70%;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-font-smoothing: antialiased;
+}
+/* left side navigation */

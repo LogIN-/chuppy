@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html> 
+<head>
+    <meta charset="utf-8">
+    <title>Chuppy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <!-- Basic Style-sheets -->
+    <link href="lib/stylesheets/vendor/bootstrap.css" rel="stylesheet">
+    <link href="lib/stylesheets/vendor/bootstrap-theme.css" rel="stylesheet">
+    <link href="lib/stylesheets/vendor/font-awesome.css" rel="stylesheet">
+    <link href="lib/stylesheets/vendor/contextmenu.css" rel="stylesheet">
+    <link href="lib/stylesheets/vendor/jquery-ui.css" rel="stylesheet">
+    <!-- Helper Style-sheets -->
+    <link href="lib/stylesheets/lib/animate.css" rel="stylesheet">
+    <link href="lib/stylesheets/vendor/validator/bootstrapValidator.css" rel="stylesheet">
+    <!-- Main Style-sheet -->
+    <link href="lib/stylesheets/chuppy.css" rel="stylesheet">
+    <!-- Basic Dependencies -->
+    <script src="lib/javascript/vendor/jquery-1.11.1.js"></script>
+    <!-- Drag and Drop interactions -->
+    <script src="lib/javascript/vendor/bootstrap.js"></script>     
+    <script src="lib/javascript/vendor/underscore.min.js"></script>
+    <script src="lib/javascript/vendor/backbone.js"></script>
+    <script src="lib/javascript/vendor/jquery-ui.js"></script> 
+    <script src="lib/javascript/vendor/mousetrap.min.js"></script> 
+    <!-- Basic 3rd party dependencies -->
+    <script src="lib/javascript/vendor/avatar.js"></script> 
+    <script src="lib/javascript/vendor/contextmenu.js"></script> 
+    <script src="lib/javascript/vendor/validator/bootstrapValidator.js"></script>  
+     <!-- Global variables include -->
+    <script src="lib/javascript/globals.js"></script>
+    <!-- helper libraries --> 
+    <script src="lib/javascript/lib/utils/window.js"></script>
+    <script src="lib/javascript/lib/utils/helpers.js"></script>
+    <script src="lib/javascript/lib/utils/filesystem.js"></script>
+    <script src="lib/javascript/lib/utils/template.js"></script>
+    <script src="lib/javascript/lib/utils/system.js"></script>
+    <script src="lib/javascript/lib/utils/user.js"></script>
+    <script src="lib/javascript/lib/utils/organization.js"></script>
+    <script src="lib/javascript/lib/utils/apps.js"></script>
+    <script src="lib/javascript/lib/utils/settings.js"></script>
+    <script src="lib/javascript/lib/utils/functions.js"></script>
+    <script src="lib/javascript/lib/utils/sharing.js"></script>
+    
+    <script src="lib/javascript/lib/utils/notification.js"></script>    
+    <script src="lib/javascript/lib/utils/contextmenu.js"></script>
+    <script src="lib/javascript/lib/utils/developer.js"></script>
+    
+    <script src="lib/javascript/lib/settings.js"></script>
+    <!-- public objects -->
+    <script src="lib/javascript/lib/public/user.js"></script>
+</head>
+<body>
+<!-- Document overlay div for blurring focus active inactive -->
+<div id="overlay"></div>
+
+
+<div id="top-headers">
+  <!--
+    1. Windows bar -> lib/templates/main-ui/windows-bar.tpl
+    2. Header bar  -> lib/templates/main-ui/header-bar.tpl
+  -->
+</div>
+<!-- Main View Start -->
+<div id="main-view" class="row affix-row">
+    <!--
+      3. Left Navigation -> lib/templates/main-ui/left-navigation.tpl
+    -->
+    <!--  4. Main window box Applications body-->
+    <div id="application-body" data-id="4" class="col-sm-9 col-md-10 affix-content"></div>
+</div>
+<!-- Main View End -->
+
+
+<!--
+  5. Footer -> lib/templates/main-ui/footer.tpl
+-->
+<footer data-id="5"></footer>
+
+
+<!-- App Initialization -->
+<script src="lib/javascript/chuppy.js"></script>
+<!-- App database initialization -->
+<script src="lib/javascript/lib/database.js"></script> 
+<!-- Preserve window state between sessions    -->
+<script src="lib/javascript/lib/winstate.js"></script>
+
+<!-- Here all  apps configs should be loaded -->
+<script src="apps/config.js"></script>
+
+<!-- Load Core Models, Views and Collections -->
+<!-- <script src="lib/javascript/frontend/models/mainapp.js"></script> -->
+<!-- <script src="lib/javascript/frontend/collections/mainapp.js"></script> -->
+<!-- <script src="lib/javascript/frontend/views/mainapp.js"></script> -->
+
+<!-- 3rd party core views -->
+<script src="lib/javascript/frontend/views/system/windowBar.js"></script>
+<script src="lib/javascript/frontend/views/main-ui/headerBar.js"></script>
+<script src="lib/javascript/frontend/views/main-ui/navigation.js"></script>
+<script src="lib/javascript/frontend/views/system/footerBar.js"></script>
+<script src="lib/javascript/frontend/views/setup.js"></script>
+<script src="lib/javascript/frontend/views/system/login.js"></script>
+
+<!-- App routers initialization -->
+<script src="lib/javascript/frontend/router.js"></script>
+
+</body>
+</html>

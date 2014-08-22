@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "0.10"
+before_install:
+  - npm install -g grunt-cli --save-dev
+install: npm install
+before_script: grunt --no-color
+env:
+    --debug
+
+#notifications:
+#  irc:
+#    channels:
+#      - "chat.freenode.net#example"
