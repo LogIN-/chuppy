@@ -17,6 +17,7 @@
         <![endif]-->
     </head>
     <body>
+     <% if( page.items.lenght > 0 ){ %>
     <table class="table table-hover">
       <thead>
         <tr>
