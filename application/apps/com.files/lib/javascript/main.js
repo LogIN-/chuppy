@@ -1,33 +1,33 @@
 /* 
-* @Author: LogIN
-* @Date:   2014-08-22 15:17:57
-* @Email:  unicoart@gmail.com
-* @URL:    https://github.com/LogIN-/chuppy
-* @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-22 16:43:27
-* Use of this source code is governed by a license: 
-* The MIT License (MIT)
-* 
-* Copyright (c) 2014-08-22 15:17:57 The Chuppy Authors
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
+ * @Author: LogIN
+ * @Date:   2014-08-22 15:17:57
+ * @Email:  unicoart@gmail.com
+ * @URL:    https://github.com/LogIN-/chuppy
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-23 09:38:58
+ * Use of this source code is governed by a license:
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-08-22 15:17:57 The Chuppy Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /* global crypt, Mousetrap */
 
@@ -38,7 +38,7 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
     self.user = App.Public.User.getUserKeys('userDetails');
 
     /* Configuration variable */
-    self.directory = { 
+    self.directory = {
         location: {
             currentLocation: self.user.userDetails.root_folder,
             workspaceRoot: self.user.userDetails.root_folder,
@@ -171,7 +171,7 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
         }
         console.log(self.directory.system);
         // IF index for this directory doesn't exist lets read it from file-system
-        if (fs.existsSync(self.directory.location.dbLocation) === false || self.directory.system.reloadIndex === true) { 
+        if (fs.existsSync(self.directory.location.dbLocation) === false || self.directory.system.reloadIndex === true) {
             console.info("reloading directory index");
             App.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(self.directory.location.currentLocation, self.directory.location.dbLocation);
         } else {
@@ -216,7 +216,7 @@ App.Apps.App["com.files"].Main.Private.Init.prototype.removeView = function() {
 
     // Delete BredCrumb Actions view
     this.mainUI.views.navigation.actions.removeView();
-    
+
     // Delete BredCrumb
     this.mainUI.views.navigation.breadcrumb.removeView();
 };
@@ -246,7 +246,7 @@ App.Apps.App["com.files"].Main.Private.Init.prototype.removeFolderModels = funct
     // Reference to parent object
     var self = this;
     var model;
-    _.each(modelsCIDs, function (modelCID) {
+    _.each(modelsCIDs, function(modelCID) {
         // Get model from collection by CID
         model = self.mainUI.collection.items.get({
             cid: modelCID
@@ -255,7 +255,7 @@ App.Apps.App["com.files"].Main.Private.Init.prototype.removeFolderModels = funct
         if (model !== null) {
             console.info("Removing model from folder collection: ", modelCID);
             self.mainUI.collection.items.remove(model);
-        }else{
+        } else {
             console.info("Removing model from folder collection failed!", modelCID);
             console.log(model);
         }
@@ -263,7 +263,7 @@ App.Apps.App["com.files"].Main.Private.Init.prototype.removeFolderModels = funct
 };
 // Return keys from directory object
 App.Apps.App["com.files"].Main.Private.Init.prototype.startPluginView = function(pluginID) {
-    
+
 };
 // Register keyboard actions
 App.Apps.App["com.files"].Main.Private.Init.prototype.registerKeyCodes = function() {
@@ -275,9 +275,11 @@ App.Apps.App["com.files"].Main.Private.Init.prototype.registerKeyCodes = functio
         }
         // Force index reload
         self.setKeys({
-            system: {reloadIndex: true} 
+            system: {
+                reloadIndex: true
+            }
         });
         // Reopen current directory with new data 
-        self.openDirectory(self.directory.location.currentLocation); 
+        self.openDirectory(self.directory.location.currentLocation);
     });
 };

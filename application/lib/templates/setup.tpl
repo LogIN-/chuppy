@@ -415,4 +415,4 @@ TODO: add import functions -->
             </div> <!-- .modal-content END -->
         </form> <!-- #userSetupForm FORM END -->    
     </div> <!-- modal-dialog -->
-</div> <!-- #chuppy-firstrun END -->
+</div> <!-- #chuppy-first-run END -->

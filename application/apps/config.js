@@ -54,6 +54,7 @@ App.Apps.Configuration = {
 App.Apps.Private = function () {
 
     var self = this;
+    
     self.userID = null;
     // Container of all detected apps
     self.app_list = [];
