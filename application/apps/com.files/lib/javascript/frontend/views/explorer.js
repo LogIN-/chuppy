@@ -386,7 +386,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
      * Its called from addItemsToPaginator() in main.js
      */
     setEmptyDirectory: function() {
-        console.info("setEmptyDirectory");
+        console.info("setEmptyDirectory check..");
         if (jQuery.isEmptyObject(this._itemViews)) {
             $(this.el).addClass('file-explorer-empty');
         } else {
@@ -621,8 +621,15 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                 // Remove any context menus if they exist
                 self.hideContextMenu();
             },
+            // On selecting items add selectedItem so can can recognize them later
             selecting: function(event, ui) {
                 $(ui.selecting).addClass('selectedItem');
+            },
+            // On unselected event remove selectedItem CSS class
+            // and remove item from selected elements
+            unselected: function(event, ui) {
+                $(ui.selecting).removeClass('selectedItem');
+                self.selectedItems = self.selectedItems.not($(ui.selecting));
             }
 
         });

@@ -44,7 +44,8 @@ App.Apps.Configuration = {
         // If system is true then this is default app
         "system": true,
         "order": 0, 
-        "icon": "/apps/com.files/lib/images/favicon.png"
+        // "icon": "/apps/com.files/lib/images/favicon.png"
+        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png"
     },
 }; 
 
@@ -121,12 +122,14 @@ App.Apps.Private = function () {
 
 // Return keys and values of appID -> name-space
 App.Apps.Private.prototype.getUserAppDetails = function (appID) {
-    console.log("App.Apps.Private getUserAppDetails: ", appID);
+    var options = null;
+    console.info("App.Apps.Private getUserAppDetails: ", appID);
     _.each(this.app_user, function(app){
         if(app["name-space"] === appID){
-            return app;
+            options = app;
         }
     });
+    return options;
 };
 
 App.Apps.Public = new App.Apps.Private(); 

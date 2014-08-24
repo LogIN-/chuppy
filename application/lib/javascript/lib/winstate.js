@@ -3,8 +3,8 @@
  * @Date:   2014-07-30 11:41:37
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:36
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-24 09:14:01
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -27,9 +27,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */
-
-/**
+ *
  * Cross-platform window state preservation.
  * Yes this code is quite complicated, but this is the best I came up with for
  * current state of node-webkit Window API (v0.7.3 and later).

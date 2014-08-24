@@ -124,6 +124,9 @@ header {
     line-height: 85px;
     text-align: center;
     width: 100%;
+    font-family: cursive;
+    font-weight: bold;
+    color: #3D3D3D;
 }
 #header-bar-content {
     height: 85px;
@@ -548,10 +551,79 @@ footer > .small {
 .menuItemName {
     width: 70%;
     height: 50px;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-font-smoothing: antialiased;
+    padding-left: 10px;
+}
+.menuItemName:first-letter {
+    text-transform: uppercase;
 }
 /* left side navigation */
+
+
+
+/* TABS CONTENT STYLES  resets */
+#application-tabs.ui-widget-content {
+    border: none;
+    background: transparent;
+    color: inherit;
+}
+#application-tabs.ui-tabs{
+    padding: 0;
+}
+#application-tabs .ui-tabs-nav {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    margin-top: -25px;
+    display: block;
+    height: 25px;
+    width: auto;
+    clear: both;
+}
+#application-tabs .ui-widget-header {
+    border: none;
+    background: #F5F5F5;
+    height: 25px;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li {
+    list-style: none;
+    float: left;
+    position: relative;
+    top: 0;
+    margin: 0;
+    border-bottom-width: 0;
+    padding: 0;
+    white-space: nowrap;
+    height: 25px;
+    line-height: 25px;
+    border-top-width: 0;
+    clear: both;
+    cursor: pointer;
+}
+#application-tabs.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    float: left;
+    padding: 0;
+    padding-left: 10px;
+    text-decoration: none;
+    padding-right: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li span.glyphicon.glyphicon-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 9px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#application-tabs.ui-tabs .ui-tabs-panel {
+    display: block;
+    border-width: 0;
+    padding: 0;
+    background: none;
+}

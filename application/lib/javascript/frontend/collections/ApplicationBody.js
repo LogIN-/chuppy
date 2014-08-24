@@ -3,8 +3,8 @@
  * @Date:   2014-07-25 11:34:07
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:46:06
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-24 10:01:23
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -29,12 +29,12 @@
  * THE SOFTWARE.
  */
 
-// Main App UI Collection --- not used for now
+// Main App UI Collection
 // ---------------
 
-App.Collections.MainApp = Backbone.Collection.extend({
+App.Collections.ApplicationBody = Backbone.Collection.extend({
 
     // Reference to this collection's model.
-    model: App.Model.MainApp,
+    model: App.Model.ApplicationBody,
 
 });

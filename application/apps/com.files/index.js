@@ -50,18 +50,23 @@ App.Apps.App["com.files"].Setup = function(options){
         "order": 0,
         "icon": "/apps/com.files/lib/images/favicon.png",
         "init": false,
+        // ID of parent application css container added dynamically
+        // But will always have #application-tabs[data-namespace='app.namespace']
+        "container": "#application-tabs[data-namespace='com.files']",
     };
     self.options = _.extend( this.options, options);
+
+    console.info("App defaults initialized!");
 
     // Setup needed database for app and include needed files (js/css)
     // All include JS and Css files must have app prefix exp. 
     // JS: App.Apps.App["com.files"].Utils 
     // CSS: #my-files-app .someclass
     self.setupDependencies = function () {
-        
+        console.info("Setting up app dependencies");
         // main application template
         var template = _.template(App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/main.tpl', 'sync'));
-        $("#application-body").html(template);
+        $(self.options.container).html(template);
 
         self.setupDatabase();
         self.setupIncludes();

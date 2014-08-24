@@ -85,7 +85,7 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
 
             // Save directory info into database
             // And make default action if callback() isn't defined
-             App.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, callback);            
+            App.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, callback);            
 
         });
 

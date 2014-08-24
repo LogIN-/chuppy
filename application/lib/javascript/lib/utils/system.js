@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:47:37
+ * @Last Modified time: 2014-08-24 12:15:14
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,8 +28,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/*jshint evil:true */
+/* global crypt */
 
 // Global application AppSystem related operations
 App.Private.System = function() {
@@ -37,9 +36,26 @@ App.Private.System = function() {
 
     self.user = null;
     self.apps = null;
+
     self.views = {
         main: {},
         apps: []
+    };
+
+    self.mainUI = {
+        collection: {
+            applications: null
+        },
+        views: {
+            apps: [],
+            main: {
+                loginView: null,
+                headerBar: null,
+                navigation: null,
+                footerBar: null,
+                applicationBody: null,
+            }
+        }
     };
 
     self.initilize = function() {
@@ -48,8 +64,8 @@ App.Private.System = function() {
         // if userID isn't set (from setup form etc) we need to display login view
         // TODO: But first destroy main app view
         if (self.user.userMain.logged_in === false) {
-            if (!self.views.main.loginView) {
-                self.views.main.loginView = new App.View.loginView();
+            if (self.mainUI.views.main.loginView === null) {
+                self.mainUI.views.main.loginView = new App.View.loginView();
             }
         } else {
             // Now loading main application variables.. lets show user loading screen 
@@ -79,16 +95,26 @@ App.Private.System = function() {
         var self = this;
         console.log("initilizeSystemUI");
 
-        if (!self.views.main.headerBar) {
-            self.views.main.headerBar = new App.View.headerBar();
+        if (self.mainUI.views.main.headerBar === null) {
+            self.mainUI.views.main.headerBar = new App.View.headerBar();
         }
-        if (!self.views.main.navigation) {
-            self.views.main.navigation = new App.View.navigation({
+        if (self.mainUI.views.main.navigation === null) {
+            self.mainUI.views.main.navigation = new App.View.navigation({
                 menuItems: self.apps
             });
         }
-        if (!self.views.main.footerBar) {
-            self.views.main.footerBar = new App.View.footerBar();
+        if (self.mainUI.views.main.footerBar === null) {
+            self.mainUI.views.main.footerBar = new App.View.footerBar();
+        }
+        // MAIN APPLICATION MODULE CONTAINER
+        if (self.mainUI.collection.applications === null) {
+            self.mainUI.collection.applications = new App.Collections.ApplicationBody();
+
+        }
+        if (self.mainUI.views.main.applicationBody === null) {
+            self.mainUI.views.main.applicationBody = new App.View.ApplicationBody({
+                collection: self.mainUI.collection.applications
+            });
         }
         // Start default application
         self.initilizeDefaultApp();
@@ -99,19 +125,19 @@ App.Private.System = function() {
     self.resetValues = function() {
         self.user = null;
         self.apps = null;
-        self.views.main = {};
-        self.views.apps = [];
+        self.mainUI.views.main = {};
+        self.mainUI.views.apps = [];
     };
     // TODO: remove any active APPS like files app!!!!!
     self.reInitilize = function() {
         // Remove main app views
-        _.each(self.views.main, function(view) {
+        _.each(self.mainUI.views.main, function(view) {
             if (typeof view.removeView === 'function') {
                 view.removeView();
             }
         });
         // Remove apps views
-        _.each(self.views.apps, function(app) {
+        _.each(self.mainUI.views.apps, function(app) {
             if (typeof app.removeView === 'function') {
                 app.removeView();
             }
@@ -149,18 +175,24 @@ App.Private.System.prototype.startApp = function(appID) {
     var self = this;
     console.log("App.Private.System.prototype.startApp: ", appID);
     var options = App.Apps.Public.getUserAppDetails(appID);
-
-    if (!self.views.apps[appID]) {
+    
+    if (!self.mainUI.views.apps[appID]) {
         // Little Hack to display loading while waiting async operations
+        // (Browser JS script injections)
         var interval = setInterval(function() {
             if (typeof App.Apps.App[appID].Setup === "function") {
                 clearInterval(interval);
-                // Create new app Object
-                self.views.apps[appID] = new App.Apps.App[appID].Setup(options);
-                // Insert app styles and scripts directly into DOM
-                self.views.apps[appID].setupDependencies();
-                // Start app 
-                self.views.apps[appID].initilizeAppUI();
+
+                self.mainUI.collection.applications.add({
+                    uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
+                    "name-space": options["name-space"],
+                    name: options.name,
+                    enabled: options.enabled,
+                    system: options.system,
+                    icon: options.icon,
+                    active: true
+                });
+
             } else {
                 console.log("Loading application data from SYSTEM");
                 console.log(typeof App.Apps.App[appID].Setup);

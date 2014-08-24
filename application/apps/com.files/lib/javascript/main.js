@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 15:17:57
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-23 09:38:58
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-24 12:44:24
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *

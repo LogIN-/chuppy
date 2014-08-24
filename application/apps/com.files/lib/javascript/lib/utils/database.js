@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-23 11:12:43
+ * @Last Modified time: 2014-08-23 13:49:15
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -32,11 +32,11 @@
 /* global crypt */
 
 /* Files app indexed database operations
- * @method initDatastore        {private}   
- * @method populateFolderIndex  {public}       
- * @method getDirectoryIndex    {public}       
- * @method getDirectoryIndexAPI {public}           
- * @method removeItemByUID      {public}   
+ * @method initDatastore        {private}
+ * @method populateFolderIndex  {public}
+ * @method getDirectoryIndex    {public}
+ * @method getDirectoryIndexAPI {public}
+ * @method removeItemByUID      {public}
  */
 App.Apps.App["com.files"].Main.Private.Database = function() {
     var self = this;
@@ -61,15 +61,20 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
                     unique: true
                 }, function(err) {
                     // If any duplicates that violets unique key lets notify us
-                    if(err){
+                    if (err) {
                         console.log(err);
                     }
-                    callback(error);
+                    if (callback && typeof(callback) === "function") {
+                        callback(err);
+                    }
                 });
             });
         } else {
             console.info("Data-store already initialized:", dbPath);
-            callback(null);
+            if (callback && typeof(callback) === "function") {
+                callback(null);
+            }
+
         }
     };
     // Used to index or reload directory index file
@@ -78,6 +83,8 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
     self.populateFolderIndex = function(dbPath, data, callback) {
         console.info("Creating folder index: ", dbPath);
         var dbID = crypt.createHash('md5').update(dbPath).digest('hex');
+        // When indexing directory make sure this DB instance isn't initialized
+        self.database[dbID] = null;
         // Check if database store is already initialized
         // If its not or data-store file doesn't exist lets make it and initialize
         self.initDatastore(dbPath, function(err) {
@@ -88,11 +95,14 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
             self.database[dbID].insert([data], function(err) {
                 if (err) {
                     console.log(err);
+                    console.log([data]);
                 } else {
                     // Compact directory index
                     self.database[dbID].persistence.compactDatafile(function() {
                         // If callback function inst defined lets do default action
-                        if (!callback) {
+                        if (callback && typeof(callback) === "function") {
+                            callback.apply(this, [err, data]);
+                        } else {
                             // Set default navigation values
                             App.Apps.App["com.files"].Main.Public.Init.setKeys({
                                 items: {
@@ -102,8 +112,6 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
                             });
                             // Calculate items per page and getDirectoryIndex()
                             App.Apps.App["com.files"].Main.Public.Init.findItemsToPaginator();
-                        } else {
-                            callback(err);
                         }
                     });
                 }

@@ -3,8 +3,8 @@
  * @Date:   2014-08-21 10:44:36
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:44:55
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-23 14:20:09
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -96,7 +96,7 @@ App.View.headerBar = Backbone.View.extend({
             App.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
 
         } else if (actionType === "1") { // data-id 1 logout Chuppy action
-
+            // Reset and clear all active classes and system values
             App.Public.System.reInitilize();
 
         } else if (actionType === "2") {

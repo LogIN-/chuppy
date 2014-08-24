@@ -1,14 +1,14 @@
 /* 
  * @Author: LogIN
- * @Date:   2014-08-20 14:25:48
+ * @Date:   2014-07-25 11:34:06
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:46:13
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-24 11:06:38
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-08-20 14:25:48 The Chuppy Authors
+ * Copyright (c) 2014-07-25 11:34:06 The Chuppy Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,31 +29,21 @@
  * THE SOFTWARE.
  */
 
-var MainAppRouter = Backbone.Router.extend({
-    routes: {
-        "": "home",
-    },
-    initialize: function() {
-        // Our default system window top bar with window actions
-        if (!this.windowBar) {
-            this.windowBar = new App.View.windowBar();
-        }
-        // If app is run for first time show user configuration interface
-        if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
-            if (!this.setupView) {
-                this.setupView = new App.View.chuppySetUp();
-            }
-        } else {
-            App.Public.System.initilize();
-        }
+// Main Application model
+// ----------
 
+// Our basic Application model
+
+App.Model.ApplicationBody = Backbone.Model.extend({
+    // Default attributes for the our app.
+    defaults: {
+        _id: null,
+        uid: null, // crypt.createHash('md5').update(model.get('name-space')).digest('hex')
+        "name-space": null,
+        name: null,
+        enabled: false,
+        system: false,
+        icon: "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        active: false
     }
-});
-
-$(function() {
-    App.Router = new MainAppRouter();
-    Backbone.history.start({
-        hashChange: true,
-        pushState: true
-    });
 });

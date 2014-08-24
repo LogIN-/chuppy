@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:45:11
+ * @Last Modified time: 2014-08-24 09:31:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -34,7 +34,7 @@
 
 // Our overall **AppView** is the top-level piece of UI.
 
-App.View.windowBar = Backbone.View.extend({
+App.View.WindowBar = Backbone.View.extend({
     template: _.template(App.Utils.Template.loadTemplate('lib/templates/main-ui/windows-bar.tpl', 'sync'), {}),
     // Bind to the existing skeleton of
     // the App already present in the HTML.
@@ -51,7 +51,7 @@ App.View.windowBar = Backbone.View.extend({
     initialize: function() {
         // if debugging let us notify about firstRun init
         if (isDebug) {
-            console.log("initialized: App.View.windowBar");
+            console.log("initialized: App.View.WindowBar");
         }
         // Ensure our methods keep the `this` reference to the view itself
         _.bindAll(this, 'render');
@@ -94,7 +94,7 @@ App.View.windowBar = Backbone.View.extend({
                 $(e.currentTarget).attr("data-id", "2");
         }
         if (isDebug) {
-            console.log('System, App.View.windowBar: windowResizeActions: ', actionType);
+            console.log('System, App.View.WindowBar: windowResizeActions: ', actionType);
         }
 
     }
