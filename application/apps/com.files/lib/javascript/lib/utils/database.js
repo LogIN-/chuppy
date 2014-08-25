@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-23 13:49:15
+ * @Last Modified time: 2014-08-25 11:29:25
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -81,7 +81,7 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
     // Inserts items in current data-store index
     // @returns callback() {function}
     self.populateFolderIndex = function(dbPath, data, callback) {
-        console.info("Creating folder index: ", dbPath);
+        console.info("Creating folder index: ", dbPath); 
         var dbID = crypt.createHash('md5').update(dbPath).digest('hex');
         // When indexing directory make sure this DB instance isn't initialized
         self.database[dbID] = null;
@@ -166,8 +166,8 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
                         App.Apps.App["com.files"].Main.Public.Init.setKeys({
                             items: {
                                 currentItems: null,
-                                dirItemsTotal: directory.total_count,
-                                dirItemsTotalSize: directory.total_size
+                                dirItemsTotal: 0,
+                                dirItemsTotalSize: 0
                             }
                         });
                         App.Apps.App["com.files"].Main.Public.Init.addItemsToPaginator();

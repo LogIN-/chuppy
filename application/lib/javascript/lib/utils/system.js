@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 12:15:14
+ * @Last Modified time: 2014-08-25 12:41:19
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -164,7 +164,7 @@ App.Private.System.prototype.initilizeDefaultApp = function() {
     var appFound = false;
 
     _.each(self.apps, function(app) {
-        if (app.system === true && app.enabled === true && appFound === false) {
+        if (app.isDefault === true && app.enabled === true && appFound === false) {
             console.log("STARTING DEFOULT APPLICATION");
             self.startApp(app["name-space"]);
             appFound = true;
@@ -175,6 +175,7 @@ App.Private.System.prototype.startApp = function(appID) {
     var self = this;
     console.log("App.Private.System.prototype.startApp: ", appID);
     var options = App.Apps.Public.getUserAppDetails(appID);
+    console.log(options);
     
     if (!self.mainUI.views.apps[appID]) {
         // Little Hack to display loading while waiting async operations
@@ -183,15 +184,7 @@ App.Private.System.prototype.startApp = function(appID) {
             if (typeof App.Apps.App[appID].Setup === "function") {
                 clearInterval(interval);
 
-                self.mainUI.collection.applications.add({
-                    uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
-                    "name-space": options["name-space"],
-                    name: options.name,
-                    enabled: options.enabled,
-                    system: options.system,
-                    icon: options.icon,
-                    active: true
-                });
+                self.mainUI.collection.applications.add(_.extend(options, {uid: crypt.createHash('md5').update(options["name-space"]).digest('hex')}));
 
             } else {
                 console.log("Loading application data from SYSTEM");

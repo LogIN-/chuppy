@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 09:31:46
+ * @Last Modified time: 2014-08-25 10:58:28
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -84,7 +84,7 @@ App.View.WindowBar = Backbone.View.extend({
                 $(e.currentTarget).attr("data-id", "1");
                 break;
             case 3: // data-id 3 shutdown window action
-                App.Utils.Helpers.exitDelay("#overlay", 1500);
+                App.Utils.Helpers.exitDelay(null, 1500);
                 // App.Utils.Window.action(3);
                 break;
             default: // defoult action is to maximize window

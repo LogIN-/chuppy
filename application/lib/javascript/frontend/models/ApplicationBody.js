@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 11:06:38
+ * @Last Modified time: 2014-08-25 12:25:48
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -42,8 +42,11 @@ App.Model.ApplicationBody = Backbone.Model.extend({
         "name-space": null,
         name: null,
         enabled: false,
-        system: false,
+        isDefault: false,
         icon: "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
-        active: false
+        visible: true,
+        filePath: null,
+        supportedFileTypes: null,
+        display: null
     }
 });

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 12:44:24
+ * @Last Modified time: 2014-08-25 11:29:38
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -174,7 +174,7 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
         if (fs.existsSync(self.directory.location.dbLocation) === false || self.directory.system.reloadIndex === true) {
             console.info("reloading directory index");
             App.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(self.directory.location.currentLocation, self.directory.location.dbLocation);
-        } else {
+        } else { 
             console.info("directory index found");
             self.findItemsToPaginator();
         }

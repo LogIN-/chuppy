@@ -49,17 +49,19 @@ App.Apps.App["com.files"].Setup = function(options){
         "default": true,
         "order": 0,
         "icon": "/apps/com.files/lib/images/favicon.png",
+        // Check if app is already initialized
         "init": false,
-        // ID of parent application css container added dynamically
+        // ID of parent application css container added dynamically from ApplicationBody.js main view
+        // {container: "#application-tabs-" + uid}
         // But will always have #application-tabs[data-namespace='app.namespace']
         "container": "#application-tabs[data-namespace='com.files']",
     };
-    self.options = _.extend( this.options, options);
+    self.options = _.extend(this.options, options);
 
     console.info("App defaults initialized!");
 
     // Setup needed database for app and include needed files (js/css)
-    // All include JS and Css files must have app prefix exp. 
+    // All include JS and CSS files must have app prefix exp. 
     // JS: App.Apps.App["com.files"].Utils 
     // CSS: #my-files-app .someclass
     self.setupDependencies = function () {
@@ -104,6 +106,7 @@ App.Apps.App["com.files"].Setup = function(options){
     };
 
 };
+// Any app database tables that should be created
 App.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
     // Check if table is already in DB
     dbORM.knex.schema.hasTable('apps_files').then(function(exists) {
@@ -125,9 +128,11 @@ App.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
     });
 };
 
+// Any app scripts(depencies), CCS files that should be included in body
 App.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
 
     var self = this;
+    // Needed scripts
     var scripts = [
         '/apps/com.files/lib/javascript/globals.js',
         '/apps/com.files/lib/javascript/lib/utils/database.js',
@@ -141,10 +146,11 @@ App.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
         '/apps/com.files/lib/javascript/frontend/views/explorer.js',
         '/apps/com.files/lib/javascript/main.js'
     ];
+    // Needed Styles
     var styles = [
         '/apps/com.files/lib/stylesheets/main.css'
     ];
-
+    // Actually include them:
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){

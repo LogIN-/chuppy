@@ -1,3 +1,33 @@
+/* 
+* @Author: LogIN
+* @Date:   2014-08-24 13:46:46
+* @Email:  unicoart@gmail.com
+* @URL:    https://github.com/LogIN-/chuppy
+* @Last Modified by:   LogIN
+* @Last Modified time: 2014-08-25 10:45:02
+* Use of this source code is governed by a license: 
+* The MIT License (MIT)
+* 
+* Copyright (c) 2014-08-24 13:46:46 The Chuppy Authors
+* 
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+* 
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+* 
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*/
 @charset "UTF-8";
 
 /* Disable user select in app */
@@ -482,8 +512,11 @@ footer > .small {
     margin: 0;
     background-color: white;
     position: relative;
-    min-height: 100%;
+    min-height: calc(100% - 135px);
     float: right;
+    clear: both;
+    height: 100%;
+    max-height: calc(100% - 135px);
 }
 
 /* Start of left content menu */
@@ -508,7 +541,6 @@ footer > .small {
     padding-left: 0;
     float: left;
     height: 100%;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
     background-color: #F5F5F5;
 }
 #left-navigation .sidebar-nav .navbar .navbar-collapse {
@@ -533,7 +565,7 @@ footer > .small {
     cursor: pointer;
     -moz-user-select: none;
     width: 100%;
-    border-bottom: 1px solid whitesmoke;
+    box-shadow: 0 -1px 0 #FFF;
 }
 #left-navigation .navbar li.active {
     background-color: #555;
@@ -566,64 +598,64 @@ footer > .small {
 
 
 /* TABS CONTENT STYLES  resets */
-#application-tabs.ui-widget-content {
+div#application-tabs {
+    padding: 0;
     border: none;
     background: transparent;
-    color: inherit;
-}
-#application-tabs.ui-tabs{
-    padding: 0;
+    min-height: 100%;
+    max-height: 100%;
+    height: 100%;
 }
 #application-tabs .ui-tabs-nav {
     margin: 0;
     padding: 0;
     position: fixed;
-    margin-top: -25px;
-    display: block;
-    height: 25px;
-    width: auto;
-    clear: both;
-}
-#application-tabs .ui-widget-header {
     border: none;
-    background: #F5F5F5;
+    background: transparent;
+    max-height: 25px;
+    float: left;
+    width: 100%;
+    top: 80px;
+    overflow: hidden;
     height: 25px;
 }
 #application-tabs.ui-tabs .ui-tabs-nav li {
-    list-style: none;
     float: left;
-    position: relative;
-    top: 0;
     margin: 0;
-    border-bottom-width: 0;
-    padding: 0;
-    white-space: nowrap;
     height: 25px;
     line-height: 25px;
-    border-top-width: 0;
-    clear: both;
+    clear: right;
+    border: none;
+    padding: 0;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-hover {
     cursor: pointer;
 }
-#application-tabs.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-    float: left;
+#application-tabs.ui-tabs .ui-tabs-nav li a {
     padding: 0;
     padding-left: 10px;
     text-decoration: none;
-    padding-right: 10px;
+    padding-right: 15px;
     font-size: 12px;
-    font-weight: bold;
+    -webkit-user-select: none;
+    cursor: pointer;
 }
-#application-tabs.ui-tabs .ui-tabs-nav li span.glyphicon.glyphicon-remove {
+#application-tabs.ui-tabs .ui-tabs-nav li a span.glyphicon.glyphicon-remove {
     position: absolute;
     top: 2px;
     right: 2px;
     font-size: 9px;
     font-weight: bold;
-    cursor: pointer;
 }
 #application-tabs.ui-tabs .ui-tabs-panel {
     display: block;
     border-width: 0;
     padding: 0;
     background: none;
+}
+
+#application-tabs.ui-tabs > div.ui-tabs-panel.ui-widget-content {
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
 }

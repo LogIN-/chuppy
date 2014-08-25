@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 13:39:55
+ * @Last Modified time: 2014-08-25 12:26:08
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -154,6 +154,8 @@ App.View.ApplicationBody = Backbone.View.extend({
     // Add model(item) to view
     add: function(model) {
         console.info("Adding new module to main view!!");
+        console.log(model.toJSON());
+
         var uid = model.get('uid');
         // We create an updating Application view for each Application that is started.
         // And add it to the collection so that it's easy to reuse.
@@ -161,33 +163,47 @@ App.View.ApplicationBody = Backbone.View.extend({
             console.info("Application model already added...");
             return;
         }
-        // Our application sub-view has two elements tabs header and application body
-        this._itemViews[uid] = {};
-        this._itemViews[uid]._itemHeaderView = new App.View.ApplicationBodyItemHeader({
-            model: model
-        });
-        this._itemViews[uid]._itemBodyView = new App.View.ApplicationBodyItemBody({
-            model: model
-        });
-        // If the view has been rendered, then
-        // we immediately append the rendered item.
-        if (this._rendered === true) {
-            console.info("Main view already rendered appending top it...");
-            // 1. Render item view and append it to main folder view
-            $(this._itemViews[uid]._itemHeaderView.render().el).appendTo($(this.viewHeaderEl));
-            $(this._itemViews[uid]._itemBodyView.render().el).appendTo($(this.el));
-            $(this.el).tabs("refresh");
+        if(model.get('display') === "tab"){
+            // Our application sub-view has two elements tabs header and application body
+            this._itemViews[uid] = {};
+            this._itemViews[uid]._itemHeaderView = new App.View.ApplicationBodyItemHeader({
+                model: model
+            });
+            this._itemViews[uid]._itemBodyView = new App.View.ApplicationBodyItemBody({
+                model: model
+            });
+            // If the view has been rendered, then
+            // we immediately append the rendered item.
+            if (this._rendered === true) {
+                console.info("Main view already rendered appending top it...");
+                // 1. Render item view and append it to main folder view
+                $(this._itemViews[uid]._itemHeaderView.render().el).appendTo($(this.viewHeaderEl));
+                $(this._itemViews[uid]._itemBodyView.render().el).appendTo($(this.el));
+                $(this.el).tabs("refresh");
+            }
+            if (model.get('isDefault') === true) {
+                console.info("Activating active tab by settings!");
+                var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
+                $(this.el).tabs("option", "active", index);
+                $(this.el).find(".ui-tabs-nav").sortable({
+                    axis: "x",
+                    stop: function() {
+                        $(this.el).tabs("refresh");
+                    }
+                });
+            }
+            this.startAppTab(model);
+            this.checkTabVisibility();
+        }else if(model.get('display') === "iframe"){
+            this.startAppIframe(model);
         }
-        if(model.get('active') === true){
-            console.info("Activating active tab by settings!");
-            var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
-            $(this.el).tabs("option", "active", index);
-        }
-        this.startApp(uid, model);
+
     },
-    startApp: function(uid, model) {
+    startAppTab: function(model) {
         console.info("Plug-in view appended starting internals");
         var appID = model.get('name-space');
+        var uid = model.get('uid');
+
         var options = {
             container: "#application-tabs-" + uid,
         };
@@ -201,6 +217,10 @@ App.View.ApplicationBody = Backbone.View.extend({
         this._itemViews[uid]._itemSystemView.setupDependencies();
         // Start app 
         this._itemViews[uid]._itemSystemView.initilizeAppUI();
+    },
+    startAppIframe: function(model) {
+        var appID = model.get('name-space');
+        new App.Apps.App[appID].Setup(model).setupDependencies().initilizeAppUI();
     },
     // Remove one model(item) from view
     remove: function(model) {
@@ -216,6 +236,16 @@ App.View.ApplicationBody = Backbone.View.extend({
 
         } else {
             console.log("no model to remove");
+        }
+        this.checkTabVisibility();
+    },
+    checkTabVisibility: function(){
+        var activeViews = Object.keys(this._itemViews).length;
+        console.info("Checking - checkTabVisibility, total:", activeViews);
+        if(activeViews === 1){
+            $("#application-tabs .ui-tabs-nav").hide();
+        }else{
+            $("#application-tabs .ui-tabs-nav").show();
         }
     },
     // Remove this view completely
