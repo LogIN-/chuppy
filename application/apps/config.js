@@ -30,7 +30,6 @@
 */
 
 // Apps configuration file
-// So we can know what apps to enable --- TODO: connect with UI and DB
 App.Apps.Configuration = {
     0: {
         // file-system name of app must be unique ("name-space") and app folder must have same name
@@ -42,9 +41,37 @@ App.Apps.Configuration = {
         // Is app enabled or disabled
         "enabled": true,
         // If system is true then this is default app
-        "system": true,
+        "isDefault": true,
         "order": 0, 
-        "icon": "/apps/com.files/lib/images/favicon.png"
+        // "icon": "/apps/com.files/lib/images/favicon.png"
+        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        // Is app visible in menu?
+        "visible": true,
+        // Any specific file-types supported by this application?
+        "supportedFileTypes": ['dir'],
+        // How should system display this app
+        "display": "tab"
+    },
+    1: {
+        // file-system name of app must be unique ("name-space") and app folder must have same name
+        "name-space": "com.pdfViewer",
+        // Name variable of app (same as in i18n variable ) 
+        "name": "pdfViewer",
+        // Path to the app folder default (/apps/{app.system.name})
+        "path": "apps/com.pdfViewer/index.js",
+        // Is app enabled or disabled
+        "enabled": true,
+        // If system is true then this is default app
+        "isDefault": false,
+        "order": 1, 
+        // "icon": "/apps/com.files/lib/images/favicon.png"
+        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        // Is app visible in menu?
+        "visible": false,
+        // Any specific file-types supported by this application?
+        "supportedFileTypes": ['pdf'],
+        // How should system display this app
+        "display": "iframe"
     },
 }; 
 
@@ -77,9 +104,9 @@ App.Apps.Private = function () {
                 self.app_list[count_sys] = app;
                 count_sys++;
                 // Assign Default apps
-                if(app.system === true && app.enabled === true){
+                if(app.isDefault === true && app.enabled === true){
                     self.app_user[count_usr] = app;
-                    App.Utils.Apps.initilizeApp(app);
+                    App.Utils.Apps.initilizeApp(self.app_user[count_usr]);
                     count_usr++;
                 }else {
                     new App.Database.UserApps({uid: self.userID, "name-space": app["name-space"]}).fetchAll().then(function(collection) {
@@ -88,8 +115,8 @@ App.Apps.Private = function () {
                             _.each(collection.models, function(model){
                                 // Check if app is enabled
                                 if(model.get('enabled') === 1){
-                                    self.app_user[count_usr] = model.attributes;
-                                    App.Utils.Apps.initilizeApp(model.attributes);
+                                    self.app_user[count_usr] = _.extend(app, model.attributes);
+                                    App.Utils.Apps.initilizeApp(self.app_user[count_usr]);
                                     count_usr++;
                                 }
                                 
@@ -121,12 +148,14 @@ App.Apps.Private = function () {
 
 // Return keys and values of appID -> name-space
 App.Apps.Private.prototype.getUserAppDetails = function (appID) {
-    console.log("App.Apps.Private getUserAppDetails: ", appID);
+    var options = null;
+    console.info("App.Apps.Private getUserAppDetails: ", appID);
     _.each(this.app_user, function(app){
         if(app["name-space"] === appID){
-            return app;
+            options = app;
         }
     });
+    return options;
 };
 
 App.Apps.Public = new App.Apps.Private(); 

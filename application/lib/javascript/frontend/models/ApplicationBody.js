@@ -1,14 +1,14 @@
 /* 
  * @Author: LogIN
- * @Date:   2014-07-25 11:34:07
+ * @Date:   2014-07-25 11:34:06
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:46:06
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-25 12:25:48
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-07-25 11:34:07 The Chuppy Authors
+ * Copyright (c) 2014-07-25 11:34:06 The Chuppy Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,12 +29,24 @@
  * THE SOFTWARE.
  */
 
-// Main App UI Collection --- not used for now
-// ---------------
+// Main Application model
+// ----------
 
-App.Collections.MainApp = Backbone.Collection.extend({
+// Our basic Application model
 
-    // Reference to this collection's model.
-    model: App.Model.MainApp,
-
+App.Model.ApplicationBody = Backbone.Model.extend({
+    // Default attributes for the our app.
+    defaults: {
+        _id: null,
+        uid: null, // crypt.createHash('md5').update(model.get('name-space')).digest('hex')
+        "name-space": null,
+        name: null,
+        enabled: false,
+        isDefault: false,
+        icon: "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        visible: true,
+        filePath: null,
+        supportedFileTypes: null,
+        display: null
+    }
 });

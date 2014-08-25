@@ -1,35 +1,35 @@
 /* 
-* @Author: LogIN
-* @Date:   2014-08-21 18:20:14
-* @Email:  unicoart@gmail.com
-* @URL:    https://github.com/LogIN-/chuppy
-* @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-22 16:42:55
-* Use of this source code is governed by a license: 
-* The MIT License (MIT)
-* 
-* Copyright (c) 2014-08-21 18:20:14 The Chuppy Authors
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
+ * @Author: LogIN
+ * @Date:   2014-08-21 18:20:14
+ * @Email:  unicoart@gmail.com
+ * @URL:    https://github.com/LogIN-/chuppy
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-23 13:53:56
+ * Use of this source code is governed by a license:
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-08-21 18:20:14 The Chuppy Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-/* global crypt, mime, async, urlRoute, moment */
+/* global crypt, mime, async, urlRoute, Cookies, Keygrip, moment */
 App.Apps.App["com.files"].Main.Private.Webserver = function() {
     var self = this;
     // Array of available web servers
@@ -50,9 +50,7 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
         self.webserver[sid] = {
             location: {
                 serverRoot: itemPath,
-                reqRelative: null,
-                reqAbsolute: itemPath,
-                DbAbsolute: path.join(itemPath, "." + crypt.createHash('md5').update(itemPath).digest('hex')),
+                DbAbsolute: path.join(itemPath, "." + crypt.createHash('md5').update(itemPath).digest('hex'))
             },
             template: {
                 dirRaw: App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/public/directory.tpl', 'sync'),
@@ -63,6 +61,9 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
             system: {
                 // Server ID and active port number
                 serverID: sid,
+                // API calling relative path prefix for this server
+                // Equal: MD5 hash of: Installation generated token(UUID) + current PORT + current creation time
+                serverApiPath: crypt.createHash('md5').update(App.Settings.getLocal('token') + sid + moment()).digest('hex'),
                 // Server created time
                 createdTime: moment(),
                 // Set from create tunnel function
@@ -77,44 +78,58 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
                     password: null,
                     // Users to authenticate
                     users: null,
+                    // Array with authenticated users UUID's
+                    authenticated: []
                 },
                 // HTTP server instance
                 server: null
             },
-            // Current browsing page variables
-            page: {
-                // Current page title
-                title: null,
-                // Current page items
-                items: null
+            // Current cookie handler object
+            cookies: {
+                keys: new Keygrip([App.Settings.getLocal('token'), App.Settings.getLocal('install_uuid'), App.Settings.getLocal('salt')])
             }
         };
 
         // Add API routes to our URL router
+
         // API for user auth
-        self.webserver[sid].system.router.addRoute('/8cd75eafa26bf06cf104c24c6016564d/api/auth/*?', self.authentificatePublicUser);
+        self.webserver[sid].system.router.addRoute('/' + self.webserver[sid].system.serverApiPath + '/api/auth/*?', self.authentificatePublicUser);
         // Static server assets
-        self.webserver[sid].system.router.addRoute('/8cd75eafa26bf06cf104c24c6016564d/assets/:type/*', self.serverStaticAssets);
+        self.webserver[sid].system.router.addRoute('/' + self.webserver[sid].system.serverApiPath + '/assets/:type/*', self.serverStaticAssets);
+        // Direct file downloads
+        self.webserver[sid].system.router.addRoute('/' + self.webserver[sid].system.serverApiPath + '/api/download/:path', self.downloadFileDirect);
+
         // Default handler
         self.webserver[sid].system.router.addRoute('/*', self.handleRequest);
 
 
-        console.log("Starting share server : " + self.webserver[sid].system.serverID);
-        //http.createServer(self.handleRequest).listen(port, '127.0.0.1');
+        console.info("Starting share server : " + self.webserver[sid].system.serverID);
+        console.info("Share server path: " + self.webserver[sid].location.serverRoot);
+
         self.webserver[sid].system.server = http.createServer(function(req, res) {
+            // Unique clients session ID
+            var clientID;
+            // Local cookie object
+            var cookies;
+            // This creates a cookie jar corresponding to the current request and response
+            cookies = new Cookies(req, res, self.webserver[sid].cookies.keys);
+            // Get signed clientID
+            clientID = cookies.get("signed", {
+                signed: true
+            });
+            if (!clientID) {
+                // On first request generate random clientID
+                clientID = App.Utils.Helpers.genUUID();
+                // Set clientID to signed cookie
+                cookies.set("signed", clientID, {
+                    maxAge: 21600000,
+                    signed: true
+                });
+            }
             var path = url.parse(req.url).pathname;
             var match = self.webserver[sid].system.router.match(path);
             match.fn(req, res, match);
         }).listen(port, '127.0.0.1');
-    };
-    self.authentificatePublicUser = function(req, res, match) {
-        if (1 === 1) {
-            match = match.next();
-            if (match) {
-                match.fn(req, res, match);
-            }
-            return;
-        }
     };
     /* Server request handler
      * URL request if its requesting folder must end in "/"
@@ -124,71 +139,102 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
     self.handleRequest = function(req, res) {
         // Server ID - port number
         var sid = req.socket.localPort.toString();
-        console.log("Starting request : " + self.webserver[sid].system.serverID);
+        // Current request relative path
+        var reqRelative;
+        // Current request absolute path
+        var reqAbsolute;
 
-        self.webserver[sid].location.reqRelative = url.parse(req.url).pathname || null;
+        var DbAbsolute;
+        // Current browsing page variables
+        var page = {
+            system: {
+                apiURL: self.webserver[sid].system.serverApiPath,
+                auth: self.webserver[sid].system.auth,
+            },
+            // Current page title
+            title: null,
+            // Current page items
+            items: null,
+            // Requested Path type (directory || file)
+            type: null
+        };
 
+        console.info("Starting request : " + sid);
+        // Set relative path variable
+        reqRelative = url.parse(req.url).pathname || null;
+        console.info("Request relative path: ", reqRelative);
         // if there is any path in request
-        if (self.webserver[sid].location.reqRelative !== "/") {
-            self.webserver[sid].location.reqAbsolute = path.join(self.webserver[sid].location.serverRoot,
-                self.webserver[sid].location.reqRelative);
+        if (reqRelative !== "/") {
+            reqAbsolute = path.join(self.webserver[sid].location.serverRoot, reqRelative);
             // else our request path is root serve path
         } else {
             // Set relative path to share name
-            self.webserver[sid].location.reqRelative = path.basename(self.webserver[sid].location.serverRoot);
+            reqRelative = path.basename(self.webserver[sid].location.serverRoot);
             // Set absolute path to share root
-            self.webserver[sid].location.reqAbsolute = self.webserver[sid].location.serverRoot;
+            reqAbsolute = self.webserver[sid].location.serverRoot;
         }
+        console.info("Request absolute path: ", reqAbsolute);
         // Default serve variables
-        self.webserver[sid].page.title = self.webserver[sid].location.reqRelative;
+        page.title = reqRelative;
 
         // If requested path exists on our client
-        if (fs.existsSync(self.webserver[sid].location.reqAbsolute)) {
+        if (fs.existsSync(reqAbsolute)) {
             // If request is directory we must serve our index html template
-            if (fs.lstatSync(self.webserver[sid].location.reqAbsolute).isDirectory()) {
+            if (fs.lstatSync(reqAbsolute).isDirectory()) {
+                // Set request type
+                path.type = "directory";
                 // If request items is directory path must end with "/"
                 // but this should be set in client side
-                if (self.webserver[sid].location.reqAbsolute.substr(-1) !== "/") {
-                    self.webserver[sid].location.reqAbsolute = self.webserver[sid].location.reqAbsolute + "/";
+                if (reqAbsolute.substr(-1) !== "/") {
+                    reqAbsolute = reqAbsolute + "/";
                 }
                 // Reference to directory index database
-                if (self.webserver[sid].location.reqAbsolute) {
-                    self.webserver[sid].location.DbAbsolute = path.join(self.webserver[sid].location.reqAbsolute, "." +
-                        crypt.createHash('md5')
-                        .update(self.webserver[sid].location.reqAbsolute)
-                        .digest('hex'));
-                    // Check if database exist in directory
-                    // TODO: index directory and server contents
-                    if (!fs.existsSync(self.webserver[sid].location.DbAbsolute)) {
-                        self.pathNotFoundPage(req, res);
-                        return;
-                    }
-                } else {
-                    self.pathNotFoundPage(req, res);
-                    return;
-                }
-                // Get all items from directory index and server template
-                async.parallel({
-                        items: App.Apps.App["com.files"].Main.Public.Database.getDirectoryIndexAPI(self.webserver[sid].location.DbAbsolute)
-                    },
-                    function(result) {
-                        self.webserver[sid].page.items = result;
-                        // If any items found
-                        if (self.webserver[sid].page.items) {
-                            self.serveDirectoryContents(req, res);
-                        } else {
-                            // TODO: serve empty items page
-                            self.pathNotFoundPage(req, res);
+                DbAbsolute = path.join(reqAbsolute, "." + crypt.createHash('md5').update(reqAbsolute).digest('hex'));
+                // Check if database exist in directory
+                if (!fs.existsSync(DbAbsolute)) {
+                    // If database doesnt exist lets index directory, create database and continue
+                    App.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(reqAbsolute, DbAbsolute, function(err, data) {
+                        if (err) {
+                            console.log(err);
+                            self.pathNotFoundPage(req, res, page);
+                        }else{
+                            page.items = data;
+                            self.serveDirectoryContents(req, res, page);
                         }
+                        return;
                     });
-                // If requested item is download (direct path)
-                // download file
+                } else {
+                    console.info("Reading Directory index file:");
+                    // Get all items from directory index and server template
+                    async.parallel({
+                            items: App.Apps.App["com.files"].Main.Public.Database.getDirectoryIndexAPI(DbAbsolute)
+                        },
+                        function(result) {
+                            if(!result){
+                                console.log("Empty directory found");
+                                page.items = [];
+                            }else{
+                                console.info("Found items in directory:", result.length);
+                                page.items = result;
+                            }
+                            // Serve HTML page
+                            // If no items found process that in template
+                            self.serveDirectoryContents(req, res, page);
+
+                        });
+                }
+            // If requested item is download (direct path)
+            // add it to items so template can server one page "template"
             } else {
-                self.downloadFileDirect(req, res);
+                // Serve HTML page
+                // If no items found process that in template
+                page.items.push(reqAbsolute);
+                path.type = "file";
+                self.serveFileDownloadPage(req, res, page);
             }
             // Request path doesn't exists send 404 Page
         } else {
-            self.pathNotFoundPage(req, res);
+            self.pathNotFoundPage(req, res, page);
         }
     };
 
@@ -213,7 +259,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.getServersList = func
     var serverItem;
     var results = [];
 
-    _.each(this.webserver, function(server){        
+    _.each(this.webserver, function(server) {
         serverItem = {
             port: server.system.serverID,
             path: server.location.serverRoot,
@@ -221,15 +267,29 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.getServersList = func
         };
         results.push(serverItem);
     });
-
     return results;
 };
 
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveDirectoryContents = function(req, res) {
+// Template serve if request is directory
+App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveDirectoryContents = function(req, res, page) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
-    self.webserver[sid].template.dirHtml = _.template(self.webserver[sid].template.dirRaw, self.webserver[sid].page, {
+    self.webserver[sid].template.dirHtml = _.template(self.webserver[sid].template.dirRaw, page, {
+        variable: 'page'
+    });
+    // Get directory items from index and serve our template
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    //send the contents with the default 200/ok header
+    res.end(self.webserver[sid].template.dirHtml);
+};
+// Template serve if request is file
+App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveFileDownloadPage = function(req, res, page) {
+    var self = this;
+    var sid = req.socket.localPort.toString();
+
+    self.webserver[sid].template.dirHtml = _.template(self.webserver[sid].template.dirRaw, page, {
         variable: 'page'
     });
     // Get directory items from index and serve our template
@@ -239,25 +299,12 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveDirectoryContent
     res.end(self.webserver[sid].template.dirHtml);
 };
 
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.downloadFileDirect = function(req, res) {
+// Template serve if 404
+App.Apps.App["com.files"].Main.Private.Webserver.prototype.pathNotFoundPage = function(req, res, page) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
-    var filename = path.basename(self.webserver[sid].location.reqAbsolute);
-    var mimetype = mime.lookup(self.webserver[sid].location.reqAbsolute);
-
-    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-    res.setHeader('Content-type', mimetype);
-
-    var filestream = fs.createReadStream(self.webserver[sid].location.reqAbsolute);
-    filestream.pipe(res);
-};
-
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.pathNotFoundPage = function(req, res) {
-    var self = this;
-    var sid = req.socket.localPort.toString();
-
-    self.webserver[sid].template.errorHtml = _.template(self.webserver[sid].template.errorRaw, self.webserver[sid].page, {
+    self.webserver[sid].template.errorHtml = _.template(self.webserver[sid].template.errorRaw, page, {
         variable: 'page'
     });
     res.writeHead(404, {
@@ -266,12 +313,42 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.pathNotFoundPage = fu
     res.end(self.webserver[sid].template.errorHtml);
 };
 
+/* URL API CALL METHODS */
+
+// File download stream serve
+App.Apps.App["com.files"].Main.Private.Webserver.prototype.downloadFileDirect = function(req, res, match) {
+    var self = this;
+    var sid = req.socket.localPort.toString();
+    var reqAbsolute = match.params.path;
+    console.info("Downloading direct file:", reqAbsolute);
+    var filename = path.basename(reqAbsolute);
+    var mimetype = mime.lookup(reqAbsolute);
+
+    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+    res.setHeader('Content-type', mimetype);
+    // this could take a while
+    res.connection.setTimeout(0); 
+
+    var filestream = fs.createReadStream(reqAbsolute);
+    filestream.pipe(res);
+};
+// File download stream serve for our assets (CSS, JS etc..)
 App.Apps.App["com.files"].Main.Private.Webserver.prototype.serverStaticAssets = function(req, res, match) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
     res.statusCode = 200;
     res.end('static files');
+};
+// API to check user credentials if password required
+App.Apps.App["com.files"].Main.Private.Webserver.prototype.authentificatePublicUser = function(req, res, match) {
+    if (1 === 1) {
+        match = match.next();
+        if (match) {
+            match.fn(req, res, match);
+        }
+        return;
+    }
 };
 
 App.Apps.App["com.files"].Main.Public.Webserver = new App.Apps.App["com.files"].Main.Private.Webserver();

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:49:18
+ * @Last Modified time: 2014-08-23 11:43:45
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -91,7 +91,11 @@ var
     // Time/Data JS manipulation
     moment = require('moment'),
     // GeoIP native JS module
-    geoip = require('geoip-lite');
+    geoip = require('geoip-lite'),
+    // Signed and unsigned cookies based on Keygrip
+    Cookies = require('cookies'),
+    // Module for signing and verifying data through a rotating credential system
+    Keygrip = require('keygrip');
 
 // window state preservation across platforms
 // - /lib/javascript/lib/winstate.js

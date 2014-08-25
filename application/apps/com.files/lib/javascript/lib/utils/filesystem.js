@@ -1,3 +1,4 @@
+/* global crypt */
 /* 
 * @Author: LogIN
 * @Date:   2014-08-22 12:04:30
@@ -29,14 +30,17 @@
 * THE SOFTWARE.
 */
 
-/* global crypt */
-App.Apps.App["com.files"].Main.Utils.Actions = {
+// Files application core functions
+App.Apps.App["com.files"].Main.Utils.Actions = { 
 
-    // TODO: support for large dires with > 400k files
-    indexDirectory: function(dir, dbPath) {
-
+    // Index directory contents to directory index database
+    // @param {string} dir Absolute path to directory to index
+    // @param {string} dbPath Absolute path to directory to index database
+    // @param {function} callback Callback function returns {err} @optional, if not defined default action is used
+    // TODO: support for large dirs with > 400k files
+    indexDirectory: function(dir, dbPath, callback) {
+        // Reference to this
         var self = this;
-
         console.log("Indexing directory");
         console.log("DIR: ", dir);
         console.log("BD : ", dbPath);
@@ -79,7 +83,9 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
             directory_details.total_count = total;
             files_details.push(directory_details);
 
-            App.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, true);
+            // Save directory info into database
+            // And make default action if callback() isn't defined
+            App.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, callback);            
 
         });
 

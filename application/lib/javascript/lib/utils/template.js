@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 14:20:32
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:30
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-25 09:07:59
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -169,14 +169,20 @@ App.Utils.Template = {
 
     },
     /* Appends script or style tags to document body
-     * @parm {string} data
-     * @parm {string} dataID
-     * @parm {string} dataType
+     * @parm {string} data - URI to script/style tag
+     * @parm {string} dataID - unique name-space identifier
+     * @parm {string} dataType - script | style
      */
     createHTMLTag: function(data, dataID, dataType) {
         if (data.length > 0 && dataID.length > 0 && dataType.length > 0) {
-            if (dataType === "script") {
 
+            if (dataType === "script") {
+                console.info("Including script on page", data);
+                // Check if script is already included in page
+                if($("script[src='" + data + "']").length){
+                    console.log("Script is already included, skipping...", data);
+                    return;                
+                }
                 var script = document.createElement("script");
                 script.type = "text/javascript";
                 script.async = false;
@@ -188,7 +194,12 @@ App.Utils.Template = {
                 document.getElementsByTagName("head")[0].appendChild(script).setAttributeNode(script_type);
 
             } else if (dataType === "style") {
-
+                console.info("Including style on page", data);
+                // Check if style is already included in page
+                if($("link[href='" + data + "']").length){
+                    console.log("Style is already included, skipping...", data);
+                    return;                
+                }
                 var style = document.createElement("link");
                 style.type = "text/css";
                 style.rel = "stylesheet";

@@ -13,7 +13,8 @@
             </div>
             <div class="navbar-collapse collapse sidebar-navbar-collapse">
                 <ul class="nav navbar-nav" id="nav-side-left">
-                    <% _.each( menuItems, function( menuItem ){ %>
+                    <% _.each(menuItems, function( menuItem ){ %>
+                        <% if(menuItem.visible === true && menuItem.enabled === true){ %>
                         <li data-href="<%- menuItem['name-space'] %>">
                                 <div class="menuItemIcon pull-left">
                                     <img 
@@ -30,6 +31,7 @@
                                 </div>
                                 <div class="menuItemName pull-left"><%- menuItem.name %></div>
                         </li>
+                        <% } %>
                     <% }); %>
                     <!-- 
                     <li class="nav-expand">

@@ -3,8 +3,8 @@
  * @Date:   2014-08-07 10:00:57
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:45
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-24 09:13:29
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -232,9 +232,4 @@ App.Database.Organizations = dbORM.Model.extend({
     },
 });
 
-
-// On first application run insert default values
-// if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
-//     App.Database.createDefoult();
-// }
 /* vim: set ts=4 sw=4 tw=80 noet : */

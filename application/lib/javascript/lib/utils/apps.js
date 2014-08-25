@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 14:41:55
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:56
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-25 11:51:07
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -59,7 +59,7 @@ App.Utils.Apps = {
                 "uid": user.userMain.id,
                 "name-space": app["name-space"],
                 "order": app.order,
-                "default": app.system,
+                "default": app.isDefault,
                 "enabled": app.enabled
             }).save().then(function(user_app) {
 

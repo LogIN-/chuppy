@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:49:11
+ * @Last Modified time: 2014-08-24 09:35:55
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -72,8 +72,7 @@ win.on('new-win-policy', function(frame, url, policy) {
     policy.ignore();
 });
 
-// TODO!!
-// Prevent dropping files into the window
+// Prevent dropping files into the window (this can be overridden from subapps views if needed)
 window.addEventListener("dragover", App.Utils.Window.manageDragAndDrop, false);
 window.addEventListener("drop", App.Utils.Window.manageDragAndDrop, false);
 // Prevent dragging files outside the window
@@ -91,3 +90,20 @@ window.addEventListener("dragstart", App.Utils.Window.manageDragAndDrop, false);
 //         // process.exit(1);
 //     });
 // }
+
+
+// Initialize application
+// Our default system window top bar with window actions
+$(function() {
+    if (!App.View.windowBar) {
+        App.View.windowBar = new App.View.WindowBar();
+    }
+    // If app is run for first time show user configuration interface
+    if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
+        if (!App.View.chuppySetUp) {
+            App.View.chuppySetUp = new App.View.ChuppySetUp();
+        }
+    } else {
+        App.Public.System.initilize();
+    }
+});
