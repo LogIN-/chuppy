@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:47:24
+ * @Last Modified time: 2014-08-25 14:57:35
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,6 +28,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+/* global crypt */
 
 // Context Menu Builder
 // @parm menuDetails {object} - With directory scope and clicked item data
@@ -65,6 +67,30 @@ App.Utils.ContextMenu = function(menuDetails) {
                         }
                     });
                     App.Apps.App["com.files"].Main.Public.Init.openDirectory(menuDetails.itemPath);
+                },
+                // Context Menu item Icon
+                icon: '/lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
+                // Context Menu item hover Title
+                title: 'Click to open'
+            }
+        });
+        menu.push({
+            // ContextMenu Item Html name
+            'Open in Tab': {
+                onclick: function(menuItem, menu) {
+                    App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                        userActions: {
+                            activeAction: 'open',
+                            open: {
+                                source: menuDetails.itemPath
+                            }
+                        }
+                    });
+                    var options = App.Apps.Public.getUserAppDetails("com.files");
+                    App.Public.System.mainUI.collection.applications.add(_.extend(options, {
+                        uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
+                        filePath: menuDetails.itemPath
+                    }));
                 },
                 // Context Menu item Icon
                 icon: '/lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',

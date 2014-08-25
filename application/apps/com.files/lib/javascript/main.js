@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 11:29:38
+ * @Last Modified time: 2014-08-25 16:47:48
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -32,7 +32,7 @@
 /* global crypt, Mousetrap */
 
 /* Main file-explorer application class */
-App.Apps.App["com.files"].Main.Private.Init = function() {
+App.Apps.App["com.files"].Main.Private.Init = function(options) {
     var self = this;
     // Get user details so we can know what is default workspace dir
     self.user = App.Public.User.getUserKeys('userDetails');
@@ -60,6 +60,7 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
             navOrder: "name"
         },
         system: {
+            uid: options.uid,
             // Should we reload current dir Index
             reloadIndex: false,
             contextActive: false
@@ -85,7 +86,7 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
         }
     };
 
-    self.mainUI = {
+    self.mainUI = {        
         collection: {
             items: null,
             breadcrumb: null,
@@ -98,6 +99,8 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
             }
         }
     };
+
+    console.log("NEW FOLDER CLASS:", options.uid);
 
     self.initialize = function() {
 
@@ -113,16 +116,20 @@ App.Apps.App["com.files"].Main.Private.Init = function() {
         // Initialize breadcrumb navigation view
         if (self.mainUI.views.navigation.breadcrumb === null) {
             self.mainUI.views.navigation.breadcrumb = new App.Apps.App["com.files"].Main.View.BreadCrumb({
+                el: $('#application-tabs-' + options.uid + ' .file-explorer-breadcrumb'),
                 collection: self.mainUI.collection.breadcrumb
             });
         }
         // Initialize breadcrumb navigation view
         if (self.mainUI.views.navigation.actions === null) {
-            self.mainUI.views.navigation.actions = new App.Apps.App["com.files"].Main.View.BreadCrumbActions();
+            self.mainUI.views.navigation.actions = new App.Apps.App["com.files"].Main.View.BreadCrumbActions({
+                el:  $('#application-tabs-' + options.uid + ' .file-explorer-action-views')
+            });
         }
         // Initialize folder view
         if (self.mainUI.views.directory === null) {
             self.mainUI.views.directory = new App.Apps.App["com.files"].Main.View.ExplorerMain({
+                el: $('#application-tabs-' + options.uid + ' .file-explorer'),
                 collection: self.mainUI.collection.items
             });
         }

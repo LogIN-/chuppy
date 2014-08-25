@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 12:41:19
+ * @Last Modified time: 2014-08-25 17:22:48
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -183,9 +183,7 @@ App.Private.System.prototype.startApp = function(appID) {
         var interval = setInterval(function() {
             if (typeof App.Apps.App[appID].Setup === "function") {
                 clearInterval(interval);
-
                 self.mainUI.collection.applications.add(_.extend(options, {uid: crypt.createHash('md5').update(options["name-space"]).digest('hex')}));
-
             } else {
                 console.log("Loading application data from SYSTEM");
                 console.log(typeof App.Apps.App[appID].Setup);

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 12:26:08
+ * @Last Modified time: 2014-08-25 17:25:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,7 +28,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/* global crypt */
+/* global crypt, moment */
 // The Application(s) main body container, responsible for managing tabs, sub-views etc..
 // Our overall **ApplicationBody** is the top-level piece of UI.
 
@@ -42,8 +42,12 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
     attributes: function() {
         return {
             'data-cid': this.model.cid,
+            'data-uid': this.model.get('uid'),
             'data-namespace': this.model.get('name-space')
         };
+    },
+    events : {
+        "click span.glyphicon-remove": "removeTabView"
     },
     // Item initialization function
     initialize: function() {
@@ -60,6 +64,18 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
         // Add item to view
         $(this.el).html(this.template);
         return this;
+    },
+    removeTabView: function (e) {
+        var element = $(this.el);
+        var modelCID = element.attr('data-cid');
+        var model = App.Public.System.mainUI.collection.applications.get({
+            cid: modelCID
+        });
+        if (model !== null) {
+            console.log(model);
+            console.info("Removing model from main View collection: ", modelCID);
+            App.Public.System.mainUI.collection.applications.remove(model);
+        } 
     },
 });
 
@@ -99,11 +115,6 @@ App.View.ApplicationBody = Backbone.View.extend({
     _itemViews: [],
     // ------ _itemHeaderView: [],
     // ------ _itemBodyView: [],
-
-    // Bind mouse events to item
-    // events: {
-    //   "keypress":  "createOnEnter"
-    // },
 
     // View initialization function
     initialize: function() {
@@ -156,47 +167,49 @@ App.View.ApplicationBody = Backbone.View.extend({
         console.info("Adding new module to main view!!");
         console.log(model.toJSON());
 
-        var uid = model.get('uid');
-        // We create an updating Application view for each Application that is started.
-        // And add it to the collection so that it's easy to reuse.
+        // Generate unique model UID
+        var uid = model.get('uid') + moment();
+        // Set new model UID
+        model.set('uid', uid);
+
+        // If UID is already in array don't allow re-adding it        
         if (this._itemViews[uid]) {
             console.info("Application model already added...");
             return;
         }
-        if(model.get('display') === "tab"){
-            // Our application sub-view has two elements tabs header and application body
-            this._itemViews[uid] = {};
-            this._itemViews[uid]._itemHeaderView = new App.View.ApplicationBodyItemHeader({
-                model: model
-            });
-            this._itemViews[uid]._itemBodyView = new App.View.ApplicationBodyItemBody({
-                model: model
-            });
-            // If the view has been rendered, then
-            // we immediately append the rendered item.
-            if (this._rendered === true) {
-                console.info("Main view already rendered appending top it...");
-                // 1. Render item view and append it to main folder view
-                $(this._itemViews[uid]._itemHeaderView.render().el).appendTo($(this.viewHeaderEl));
-                $(this._itemViews[uid]._itemBodyView.render().el).appendTo($(this.el));
-                $(this.el).tabs("refresh");
-            }
-            if (model.get('isDefault') === true) {
-                console.info("Activating active tab by settings!");
-                var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
-                $(this.el).tabs("option", "active", index);
-                $(this.el).find(".ui-tabs-nav").sortable({
-                    axis: "x",
-                    stop: function() {
-                        $(this.el).tabs("refresh");
-                    }
-                });
-            }
-            this.startAppTab(model);
-            this.checkTabVisibility();
-        }else if(model.get('display') === "iframe"){
-            this.startAppIframe(model);
+
+        // Our application sub-view has two elements tabs header and application body
+        this._itemViews[uid] = {};
+        // We create an updating Application view for each Application that is started.
+        this._itemViews[uid]._itemHeaderView = new App.View.ApplicationBodyItemHeader({
+            model: model
+        });
+        this._itemViews[uid]._itemBodyView = new App.View.ApplicationBodyItemBody({
+            model: model
+        });
+        // If the view has been rendered, then
+        // we immediately append the rendered item.
+        if (this._rendered === true) {
+            console.info("Main view already rendered appending top it...");
+            // 1. Render item view and append it to main folder view
+            $(this._itemViews[uid]._itemHeaderView.render().el).appendTo($(this.viewHeaderEl));
+            $(this._itemViews[uid]._itemBodyView.render().el).appendTo($(this.el));
+            $(this.el).tabs("refresh");            
         }
+        if (model.get('isDefault') === true) {
+            console.info("Activating active tab by settings!");
+            var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
+            $(this.el).tabs("option", "active", index);
+            $(this.el).find(".ui-tabs-nav").sortable({
+                axis: "x",
+                stop: function() {
+                    $(this.el).tabs("refresh");
+                }
+            });
+        }
+        this.startAppTab(model);
+        this.checkTabVisibility();
+
 
     },
     startAppTab: function(model) {
@@ -205,7 +218,7 @@ App.View.ApplicationBody = Backbone.View.extend({
         var uid = model.get('uid');
 
         var options = {
-            container: "#application-tabs-" + uid,
+            uid: uid,
         };
         if (document.getElementById("application-tabs-" + uid) === null) {
             console.log("ERROR HTML ISNT IN PLACE", uid, appID);
@@ -218,9 +231,14 @@ App.View.ApplicationBody = Backbone.View.extend({
         // Start app 
         this._itemViews[uid]._itemSystemView.initilizeAppUI();
     },
-    startAppIframe: function(model) {
-        var appID = model.get('name-space');
-        new App.Apps.App[appID].Setup(model).setupDependencies().initilizeAppUI();
+    checkTabVisibility: function(){
+        var activeViews = Object.keys(this._itemViews).length;
+        console.info("Checking - checkTabVisibility, total:", activeViews);
+        if(activeViews === 1){
+            $("#application-tabs .ui-tabs-nav").hide();
+        }else{
+            $("#application-tabs .ui-tabs-nav").show();
+        }
     },
     // Remove one model(item) from view
     remove: function(model) {
@@ -233,20 +251,15 @@ App.View.ApplicationBody = Backbone.View.extend({
             $(self._itemViews[uid]._itemHeaderView.el).remove();
             $(self._itemViews[uid]._itemBodyView.el).remove();
             delete self._itemViews[uid];
-
+            $(this.el).tabs("refresh");
         } else {
             console.log("no model to remove");
         }
+        // TODO: set active nearby tab
+        // var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
+        // $(this.el).tabs("option", "active", index);
+
         this.checkTabVisibility();
-    },
-    checkTabVisibility: function(){
-        var activeViews = Object.keys(this._itemViews).length;
-        console.info("Checking - checkTabVisibility, total:", activeViews);
-        if(activeViews === 1){
-            $("#application-tabs .ui-tabs-nav").hide();
-        }else{
-            $("#application-tabs .ui-tabs-nav").show();
-        }
     },
     // Remove this view completely
     removeView: function() {

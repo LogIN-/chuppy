@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 11:51:07
+ * @Last Modified time: 2014-08-25 14:47:13
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -31,9 +31,6 @@
 
 // Global application apps/plugins related operations
 App.Utils.Apps = {
-    appsDetails: function(userID) {
-
-    },
     // Insert enabled application main javascript file into html
     // Called from: App.Apps.Private.initilizeUserApps
     initilizeApp: function(app) {
@@ -41,36 +38,47 @@ App.Utils.Apps = {
         this.initilizeAppDB(app);
 
     },
+    // Inserts index.js app file into HTML
     initilizeAppHTML: function(app) {
         App.Utils.Template.createHTMLTag(app.path, app["name-space"], "script");
     },
     initilizeAppDB: function(app) {
 
         var user = App.Public.User.getUserKeys('userMain');
+        var userApp = null;
+
         new App.Database.UserApps({
             "uid": user.userMain.id,
             "name-space": app["name-space"]
         }).fetch().then(function(model) {
             if (model !== null) {
                 console.log("SYSTEM: App.Utils.Apps.initilizeAppDB: App DB is already initialized");
-                return;
+                userApp = {
+                    "name-space": model.get('name-space'),
+                    "order": model.get('order'),
+                    "default": model.get('default')
+                };
+                App.Apps.Public.pushAppUserApp(_.extend(app, userApp));
+            }else{
+                new App.Database.UserApps({
+                    "uid": user.userMain.id,
+                    "name-space": app["name-space"],
+                    "order": app.order,
+                    "default": app.isDefault,
+                    "enabled": app.enabled
+                }).save().then(function(user_app) {
+
+                    if (user_app === null) {
+                        console.log("SYSTEM: App.Utils.Apps.initilizeAppDB: ERROR");
+                        return;
+                    }
+                    App.Apps.Public.pushAppUserApp(app);
+                    console.log("System, App.Utils.Apps.initilizeAppDB: ", app["name-space"]);
+                });
             }
-            new App.Database.UserApps({
-                "uid": user.userMain.id,
-                "name-space": app["name-space"],
-                "order": app.order,
-                "default": app.isDefault,
-                "enabled": app.enabled
-            }).save().then(function(user_app) {
-
-                if (user_app === null) {
-                    console.log("SYSTEM: App.Utils.Apps.initilizeAppDB: ERROR");
-                    return;
-                }
-
-                console.log("System, App.Utils.Apps.initilizeAppDB: ", app["name-space"]);
-            });
         });
+
+        
     },
     // Deletes Inserted application scripts from html and 
     // also deletes their objects 

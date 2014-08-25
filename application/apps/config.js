@@ -84,15 +84,13 @@ App.Apps.Private = function () {
     
     self.userID = null;
     // Container of all detected apps
-    self.app_list = [];
+    self.appList = [];
     // Container of all detected apps for current user
-    self.app_user = [];
+    self.appUser = [];
 
     // Detect available apps on file-system and Assign apps to current user
     self.initilizeUserApps = function (userID) {
         var self = this;
-        var count_sys = 0;
-        var count_usr = 0;
         // Reset Values on every initialize
         self.resetValues();
         self.userID = userID;
@@ -101,31 +99,13 @@ App.Apps.Private = function () {
             // If app file exists on file-system
             if (fs.existsSync(app.path)) {
                 // Add app info to global app info object
-                self.app_list[count_sys] = app;
-                count_sys++;
+                self.appList.push(app);
+                // Check if app is already in DB 
+                // if not Insert it with default values
+                // and populate this.appUser
+                App.Utils.Apps.initilizeApp(app);
 
-                // Assign Default app
-                if(app.isDefault === true && app.enabled === true){
-                    self.app_user[count_usr] = app;
-                    App.Utils.Apps.initilizeApp(self.app_user[count_usr]);
-                    count_usr++;
-                }else {
-                    new App.Database.UserApps({uid: self.userID, "name-space": app["name-space"]}).fetchAll().then(function(collection) {
-                        // If any apps exists loop through them
-                        if(collection !== null ){
-                            _.each(collection.models, function(model){
-                                // Check if app is enabled
-                                if(model.get('enabled') === 1){
-                                    self.app_user[count_usr] = _.extend(app, model.attributes);
-                                    console.info("ADDING APP:", self.app_user[count_usr]);
-                                    App.Utils.Apps.initilizeApp(self.app_user[count_usr]);
-                                    count_usr++;
-                                }
-                                
-                            });
-                        }
-                    });
-                }
+
             }else{
                 console.log("App index file doesn't exist:", app.path);
             }
@@ -136,30 +116,33 @@ App.Apps.Private = function () {
         var self = this;
     };
     self.getAllUserApps = function () {
-        return self.app_user;
+        return self.appUser;
     };
     self.getAllSystemApps = function () {
-        return self.app_list;
+        return self.appList;
     };
 
     self.resetValues = function () {
         console.log("USER PUBLIC: resetValues");
-        self.app_list = [];
-        self.app_user = [];
+        self.appList = [];
+        self.appUser = [];
         self.userID = null;
     };
 };
-
 // Return keys and values of appID -> name-space
 App.Apps.Private.prototype.getUserAppDetails = function (appID) {
     var options = null;
     console.info("App.Apps.Private getUserAppDetails: ", appID);
-    _.each(this.app_user, function(app){
+    _.each(this.appUser, function(app){
         if(app["name-space"] === appID){
             options = app;
         }
     });
     return options;
+};
+
+App.Apps.Private.prototype.pushAppUserApp = function (newApp) {
+    this.appUser.push(newApp);
 };
 
 App.Apps.Public = new App.Apps.Private(); 

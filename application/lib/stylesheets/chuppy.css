@@ -4,7 +4,7 @@
 * @Email:  unicoart@gmail.com
 * @URL:    https://github.com/LogIN-/chuppy
 * @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-25 10:45:02
+* @Last Modified time: 2014-08-25 17:07:46
 * Use of this source code is governed by a license: 
 * The MIT License (MIT)
 * 
@@ -625,12 +625,14 @@ div#application-tabs {
     height: 25px;
     line-height: 25px;
     clear: right;
-    border: none;
     padding: 0;
+    border: 1px solid black;
+    border-bottom: 0;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    margin-right: 2px;
 }
-#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-hover {
-    cursor: pointer;
-}
+
 #application-tabs.ui-tabs .ui-tabs-nav li a {
     padding: 0;
     padding-left: 10px;
@@ -647,6 +649,16 @@ div#application-tabs {
     font-size: 9px;
     font-weight: bold;
 }
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-hover {
+    cursor: pointer;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-active {
+    background: #555;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-active a, #application-tabs.ui-tabs .ui-tabs-nav li.ui-state-active a span.glyphicon.glyphicon-remove {
+    color: #ffffff;
+}
+
 #application-tabs.ui-tabs .ui-tabs-panel {
     display: block;
     border-width: 0;

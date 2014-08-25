@@ -38,7 +38,7 @@ App.Apps.App["com.pdfViewer"] = {Setup: null};
 App.Apps.App["com.pdfViewer"].Setup = function(options){
     var self = this;
 
-    self.options = {
+    self.options = { 
         // file-system name of app must be unique ("name-space") and app folder must have same name
         "name-space": "com.pdfViewer",
         // Name variable of app (same as in i18n variable ) 

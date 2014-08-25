@@ -54,7 +54,7 @@ App.Apps.App["com.files"].Setup = function(options){
         // ID of parent application css container added dynamically from ApplicationBody.js main view
         // {container: "#application-tabs-" + uid}
         // But will always have #application-tabs[data-namespace='app.namespace']
-        "container": "#application-tabs[data-namespace='com.files']",
+        "uid": null,
     };
     self.options = _.extend(this.options, options);
 
@@ -68,7 +68,7 @@ App.Apps.App["com.files"].Setup = function(options){
         console.info("Setting up app dependencies");
         // main application template
         var template = _.template(App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/main.tpl', 'sync'));
-        $(self.options.container).html(template);
+        $("#application-tabs-" + self.options.uid).html(template);
 
         self.setupDatabase();
         self.setupIncludes();
@@ -83,7 +83,7 @@ App.Apps.App["com.files"].Setup = function(options){
                 if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {                     
                     clearInterval(interval);
                     // Create our application object
-                    App.Apps.App["com.files"].Main.Public.Init = new App.Apps.App["com.files"].Main.Private.Init();
+                    App.Apps.App["com.files"].Main.Public.Init = new App.Apps.App["com.files"].Main.Private.Init(self.options);
                     // Render application
                     App.Apps.App["com.files"].Main.Public.Init.initialize();
                 }else{

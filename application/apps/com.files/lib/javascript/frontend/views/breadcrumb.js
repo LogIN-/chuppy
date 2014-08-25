@@ -31,17 +31,20 @@
 
 App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
 
+    elementID: null,
+
     templateHTML: '<li title="Force directory index reload?" data-id="reload" class="system-actions pull-right"><i class="fa fa-refresh"></i></li>' +
         '<li title="View details as list" data-id="list" class="animated view-actions"><i class="fa fa-list"></i></li>' +
         '<li title="View details as icons" data-id="icons" class="active animated pulse view-actions"><i class="fa fa-th"></i></li>',
 
-    el: $('.file-explorer-action-views'),
     events: {
         "click li.view-actions": "changeViewType",
         "click li.system-actions": "systemActions" 
     },
 
     initialize: function() {
+        this.elementID = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']).system.uid;
+
         this.template = _.template(this.templateHTML);
         this.render();
 
@@ -65,12 +68,12 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
             App.Apps.App["com.files"].Main.Public.Init.openDirectory(systemDetails.location.currentLocation);
 
             // Re-class main container
-            $(".file-explorer").attr( "class", "file-explorer");
-            $(".file-explorer").addClass(dataType);
+            $('#application-tabs-' + this.elementID + ' .file-explorer').attr( "class", "file-explorer");
+            $('#application-tabs-' + this.elementID + ' .file-explorer').addClass(dataType);
             // $(".file-explorer").addClass(dataType);
 
             // Remove class of current active object
-            $(".file-explorer-action-views li.active").removeClass("active").removeClass("pulse");
+            $('#application-tabs-' + this.elementID + ' .file-explorer-action-views li.active').removeClass("active").removeClass("pulse");
             // Add active class to new active element
             $(e.currentTarget).addClass("active").addClass("pulse");
         }else{
@@ -123,7 +126,8 @@ App.Apps.App["com.files"].Main.View.BreadCrumbItem = Backbone.View.extend({
 });
 
 App.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
-    el: $('.file-explorer-breadcrumb'),
+    elementID: null,
+
     current_dir: null,
     _rendered: false,
     // create an array of views to keep track of items
@@ -133,6 +137,8 @@ App.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
         "click .file-explorer-breadcrumb-item": "open"
     },
     initialize: function() {
+
+        this.elementID = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']).system.uid;
 
         // Ensure our methods keep the `this` reference to the view itself
         _(this).bindAll('add', 'remove');

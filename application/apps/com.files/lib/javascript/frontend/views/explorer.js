@@ -77,7 +77,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
         var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['display', 'location']);
         // Set display type and template (icons or list)
         this.navType = systemDetails.display.navType;
-        console.info("Adding item with view:", this.navType);
+        // console.info("Adding item with view:", this.navType);
         // Choose template based on navigation type settings
         var template = this.templateIconsHTML;
         if (this.navType === "list") {
@@ -147,8 +147,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
 
 // Main folder items display view
 App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
-    // View Jquery element container
-    el: $('.file-explorer'),
+    elementID: null,
     // Is view rendered or not helper?
     _rendered: false,
     // Container for nested sub-views (item-views)
@@ -172,6 +171,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     },
     // View initialization function
     initialize: function() {
+        this.elementID = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']).system.uid;
         // Ensure our methods keep the `this` reference to the view itself
         _(this).bindAll('add', 'remove');
         // add each item to the view
@@ -239,7 +239,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     // Remove all models(items) from folder view 
     // Called on every new openDirectory()
     removeAll: function() {
-        $('.file-explorer')[0].innerHTML = '';
+        $('#application-tabs-' + this.elementID + ' .file-explorer')[0].innerHTML = '';
         this._itemViews = [];
         // Remove any context menus if they exist
         this.hideContextMenu();
@@ -423,8 +423,8 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             // default value because "icons" is default view
             itemHeight: 105,
             itemWidth: 100,
-            bodyHeight: $('.file-explorer').height(),
-            bodyWidth: $('.file-explorer').width(),
+            bodyHeight: $(this.el).height(),
+            bodyWidth: $(this.el).width(),
             itemsPerPage: 0
         };
         // if view isn't "icons" change default values
@@ -432,8 +432,10 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             details.itemHeight = 30;
             details.itemWidth = details.bodyWidth;
         }
+        console.log(details);
         // Calculate total items per page
         details.itemsPerPage = Math.round((details.bodyWidth / details.itemWidth) * (details.bodyHeight / details.itemHeight));
+        console.log(details.itemsPerPage);
         // Select model(item) from this start number
         details.items_start = details.items_end;
         // Select model(item) to this end number
@@ -476,7 +478,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         // Loop through all current items on page
         // 1. Add draggable to every item
         // 2. Add droppable only on folders
-        $('.file-explorer > li.file-explore-item').each(function() {
+        $('#application-tabs-' + this.elementID + ' .file-explorer > li.file-explore-item').each(function() {
             var fileType = $(this).attr('data-type');
             // We must destroy draggable            
             if ($(this).data('draggable')) {
@@ -669,7 +671,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                 console.log("de-selecting item");
             }
         }
-        $(".file-explorer").data("ui-selectable")._mouseStop(null);
+        $('#application-tabs-' + this.elementID + ' .file-explorer').data("ui-selectable")._mouseStop(null);
     }
 
 });
