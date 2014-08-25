@@ -103,7 +103,8 @@ App.Apps.Private = function () {
                 // Add app info to global app info object
                 self.app_list[count_sys] = app;
                 count_sys++;
-                // Assign Default apps
+
+                // Assign Default app
                 if(app.isDefault === true && app.enabled === true){
                     self.app_user[count_usr] = app;
                     App.Utils.Apps.initilizeApp(self.app_user[count_usr]);
@@ -116,6 +117,7 @@ App.Apps.Private = function () {
                                 // Check if app is enabled
                                 if(model.get('enabled') === 1){
                                     self.app_user[count_usr] = _.extend(app, model.attributes);
+                                    console.info("ADDING APP:", self.app_user[count_usr]);
                                     App.Utils.Apps.initilizeApp(self.app_user[count_usr]);
                                     count_usr++;
                                 }
@@ -124,6 +126,8 @@ App.Apps.Private = function () {
                         }
                     });
                 }
+            }else{
+                console.log("App index file doesn't exist:", app.path);
             }
         });
     };
