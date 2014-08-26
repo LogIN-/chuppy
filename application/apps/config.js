@@ -28,6 +28,7 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+/* globals mime */
 
 // Apps configuration file
 App.Apps.Configuration = {
@@ -86,6 +87,9 @@ App.Apps.Private = function () {
     self.appList = [];
     // Container of all detected apps for current user
     self.appUser = [];
+    // File-type actions
+    self.supportedFileTypes = [];
+    // ['application/pdf' => 'com.pdfViewer']
 
     // Detect available apps on file-system and Assign apps to current user
     self.initilizeUserApps = function (userID) {
@@ -99,6 +103,16 @@ App.Apps.Private = function () {
             if (fs.existsSync(app.path)) {
                 // Add app info to global app info object
                 self.appList.push(app);
+
+                var mimeType;
+                _.each(app.supportedFileTypes, function (extension){
+                    console.info("Adding support for extension:", extension);
+                    mimeType = mime.lookup(extension);
+                    console.info(mimeType);
+                    // self.supportedFileTypes
+
+                });
+
                 // Check if app is already in DB 
                 // if not Insert it with default values
                 // and populate this.appUser
