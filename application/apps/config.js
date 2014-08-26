@@ -49,7 +49,7 @@ App.Apps.Configuration = {
         // Is app visible in menu?
         "visible": true,
         // Any specific file-types supported by this application?
-        "supportedFileTypes": ['dir'],
+        "supportedFileTypes": ['directory'],
         // How should system display this app
         "display": "tab"
     },
@@ -88,7 +88,7 @@ App.Apps.Private = function () {
     // Container of all detected apps for current user
     self.appUser = [];
     // File-type actions
-    self.supportedFileTypes = [];
+    self.supportedFileTypes = {};
     // ['application/pdf' => 'com.pdfViewer']
 
     // Detect available apps on file-system and Assign apps to current user
@@ -107,15 +107,22 @@ App.Apps.Private = function () {
                 var mimeType;
                 _.each(app.supportedFileTypes, function (extension){
                     console.info("Adding support for extension:", extension);
-                    mimeType = mime.lookup(extension);
+                    // Support for internal extensions like "directory"
+                    if(extension !== 'directory'){
+                        mimeType = mime.lookup(extension);
+                    }else{
+                        mimeType = extension;
+                    }                    
                     console.info(mimeType);
-                    // self.supportedFileTypes
-
+                    if(!self.supportedFileTypes[mimeType]){
+                        self.supportedFileTypes[mimeType] = [];
+                    }    
+                    // TODO: check for duplicate #name-space#                
+                    self.supportedFileTypes[mimeType].push(app["name-space"]);
                 });
 
-                // Check if app is already in DB 
-                // if not Insert it with default values
-                // and populate this.appUser
+                // Check if app is DB, if isn't insert it with default values in DB
+                // - populate this.appUser
                 App.Utils.Apps.initilizeApp(app);
 
 
@@ -142,6 +149,15 @@ App.Apps.Private = function () {
         self.userID = null;
     };
 };
+// Return keys and values of appID -> name-space
+App.Apps.Private.prototype.getSupportedAppsForMimeType = function (mimeType) {
+    var results = null;
+    if(this.supportedFileTypes[mimeType]){
+        results = this.supportedFileTypes[mimeType];
+    }
+    return results;
+};
+
 // Return keys and values of appID -> name-space
 App.Apps.Private.prototype.getUserAppDetails = function (appID) {
     var options = null;

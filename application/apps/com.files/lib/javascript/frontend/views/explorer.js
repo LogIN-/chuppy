@@ -34,10 +34,10 @@
 // Explorer item view (file/directory)
 App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
     // Underscore template for Icons view
-    templateIconsHTML: '<div class="item-icon"><img alt="<%- item.name %>" src="/lib/images/system-icons/extensions/<%- item.icon %>.png" /></div> ' +
+    templateIconsHTML: '<div class="item-icon"><img alt="<%- item.name %>" src="lib/images/system-icons/extensions/<%- item.icon %>.png" /></div> ' +
         '<div title="<%- item.name %>" class="item-name"><span><%- item.name %></span></div>',
     // Underscore template for List view
-    templateListHTML: '<div class="item-icon"><img alt="<%- item.name %>" src="/lib/images/system-icons/extensions/<%- item.icon %>.png" /></div> ' +
+    templateListHTML: '<div class="item-icon"><img alt="<%- item.name %>" src="lib/images/system-icons/extensions/<%- item.icon %>.png" /></div> ' +
         '<div title="<%- item.name %>" class="item-name"><span><%- item.name %></span></div>' +
         '<div class="item-size"><% if(item.size_human !== 0 && item.fileType === 0) { %><span><%- item.size_human %><% } %></span></div>' +
         '<div class="item-actions animated flipInX"> ' +
@@ -295,7 +295,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     text: "Move",
                     click: function() {
                         // play confirmation sound
-                        App.Utils.Functions.doPlaySound('/lib/sounds/dialog-information.oga');
+                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
                         // Destroy dialog
                         $(this).dialog("close");
                         $(this).remove();
@@ -307,7 +307,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     text: "Copy",
                     click: function() {
                         // play confirmation sound
-                        App.Utils.Functions.doPlaySound('/lib/sounds/dialog-information.oga');
+                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
                         // Destroy dialog
                         $(this).dialog("close");
                         $(this).remove();
@@ -319,7 +319,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     text: "Cancel",
                     click: function() {
                         // play warning sound
-                        App.Utils.Functions.doPlaySound('/lib/sounds/dialog-warning.oga');
+                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
                         // Destroy dialog
                         $(this).dialog("close");
                         $(this).remove();
@@ -365,7 +365,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             // Our unique model id in DB
             modelUID: element.attr('data-uid'),
             // File system Path of element
-            itemPath: element.attr('data-path'),
+            itemPath: element.attr('data-path'), 
             // File or Folder
             itemType: element.attr('data-type'),
             // App memory keys storage

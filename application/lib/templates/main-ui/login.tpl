@@ -4,7 +4,7 @@
             <h4>Please login:</h4>
             <div class="loginUserContainer">
                 <% _.each( users_models, function( user ){ %>
-                    <div class="loginUserChooser clearfix" data-id="1" data-username="<%- user.attributes.username %>" data-password-login="<%- user.relations.userDetails.attributes.password_login %>">
+                    <div class="loginUserChooser clearfix" data-id="1" data-username="<%- user.attributes.username %>" data-password-login="<%- user.relations.userDetails.attributes.autologin %>"> 
                         <div class="loginUserAvatar pull-left">
                             <img 
                             onerror="$(this).avatar();" 
@@ -32,8 +32,8 @@
             </div>
             <h4>Please enter login details:</h4>
             <div class="loginUserPromptInput">
-                <input id="loginUserPromptUsername" type="text" placeholder="username" value="unicoart">
-                <input id="loginUserPromptpassword" type="password" placeholder="password" value="iv@n1008">
+                <input id="loginUserPromptUsername" type="text" placeholder="username" value="">
+                <input id="loginUserPromptpassword" type="password" placeholder="password" value="">
                 <button class="btn btn-default btn-login">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>

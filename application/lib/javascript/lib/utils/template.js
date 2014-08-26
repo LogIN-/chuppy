@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 09:07:59
+ * @Last Modified time: 2014-08-26 15:03:53
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -71,7 +71,7 @@ App.Utils.Template = {
             dialogSound = "dialog-warning.oga";
         }
         // play desired sound
-        App.Utils.Functions.doPlaySound('/lib/sounds/' + dialogSound);
+        App.Utils.Functions.doPlaySound('lib/sounds/' + dialogSound);
 
         // Default is show action
         if (action === "") {
@@ -134,7 +134,7 @@ App.Utils.Template = {
                 duration: 500
             },
             open: function(event, ui) {
-                App.Utils.Functions.doPlaySound('/lib/sounds/dialog-information.oga');
+                App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
             },
             title: dialogTitle,
             buttons: dialogButtons

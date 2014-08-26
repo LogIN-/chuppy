@@ -24,7 +24,7 @@
     background-color: rgba(231, 230, 230, 0.32);
     position: absolute;
     top: 80px;
-    background-image: url(/lib/images/preloaders/loading-spin.svg);
+    background-image: url(../../../../lib/images/preloaders/loading-spin.svg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100px;

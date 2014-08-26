@@ -1,6 +1,6 @@
 {
   "name": "Chuppy",
-  "main": "app://host/index.html",
+  "main": "./index.html",
   "description": "Chuppy is an fresh open-source approach for data management. It gives you maximum freedom and control over your own projects and data.",
   "version": "0.1.0",
   "private": true,
@@ -10,7 +10,7 @@
   "no-edit-menu": true,
   "single-instance": false,
   "window": {
-    "icon": "lib/images/icon.png",
+    "icon": "/lib/images/icon.png",
     "toolbar": false,
     "frame": false,
     "position": "center",

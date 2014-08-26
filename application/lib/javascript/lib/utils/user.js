@@ -3,8 +3,8 @@
  * @Date:   2014-08-07 09:33:15
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:07
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-26 14:30:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -33,7 +33,7 @@
 
 // Global application user related operations
 App.Utils.User = {
-
+ 
     user: {},
 
     // Create new user in system with associated details
@@ -58,14 +58,14 @@ App.Utils.User = {
             // 2. Create user details in user_details_table
             new App.Database.UserDetails({
                 uid: self.user.id,
-                first_name: self.user["configuration-user-firstname"],
-                last_name: self.user["configuration-user-lastname"],
+                first_name: self.user["configuration-user-firstname"] || 'John',
+                last_name: self.user["configuration-user-lastname"] || 'Doe',
                 email: self.user["configuration-user-email"],
                 profile_picture: self.user["configuration-user-avatar-base64"],
                 phone_number: self.user["configuration-user-phone"],
                 usage_type: self.user["configuration-user-usage"],
-                encryption: self.user["configuration-user-encryption"],
-                password_login: self.user["configuration-user-autologin"],
+                encryption: self.user["configuration-user-encryption"] || 0,
+                autologin: self.user["configuration-user-autologin"] || 0,
                 root_folder: self.user["configuration-user-root-folder"]
             }).save().then(function(userDetails) {
 
@@ -98,7 +98,9 @@ App.Utils.User = {
         // Select user by Username
         new App.Database.User({
             username: self.user["configuration-user-username"]
-        }).fetch().then(function(model) {
+        }).fetch({
+            withRelated: ['userDetails']
+        }).then(function(model) {
 
             if (model === null) {
                 self.loginStatus(false, "Wrong credentials! Please try again!", loginView);
@@ -106,7 +108,7 @@ App.Utils.User = {
             }
             self.user.id = model.get('id');
             self.user.password_hash = model.get('password');
-            self.user["configuration-user-autologin"] = model.get('password_login');
+            self.user["configuration-user-autologin"] = model.related('userDetails').get('autologin');
 
             // Load hash from DB and compare it
             bcrypt.compare(self.user["configuration-user-password"], self.user.password_hash, function(err, res) {
@@ -122,7 +124,7 @@ App.Utils.User = {
 
                 } else {
                     // If user set that he doesn't wont password login lets automatically login him
-                    if (self.user["configuration-user-autologin"] === 2) {
+                    if (self.user["configuration-user-autologin"] === 1) {
                         // Initialize userDetails object
                         self.userDetails();
                         // Login is successful so remove view
@@ -137,7 +139,8 @@ App.Utils.User = {
                         });
                         self.loginStatus(false, "Wrong credentials! Please try again!", loginView);
 
-                        console.log("System: App.Utils.User.loginUser FAILED", self.user.username);
+                        console.log("System: App.Utils.User.loginUser FAILED");
+                        console.log(self.user);
 
                     }
                 }

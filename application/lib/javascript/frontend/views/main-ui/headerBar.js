@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-23 14:20:09
+ * @Last Modified time: 2014-08-26 15:03:28
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -77,7 +77,7 @@ App.View.headerBar = Backbone.View.extend({
             var dialogButtons = [{
                 text: "Exit",
                 click: function() {
-                    App.Utils.Functions.doPlaySound('/lib/sounds/service-logout.oga');
+                    App.Utils.Functions.doPlaySound('lib/sounds/service-logout.oga');
                     $(this).dialog("close");
                     $(this).remove();
                     // Just in case clear User and System objects from memory

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 18:56:30
+ * @Last Modified time: 2014-08-26 15:03:36
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -29,7 +29,7 @@
  * THE SOFTWARE.
  */
 
-/* global crypt */
+/* global crypt, mime */
 
 // Context Menu Builder
 // @parm menuDetails {object} - With directory scope and clicked item data
@@ -73,7 +73,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.openDirectory(menuDetails.itemPath);
                 },
                 // Context Menu item Icon
-                icon: '/lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
+                icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
                 // Context Menu item hover Title
                 title: 'Click to open'
             }
@@ -97,14 +97,51 @@ App.Utils.ContextMenu = function(menuDetails) {
                     }));
                 },
                 // Context Menu item Icon
-                icon: '/lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
+                icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
                 // Context Menu item hover Title
                 title: 'Click to open'
             }
         });
         // Add separator line to Context Menu
         menu.push($.contextMenu.separator);
-    }
+    } // Check if item is directory
+
+    if (menuDetails.itemType === "0") {
+       var mimeType = mime.lookup(menuDetails.itemPath);
+       var supportedApps = App.Apps.Public.getSupportedAppsForMimeType(mimeType);
+       // If there are any supported apps lets build menu
+       if(supportedApps !== null){
+            menu.push({
+                // ContextMenu Item Html name
+                'Open': {
+                    onclick: function(menuItem, menu) {
+                        App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                            userActions: {
+                                activeAction: 'open',
+                                open: {
+                                    source: menuDetails.itemPath
+                                }
+                            }
+                        });
+                        var firstAppNameSpace = _.first(supportedApps);
+                        var options = App.Apps.Public.getUserAppDetails(firstAppNameSpace);
+
+                        App.Public.System.mainUI.collection.applications.add(_.extend(options, {
+                            uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
+                            filePath: menuDetails.itemPath
+                        }));
+                    },
+                    // Context Menu item Icon
+                    icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
+                    // Context Menu item hover Title
+                    title: 'Click to open'
+                }
+            });
+            // Add separator line to Context Menu
+            menu.push($.contextMenu.separator);
+       }
+
+    }// Check if item is file
 
     menu.push({
         // ContextMenu Item Html name
@@ -134,7 +171,7 @@ App.Utils.ContextMenu = function(menuDetails) {
 
             },
             // Context Menu item Icon
-            icon: '/lib/images/system-icons/system/holo_light/01_core_copy/drawable-xhdpi/ic_action_copy.png',
+            icon: 'lib/images/system-icons/system/holo_light/01_core_copy/drawable-xhdpi/ic_action_copy.png',
             // Context Menu item hover Title
             title: 'Copy'
         }
@@ -166,7 +203,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 });
             },
             // Context Menu item Icon
-            icon: '/lib/images/system-icons/system/holo_light/01_core_cut/drawable-xhdpi/ic_action_cut.png',
+            icon: 'lib/images/system-icons/system/holo_light/01_core_cut/drawable-xhdpi/ic_action_cut.png',
             // Context Menu item hover Title
             title: 'Cut'
         }
@@ -214,7 +251,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                 },
                 // Context Menu item Icon
-                icon: '/lib/images/system-icons/system/holo_light/01_core_paste/drawable-xhdpi/ic_action_paste.png',
+                icon: 'lib/images/system-icons/system/holo_light/01_core_paste/drawable-xhdpi/ic_action_paste.png',
                 // Context Menu item hover Title
                 title: 'Paste'
             }
@@ -235,7 +272,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     text: "Delete",
                     click: function() {
                         // play confirmation sound
-                        App.Utils.Functions.doPlaySound('/lib/sounds/dialog-warning.oga');
+                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
                         // Remove dialog
                         $(this).dialog("close");
                         $(this).remove();
@@ -298,7 +335,7 @@ App.Utils.ContextMenu = function(menuDetails) {
 
             },
             // Context Menu item Icon
-            icon: '/lib/images/system-icons/system/holo_light/01_core_remove/drawable-xhdpi/ic_action_remove.png',
+            icon: 'lib/images/system-icons/system/holo_light/01_core_remove/drawable-xhdpi/ic_action_remove.png',
             // Context Menu item hover Title
             title: 'Delete'
         }
@@ -327,7 +364,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 }
             },
             // Context Menu item Icon
-            icon: '/lib/images/system-icons/system/holo_light/01_core_share/drawable-xhdpi/ic_action_share.png',
+            icon: 'lib/images/system-icons/system/holo_light/01_core_share/drawable-xhdpi/ic_action_share.png',
             // Context Menu item hover Title
             title: 'Share with public URL'
         }
@@ -348,7 +385,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 });
             },
             // Context Menu item Icon
-            icon: '/lib/images/system-icons/system/holo_light/13_extra_actions_about/drawable-xhdpi/ic_action_about.png',
+            icon: 'lib/images/system-icons/system/holo_light/13_extra_actions_about/drawable-xhdpi/ic_action_about.png',
             // Context Menu item hover Title
             title: 'Item Details'
         }

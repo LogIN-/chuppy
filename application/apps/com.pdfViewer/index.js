@@ -51,7 +51,7 @@ App.Apps.App["com.pdfViewer"].Setup = function(options){
         "isDefault": false,
         "order": 1, 
         // "icon": "/apps/com.files/lib/images/favicon.png"
-        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        "icon": "lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
         // Is app visible in menu?
         "visible": false,
         // ID of parent application css container added dynamically from ApplicationBody.js main view
@@ -73,8 +73,8 @@ App.Apps.App["com.pdfViewer"].Setup = function(options){
     self.initilizeAppUI = function () {
         console.info("Opening PDF File", self.options.filePath);
         $("#application-tabs-" + self.options.uid).html($('<iframe>', {
-            id: "iframeViewer",
-            src: "apps/" + self.options["name-space"] + "/?cp=" + self.options.filePath,
+            class: "iframeViewer",
+            src: "apps/" + self.options["name-space"] + "/index.html?cp=" + self.options.filePath,
             "nwdisable": "",
             "nwfaketop": ""
         }));

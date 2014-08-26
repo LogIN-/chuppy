@@ -3,8 +3,8 @@
  * @Date:   2014-08-07 10:00:57
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-24 09:13:29
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-26 14:23:12
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -114,7 +114,7 @@ App.Database.createSchema = function() {
                 users_details.string('phone_number');
                 users_details.integer('usage_type');
                 users_details.boolean('encryption');
-                users_details.boolean('password_login');
+                users_details.boolean('autologin');
                 users_details.string('root_folder');
                 users_details.timestamps(); // created_at and updated_at
             }).then(function() {

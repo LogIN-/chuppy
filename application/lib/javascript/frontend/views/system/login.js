@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:45:20
+ * @Last Modified time: 2014-08-26 14:43:48
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -79,13 +79,13 @@ App.View.loginView = Backbone.View.extend({
     toggleBoxes: function(e) {
         var actionType = $(e.currentTarget).attr("data-id");
         var autoLogin = $(e.currentTarget).attr("data-password-login");
-        var username = $(e.currentTarget).attr("data-username");
+        var username = $(e.currentTarget).attr("data-username"); 
 
         if (actionType === "1") {
             // Does user wants to autologin ??
-            // 1- no
-            // 2- yes
-            if (autoLogin === "2") {
+            // 0- no
+            // 1- yes
+            if (autoLogin === "1") {
                 App.Utils.User.loginUser(username, "", this);
             } else {
                 $("#loginContainerUserList").removeClass('bounceIn').addClass('bounceOut').hide();

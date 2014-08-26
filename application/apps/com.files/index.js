@@ -49,7 +49,7 @@ App.Apps.App["com.files"].Setup = function(options){
         "enabled": true,
         "default": true,
         "order": 0,
-        "icon": "/apps/com.files/lib/images/favicon.png",
+        "icon": "apps/com.files/lib/images/favicon.png",
         // ID of parent application css container added dynamically from ApplicationBody.js main view
         // {container: "#application-tabs-" + uid}
         // But will always have #application-tabs[data-namespace='app.namespace']
@@ -61,6 +61,7 @@ App.Apps.App["com.files"].Setup = function(options){
     };
     self.options = _.extend(this.options, options);
     console.info("App defaults initialized!");
+    console.info(self.options);
 
     // Setup needed database for app and include needed files (js/css)
     // All include JS and CSS files must have app prefix exp. 
@@ -79,15 +80,25 @@ App.Apps.App["com.files"].Setup = function(options){
     // After successful app init this function is called
     // Here is a place where magic should happen
     self.initilizeAppUI = function () {
+        var counter = 0;
         // Little Hack to display loading while waiting async operations
         var interval = setInterval(function() {
-            if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {                     
-                clearInterval(interval);
-                // Create our application object
-                self.FilesMain = new App.Apps.App["com.files"].Main.Private.Init(self.options);
-                // Render application
-                self.FilesMain.initialize();
+            if(counter === 100){
+                console.log("App loading canceled");
+                return;
+            }
+            if (typeof App.Apps.App["com.files"].Main.Private !== "undefined") {     
+                 if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {         
+                    clearInterval(interval);
+                    // Create our application object
+                    self.FilesMain = new App.Apps.App["com.files"].Main.Private.Init(self.options);
+                    // Render application
+                    self.FilesMain.initialize();
+                }else{
+                    console.log("com.files Private.Init undefined");
+                }
             }else{
+                counter++;
                 console.log("Loading application data");
             }
         }, 100);
@@ -128,21 +139,21 @@ App.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
     var self = this;
     // Needed scripts
     var scripts = [
-        '/apps/com.files/lib/javascript/globals.js',
-        '/apps/com.files/lib/javascript/lib/utils/database.js',
-        '/apps/com.files/lib/javascript/lib/utils/filesystem.js',        
-        '/apps/com.files/lib/javascript/lib/utils/webserver.js',        
-        '/apps/com.files/lib/javascript/frontend/models/explorer.items.js',
-        '/apps/com.files/lib/javascript/frontend/models/breadcrumb.items.js',
-        '/apps/com.files/lib/javascript/frontend/collections/explorer.collection.js',
-        '/apps/com.files/lib/javascript/frontend/collections/breadcrumb.collection.js',
-        '/apps/com.files/lib/javascript/frontend/views/breadcrumb.js',
-        '/apps/com.files/lib/javascript/frontend/views/explorer.js',
-        '/apps/com.files/lib/javascript/main.js'
+        'apps/com.files/lib/javascript/globals.js',
+        'apps/com.files/lib/javascript/lib/utils/database.js',
+        'apps/com.files/lib/javascript/lib/utils/filesystem.js',        
+        'apps/com.files/lib/javascript/lib/utils/webserver.js',        
+        'apps/com.files/lib/javascript/frontend/models/explorer.items.js',
+        'apps/com.files/lib/javascript/frontend/models/breadcrumb.items.js',
+        'apps/com.files/lib/javascript/frontend/collections/explorer.collection.js',
+        'apps/com.files/lib/javascript/frontend/collections/breadcrumb.collection.js',
+        'apps/com.files/lib/javascript/frontend/views/breadcrumb.js',
+        'apps/com.files/lib/javascript/frontend/views/explorer.js',
+        'apps/com.files/lib/javascript/main.js'
     ];
     // Needed Styles
     var styles = [
-        '/apps/com.files/lib/stylesheets/main.css'
+        'apps/com.files/lib/stylesheets/main.css'
     ];
     // Actually include them:
     if(scripts.length > 0){ 

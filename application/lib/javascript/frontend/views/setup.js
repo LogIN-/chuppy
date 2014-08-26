@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 09:31:19
+ * @Last Modified time: 2014-08-26 14:12:54
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -32,7 +32,7 @@
 /* global alert */
 // The ChuppySetUp View
 // ---------------
-// Our overall **ChuppySetUp** is run only at app frst run
+// Our overall **ChuppySetUp** is run only at app frst run 
 App.View.ChuppySetUp = Backbone.View.extend({
 
     template: _.template(App.Utils.FileSystem.readFileLocal('lib/templates/setup.tpl', 'sync')),

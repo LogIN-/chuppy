@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 12:19:58
+ * @Last Modified time: 2014-08-26 14:12:53
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -81,6 +81,7 @@ App.Private.System = function() {
             if (self.user.userMain.username !== null && self.user.userDetails.uid !== null && self.apps !== null) {
                 console.log("Loading user data....");
                 clearInterval(interval);
+                console.log(self.apps);
                 self.initilizeSystemUI();
             }
         }, 100);

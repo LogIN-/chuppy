@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 09:35:55
+ * @Last Modified time: 2014-08-26 14:50:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -69,8 +69,10 @@ App.Utils.Window.initTray();
 
 // Cancel all new windows (Middle clicks / New Tab)
 win.on('new-win-policy', function(frame, url, policy) {
+    console.log("Window policy:", url);
     policy.ignore();
 });
+
 
 // Prevent dropping files into the window (this can be overridden from subapps views if needed)
 window.addEventListener("dragover", App.Utils.Window.manageDragAndDrop, false);

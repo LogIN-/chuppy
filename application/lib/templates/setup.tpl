@@ -173,13 +173,13 @@ TODO: add import functions -->
                                   <div class="col-md-4">
                                   <div class="radio">
                                     <label for="configuration-user-autologin-0">
-                                      <input name="configuration-user-autologin" id="configuration-user-autologin-0" value="1" checked="checked" type="radio">
+                                      <input name="configuration-user-autologin" id="configuration-user-autologin-0" value="0" checked="checked" type="radio">
                                       No
                                     </label>
                                     </div>
                                   <div class="radio">
                                     <label for="configuration-user-autologin-1">
-                                      <input name="configuration-user-autologin" id="configuration-user-autologin-1" value="2" type="radio">
+                                      <input name="configuration-user-autologin" id="configuration-user-autologin-1" value="1" type="radio">
                                       Yes
                                     </label>
                                     </div>

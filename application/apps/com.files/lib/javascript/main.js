@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 11:48:01
+ * @Last Modified time: 2014-08-26 14:41:31
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -37,8 +37,8 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
     // Get user details so we can know what is default workspace dir
     self.user = App.Public.User.getUserKeys('userDetails');
 
-    self.workspaceRoot = options.workspaceRoot  || self.user.userDetails.root_folder;
-    self.startingDirectory = options.filePath  || self.workspaceRoot;
+    self.workspaceRoot = options.workspaceRoot || self.user.userDetails.root_folder;
+    self.startingDirectory = options.filePath || self.workspaceRoot;
     
 
     /* Configuration variable */
