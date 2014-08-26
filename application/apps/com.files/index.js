@@ -37,6 +37,7 @@ App.Apps.App["com.files"] = {Main: {}, Setup: null};
 
 App.Apps.App["com.files"].Setup = function(options){
     var self = this;
+    self.FilesMain = null;
 
     self.options = {
         "name-space": "com.files",
@@ -49,15 +50,16 @@ App.Apps.App["com.files"].Setup = function(options){
         "default": true,
         "order": 0,
         "icon": "/apps/com.files/lib/images/favicon.png",
-        // Check if app is already initialized
-        "init": false,
         // ID of parent application css container added dynamically from ApplicationBody.js main view
         // {container: "#application-tabs-" + uid}
         // But will always have #application-tabs[data-namespace='app.namespace']
         "uid": null,
+        // Path to File/Directory if needed
+        "filePath": null,
+        // Path to File/Directory if needed
+        "workspaceRoot": null
     };
     self.options = _.extend(this.options, options);
-
     console.info("App defaults initialized!");
 
     // Setup needed database for app and include needed files (js/css)
@@ -77,26 +79,18 @@ App.Apps.App["com.files"].Setup = function(options){
     // After successful app init this function is called
     // Here is a place where magic should happen
     self.initilizeAppUI = function () {
-        if(self.options.init === false){
-            // Little Hack to display loading while waiting async operations
-            var interval = setInterval(function() {
-                if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {                     
-                    clearInterval(interval);
-                    // Create our application object
-                    App.Apps.App["com.files"].Main.Public.Init = new App.Apps.App["com.files"].Main.Private.Init(self.options);
-                    // Render application
-                    App.Apps.App["com.files"].Main.Public.Init.initialize();
-                }else{
-                    console.log("Loading application data");
-                }
-            }, 100);
-
-        }else{
-            console.log("App.Apps.Com.files already initialized");
-        }
-
-        self.options.init = true;       
-
+        // Little Hack to display loading while waiting async operations
+        var interval = setInterval(function() {
+            if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {                     
+                clearInterval(interval);
+                // Create our application object
+                self.FilesMain = new App.Apps.App["com.files"].Main.Private.Init(self.options);
+                // Render application
+                self.FilesMain.initialize();
+            }else{
+                console.log("Loading application data");
+            }
+        }, 100);
     };
     // Remove current app dependencies 
     // Called from App.Utils.Apps

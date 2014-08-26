@@ -79,9 +79,8 @@ App.Apps.Configuration = {
 // exp. -- App.Apps.Com.files {}
 
 App.Apps.Private = function () {
-
     var self = this;
-    
+    // ID of current user
     self.userID = null;
     // Container of all detected apps
     self.appList = [];

@@ -41,21 +41,9 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
     indexDirectory: function(dir, dbPath, callback) {
         // Reference to this
         var self = this;
-        console.log("Indexing directory");
+        console.log("Indexing directory"); 
         console.log("DIR: ", dir);
         console.log("BD : ", dbPath);
-
-        // If database index exist that mens we forced index reload with reload_index = true
-        // Otherwise this function wouldn't be called
-        if (fs.existsSync(dbPath)) {
-            console.log("INDEX DELETED");
-            App.Utils.FileSystem.rmFileSync([dbPath]);
-            App.Apps.App["com.files"].Main.Public.Init.setKeys({
-                system: {
-                    reloadIndex: false
-                }
-            });
-        }
 
         // Read current directory
         fs.readdir(dir, function(err, files) {
@@ -144,7 +132,7 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
                 res.path = res.path + "/";
             }
             pre_items = pre_items + "/" + item + "/";
-            res.id = crypt.createHash('md5').update(res.path).digest('hex');
+            res.uid = crypt.createHash('md5').update(res.path).digest('hex');
             res.name = item;
             results.push(res);
         });

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 16:47:48
+ * @Last Modified time: 2014-08-26 11:48:01
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -37,13 +37,17 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
     // Get user details so we can know what is default workspace dir
     self.user = App.Public.User.getUserKeys('userDetails');
 
+    self.workspaceRoot = options.workspaceRoot  || self.user.userDetails.root_folder;
+    self.startingDirectory = options.filePath  || self.workspaceRoot;
+    
+
     /* Configuration variable */
     self.directory = {
         location: {
-            currentLocation: self.user.userDetails.root_folder,
-            workspaceRoot: self.user.userDetails.root_folder,
+            currentLocation: self.startingDirectory,
+            workspaceRoot: self.workspaceRoot,
             // Current directory index database full path
-            dbLocation: self.user.userDetails.root_folder + "." + crypt.createHash('md5').update(self.user.userDetails.root_folder).digest('hex')
+            dbLocation: self.startingDirectory + "." + crypt.createHash('md5').update(self.startingDirectory).digest('hex')
         },
         items: {
             // Current folder item models to display
@@ -100,7 +104,9 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
         }
     };
 
-    console.log("NEW FOLDER CLASS:", options.uid);
+    console.log("NEW FOLDER OBJECT:", options.uid);
+    console.log("Workspace root:", self.workspaceRoot);
+    console.log("Starting directory:", self.startingDirectory);
 
     self.initialize = function() {
 
@@ -116,20 +122,31 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
         // Initialize breadcrumb navigation view
         if (self.mainUI.views.navigation.breadcrumb === null) {
             self.mainUI.views.navigation.breadcrumb = new App.Apps.App["com.files"].Main.View.BreadCrumb({
+                // ID for current constructed class
+                uid: options.uid,
+                // DOM Element
                 el: $('#application-tabs-' + options.uid + ' .file-explorer-breadcrumb'),
+                // Collection
                 collection: self.mainUI.collection.breadcrumb
             });
         }
         // Initialize breadcrumb navigation view
         if (self.mainUI.views.navigation.actions === null) {
             self.mainUI.views.navigation.actions = new App.Apps.App["com.files"].Main.View.BreadCrumbActions({
+                // ID for current constructed class
+                uid: options.uid,
+                // DOM Element
                 el:  $('#application-tabs-' + options.uid + ' .file-explorer-action-views')
             });
         }
         // Initialize folder view
         if (self.mainUI.views.directory === null) {
             self.mainUI.views.directory = new App.Apps.App["com.files"].Main.View.ExplorerMain({
+                // ID for current constructed class
+                uid: options.uid,
+                // DOM Element
                 el: $('#application-tabs-' + options.uid + ' .file-explorer'),
+                // Collection
                 collection: self.mainUI.collection.items
             });
         }
@@ -165,22 +182,43 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
         self.directory.items.itemsEnd = 0;
 
         console.log("Items reset:", self.directory.items.itemsStart, self.directory.items.itemsEnd);
-        console.log("View type:", self.directory.display.navType);
+        console.log("View type:", self.directory.display.navType); 
 
         // read current full path and make models
         // TODO remove/add only models one by one not whole collection 
         if (self.directory.items.currentNavItems.length > 0) {
-            self.mainUI.collection.breadcrumb.remove(self.directory.items.currentNavItems);
+            console.info("REMOVING breadcrumb objects:", self.directory.items.currentNavItems);
+            _.each(self.directory.items.currentNavItems, function(item){
+                self.mainUI.collection.breadcrumb.remove(self.mainUI.collection.breadcrumb.getByUid(item.uid));
+            });
+            
         }
         self.directory.items.currentNavItems = App.Apps.App["com.files"].Main.Utils.Actions.makeBreadCrumbObject(self.directory.location.currentLocation, self.directory.location.workspaceRoot);
+        
         if (self.directory.items.currentNavItems.length > 0) {
-            self.mainUI.collection.breadcrumb.add(self.directory.items.currentNavItems);
+            console.info("ADDING breadcrumb objects:", self.directory.items.currentNavItems);
+            _.each(self.directory.items.currentNavItems, function(item){
+                self.mainUI.collection.breadcrumb.add(new App.Apps.App["com.files"].Main.Model.BreadCrumbItems(item));
+            });
         }
+        
         console.log(self.directory.system);
         // IF index for this directory doesn't exist lets read it from file-system
         if (fs.existsSync(self.directory.location.dbLocation) === false || self.directory.system.reloadIndex === true) {
             console.info("reloading directory index");
-            App.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(self.directory.location.currentLocation, self.directory.location.dbLocation);
+            // If database index exist that mens we forced index reload with reload_index = true
+            // Otherwise this function wouldn't be called
+            if (fs.existsSync(self.directory.location.dbLocation)) {
+                console.log("INDEX DELETED");
+                App.Utils.FileSystem.rmFileSync([self.directory.location.dbLocation]);
+                self.directory.system.reloadIndex = false;
+            }
+            App.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(self.directory.location.currentLocation, self.directory.location.dbLocation, function(err, data){
+                // Set default navigation values
+                self.directory.items.itemsStart = 0;
+                self.directory.items.itemsEnd = 0;
+                self.findItemsToPaginator();
+            });
         } else { 
             console.info("directory index found");
             self.findItemsToPaginator();
@@ -198,7 +236,7 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
 
         console.log("Items before reading index: ", self.directory.items.itemsStart, self.directory.items.itemsEnd);
         // Get index from index Database
-        App.Apps.App["com.files"].Main.Public.Database.getDirectoryIndex(self.directory.location.dbLocation);
+        App.Apps.App["com.files"].Main.Public.Database.getDirectoryIndex(self.directory.location.dbLocation, options.uid);
     };
 
     self.addItemsToPaginator = function() {
@@ -218,6 +256,7 @@ App.Apps.App["com.files"].Main.Private.Init = function(options) {
 };
 // Remove all views, collection, models from system
 App.Apps.App["com.files"].Main.Private.Init.prototype.removeView = function() {
+    console.log("REMOVING FILES VIEW!");
     // Delete whole directory view
     this.mainUI.views.directory.removeView();
 
@@ -274,19 +313,19 @@ App.Apps.App["com.files"].Main.Private.Init.prototype.startPluginView = function
 };
 // Register keyboard actions
 App.Apps.App["com.files"].Main.Private.Init.prototype.registerKeyCodes = function() {
-    var self = this;
-    // Reloads current view
-    Mousetrap.bind(['ctrl+shift+r', 'ctrl+f5'], function(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-        // Force index reload
-        self.setKeys({
-            system: {
-                reloadIndex: true
-            }
-        });
-        // Reopen current directory with new data 
-        self.openDirectory(self.directory.location.currentLocation);
-    });
+    // var self = this;
+    // // Reloads current view
+    // Mousetrap.bind(['ctrl+shift+r', 'ctrl+f5'], function(e) {
+    //     if (e.preventDefault) {
+    //         e.preventDefault();
+    //     }
+    //     // Force index reload
+    //     self.setKeys({
+    //         system: {
+    //             reloadIndex: true
+    //         }
+    //     });
+    //     // Reopen current directory with new data 
+    //     self.openDirectory(self.directory.location.currentLocation);
+    // });
 };

@@ -31,8 +31,6 @@
 
 App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
 
-    elementID: null,
-
     templateHTML: '<li title="Force directory index reload?" data-id="reload" class="system-actions pull-right"><i class="fa fa-refresh"></i></li>' +
         '<li title="View details as list" data-id="list" class="animated view-actions"><i class="fa fa-list"></i></li>' +
         '<li title="View details as icons" data-id="icons" class="active animated pulse view-actions"><i class="fa fa-th"></i></li>',
@@ -41,9 +39,11 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
         "click li.view-actions": "changeViewType",
         "click li.system-actions": "systemActions" 
     },
-
-    initialize: function() {
-        this.elementID = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']).system.uid;
+    // View initialization function
+    initialize: function(options) {
+        // Container of passed arguments
+        // this.options.uid
+        this.options = options;   
 
         this.template = _.template(this.templateHTML);
         this.render();
@@ -55,7 +55,7 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
     },
     changeViewType: function(e) {
         var dataType = $(e.currentTarget).attr('data-id');
-        var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['display', 'location']);
+        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
 
         if (systemDetails.display.navType !== dataType) {
             console.info("Change view type from:", systemDetails.display.navType);
@@ -65,15 +65,15 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
                 display: {navType: dataType} 
             });
             // Reopen current directory with new display class 
-            App.Apps.App["com.files"].Main.Public.Init.openDirectory(systemDetails.location.currentLocation);
+            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(systemDetails.location.currentLocation);
 
             // Re-class main container
-            $('#application-tabs-' + this.elementID + ' .file-explorer').attr( "class", "file-explorer");
-            $('#application-tabs-' + this.elementID + ' .file-explorer').addClass(dataType);
+            $('#application-tabs-' + this.options.uid + ' .file-explorer').attr( "class", "file-explorer");
+            $('#application-tabs-' + this.options.uid + ' .file-explorer').addClass(dataType);
             // $(".file-explorer").addClass(dataType);
 
             // Remove class of current active object
-            $('#application-tabs-' + this.elementID + ' .file-explorer-action-views li.active').removeClass("active").removeClass("pulse");
+            $('#application-tabs-' + this.options.uid + ' .file-explorer-action-views li.active').removeClass("active").removeClass("pulse");
             // Add active class to new active element
             $(e.currentTarget).addClass("active").addClass("pulse");
         }else{
@@ -82,13 +82,13 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
     },
     systemActions: function(e) {
         var dataType = $(e.currentTarget).attr('data-id');
-        var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['location']);
+        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location']);
         if (dataType === "reload") {
-            App.Apps.App["com.files"].Main.Public.Init.setKeys({
+            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
                 system: {reloadIndex: true} 
             });
             // Reopen current directory with new data 
-            App.Apps.App["com.files"].Main.Public.Init.openDirectory(systemDetails.location.currentLocation); 
+            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(systemDetails.location.currentLocation); 
         }
     },
     removeView: function (){
@@ -126,73 +126,80 @@ App.Apps.App["com.files"].Main.View.BreadCrumbItem = Backbone.View.extend({
 });
 
 App.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
-    elementID: null,
-
-    current_dir: null,
-    _rendered: false,
-    // create an array of views to keep track of items
-    _itemViews: [],
-
     events: {
         "click .file-explorer-breadcrumb-item": "open"
     },
-    initialize: function() {
 
-        this.elementID = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']).system.uid;
+    // View initialization function
+    initialize: function(options) {
+        // Container of passed arguments
+        // this.options.uid
+        this.options = options;
+        // create an array of views to keep track of items
+        this._itemViews = [];
 
         // Ensure our methods keep the `this` reference to the view itself
         _(this).bindAll('add', 'remove');
-        // add each item to the view
-        this.collection.each(this.add);
 
         // bind this view to the add and remove events of the collection!
         this.collection.bind('add', this.add);
         this.collection.bind('remove', this.remove);
-
+        // this.collection.bind('reset', this.reset);
         this.render();
+        // add each item to the view
+        this.collection.each(this.add);
+
     },
     render: function() {
-        var element = $(this.el);
-        // If its first time render lets clean our container
-        if (this._rendered === false) {
-            element.empty();
-        }
+        console.log("RENDERING BREADCRUMB VIEW FOR FIRST TIME");
+        $(this.el).html('');
         // Render each Item View and append them.
         _(this._itemViews).each(function(item) {
-            element.append(item.render().el);
+            $(this.el).append(item.render().el);
         });
-
-        // We keep track of the rendered state of the view
-        this._rendered = true;
-
         return this;
     },
     add: function(model) {
-        // We create an updating Item view for each Item that is added.
-        var itemView = new App.Apps.App["com.files"].Main.View.BreadCrumbItem({
-            model: model
-        });
-        // And add it to the collection so that it's easy to reuse.
-        this._itemViews[model.id] = itemView;
-        // If the view has been rendered, then
-        // we immediately append the rendered donut.
-        if (this._rendered === true) {
-            $(this.el).append(itemView.render().el);
+        console.log("Adding Breadcrumb model!");
+        console.log(JSON.stringify(this._itemViews));
+
+        var uid = model.get('uid');
+        if(this._itemViews[uid]){
+            console.log("Breadcrumb already in view:", uid);
+            console.log(_.keys(this._itemViews));
+            return;
         }
+        // We create an updating Item view for each Item that is added.
+        // And add it to the collection so that it's easy to reuse.
+        this._itemViews[uid] = new App.Apps.App["com.files"].Main.View.BreadCrumbItem({
+            model: model
+        });       
+
+        $(this.el).append(this._itemViews[uid].render().el);
+
     },
     remove: function(model) {
-        console.log("Removing model!");
-        // Remove model from DOM
-        if (this._rendered === true) {
-            $(this._itemViews[model.id].el).remove();
+        console.log("Removing Breadcrumb model!");
+        var uid = model.get('uid');
+        if(!this._itemViews[uid]){
+            console.log("Breadcrumb not in view nothing to remove!");
+            return;
         }
-        delete this._itemViews[model.id];
+        // Remove model from DOM
+        if (this._itemViews[uid]) {
+            $(this._itemViews[uid].el).remove();
+            console.log("Breadcrumb deleted", model.get('path'));
+            delete this._itemViews[uid];
+        }else{
+            console.log("No model to remove!");
+        }
+        
     },
     open: function(e) {
         var item = $(e.currentTarget);
         var itemPath = item.attr('data-path');
         console.log("BREADCRUMB OPEN DIR CLICK");
-        App.Apps.App["com.files"].Main.Public.Init.openDirectory(itemPath);
+        App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(itemPath);
         e.preventDefault();
     },
     removeView: function (){

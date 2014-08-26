@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 17:22:48
+ * @Last Modified time: 2014-08-25 18:30:38
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -36,11 +36,6 @@ App.Private.System = function() {
 
     self.user = null;
     self.apps = null;
-
-    self.views = {
-        main: {},
-        apps: []
-    };
 
     self.mainUI = {
         collection: {
@@ -175,23 +170,20 @@ App.Private.System.prototype.startApp = function(appID) {
     var self = this;
     console.log("App.Private.System.prototype.startApp: ", appID);
     var options = App.Apps.Public.getUserAppDetails(appID);
-    console.log(options);
-    
-    if (!self.mainUI.views.apps[appID]) {
-        // Little Hack to display loading while waiting async operations
-        // (Browser JS script injections)
-        var interval = setInterval(function() {
-            if (typeof App.Apps.App[appID].Setup === "function") {
-                clearInterval(interval);
-                self.mainUI.collection.applications.add(_.extend(options, {uid: crypt.createHash('md5').update(options["name-space"]).digest('hex')}));
-            } else {
-                console.log("Loading application data from SYSTEM");
-                console.log(typeof App.Apps.App[appID].Setup);
-            }
-        }, 100);
-    } else {
-        console.log("Application already started!");
-    }
+    console.log(options);   
+
+    // Little Hack to display loading while waiting async operations
+    // (Browser JS script injections)
+    var interval = setInterval(function() {
+        if (typeof App.Apps.App[appID].Setup === "function") {
+            clearInterval(interval);
+            self.mainUI.collection.applications.add(_.extend(options, {uid: crypt.createHash('md5').update(options["name-space"]).digest('hex')}));
+        } else {
+            console.log("Loading application data from SYSTEM");
+            console.log(typeof App.Apps.App[appID].Setup);
+        }
+    }, 100);
+
     // Active element in CSS
     $("#nav-side-left").find("[data-href='" + appID + "']").addClass('active');
 };

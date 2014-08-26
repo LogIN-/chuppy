@@ -68,13 +68,16 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
             'data-path': this.model.get('path')
         };
     },
-    // Item initialization function
-    initialize: function() {
+    // View initialization function
+    initialize: function(options) {
+        // Container of passed arguments
+        // this.options.uid
+        this.options = options;        
         // Ensure our methods keep the `this` reference to the view itself
         _.bindAll(this, 'render');
 
         // Get current view folder details
-        var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['display', 'location']);
+        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
         // Set display type and template (icons or list)
         this.navType = systemDetails.display.navType;
         // console.info("Adding item with view:", this.navType);
@@ -124,9 +127,8 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
     // Item actions for List view
     // Cut, copy, delete, share buttons
     itemActions: function(e) {
-        var element = $(e.currentTarget);
-        var actionType = element.attr('data-action');
-        var parentElement = element.closest("li");
+        var actionType = $(e.currentTarget).attr('data-action');
+        var parentElement = $(e.currentTarget).closest("li");
 
         var actionDetails = {
             // Jquery Object
@@ -138,7 +140,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
             // File or Folder
             itemType: parentElement.attr('data-type'),
             // App memory keys storage
-            systemDetails: App.Apps.App["com.files"].Main.Public.Init.getKeys(['location', 'userActions'])
+            systemDetails: App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location', 'userActions'])
         };
         console.log(actionDetails.itemPath + " action: " + actionType);
 
@@ -147,7 +149,6 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
 
 // Main folder items display view
 App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
-    elementID: null,
     // Is view rendered or not helper?
     _rendered: false,
     // Container for nested sub-views (item-views)
@@ -170,8 +171,10 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         "drop": "dragAndDropHandlers",
     },
     // View initialization function
-    initialize: function() {
-        this.elementID = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']).system.uid;
+    initialize: function(options) {
+        // Container of passed arguments
+        // this.options.uid
+        this.options = options;        
         // Ensure our methods keep the `this` reference to the view itself
         _(this).bindAll('add', 'remove');
         // add each item to the view
@@ -200,6 +203,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     },
     // Add model(item) to view
     add: function(model) {
+        // Model ID
         var uid = model.get('uid');
         // We create an updating Item view for each Item that is added.
         // And add it to the collection so that it's easy to reuse.
@@ -207,6 +211,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             return;
         }
         this._itemViews[uid] = new App.Apps.App["com.files"].Main.View.ExplorerItem({
+            uid: this.options.uid,
             model: model
         });
         // If the view has been rendered, then
@@ -223,6 +228,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     remove: function(model) {
         var self = this;
         // Remove model from DOM
+        // Model ID
         var uid = model.get('uid');
         console.info("Model remove started uid:", uid);
         if (self._rendered === true && self._itemViews[uid] !== null) {
@@ -239,7 +245,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     // Remove all models(items) from folder view 
     // Called on every new openDirectory()
     removeAll: function() {
-        $('#application-tabs-' + this.elementID + ' .file-explorer')[0].innerHTML = '';
+        $('#application-tabs-' + this.options.uid + ' .file-explorer')[0].innerHTML = '';
         this._itemViews = [];
         // Remove any context menus if they exist
         this.hideContextMenu();
@@ -269,7 +275,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             }
             var fileDetails = [];
             var fileInfo = {};
-            var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['location']);
+            var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location']);
 
             // Loop through all files dropped and save them to array
             _.each(files, function(file) {
@@ -333,13 +339,12 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     },
     // Dblclick on model(item) action
     onItemDblClick: function(e) {
-        var item = $(e.currentTarget);
-        var itemType = item.attr('data-type');
-        var itemPath = item.attr('data-path');
+        var itemType = $(e.currentTarget).attr('data-type');
+        var itemPath = $(e.currentTarget).attr('data-path');
 
         // If clicked item is directory lets open it
         if (itemType === "1") {
-            App.Apps.App["com.files"].Main.Public.Init.openDirectory(itemPath);
+            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(itemPath);
         } else if (itemType === "0") {
             // Remove any context menus if they exist
             this.hideContextMenu();
@@ -354,8 +359,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         element.addClass("selectedItem");
 
         var menuDetails = {
-            // Jquery Object
-            item: element,
+            uid: this.options.uid,
             // Backbone generated CID so we have reference in collection
             modelCID: element.attr('data-cid'),
             // Our unique model id in DB
@@ -365,7 +369,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             // File or Folder
             itemType: element.attr('data-type'),
             // App memory keys storage
-            systemDetails: App.Apps.App["com.files"].Main.Public.Init.getKeys(['location', 'userActions'])
+            systemDetails: App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location', 'userActions'])
         };
         // Remove any context menus if they exist
         this.hideContextMenu();
@@ -374,7 +378,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             theme: 'vista'
         }, e);
         // Set values to our app
-        App.Apps.App["com.files"].Main.Public.Init.setKeys({
+        App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
             system: {
                 contextActive: true
             },
@@ -402,7 +406,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     //           - new page opened           - this.removeAll()
     //           - selectable start and draggable star
     hideContextMenu: function() {
-        var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['system']);
+        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['system']);
         if (systemDetails.system.contextActive === true) {
             $('.contextMenuItem').remove();
         }
@@ -411,7 +415,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     // Sets start and end number to retrieve from directory index database
     detectItemsPerPage: function() {
         // Current system variables
-        var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['items', 'display']);
+        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['items', 'display']);
         // Internal Details
         var details = {
             // Navigation type
@@ -442,7 +446,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         details.items_end = details.items_start + details.itemsPerPage;
         console.info("Automatic calculated values:", details.items_start, details.items_end);
         // Set values to our app
-        App.Apps.App["com.files"].Main.Public.Init.setKeys({
+        App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
             items: {
                 itemsStart: details.items_start,
                 itemsEnd: details.items_end
@@ -455,13 +459,13 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
      * findItemsToPaginator() is executed to load smoothly more items on page
      */
     checkScroll: function() {
-        // 100px from the bottom
+        var itemsDOM = $('#application-tabs-' + this.options.uid + ' .file-explorer > li.file-explore-item');
         var triggerPoint = 100; 
-        if (this.el.scrollTop + this.el.clientHeight + triggerPoint > this.el.scrollHeight && $('.file-explore-item').length > 10) {
+        if (this.el.scrollTop + this.el.clientHeight + triggerPoint > this.el.scrollHeight && itemsDOM.length > 10) {
             // Remove any context menus on scroll if they exist
             this.hideContextMenu();
             // Add next models to collection and trigger add() function
-            App.Apps.App["com.files"].Main.Public.Init.findItemsToPaginator();
+            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.findItemsToPaginator();
         }
     },
     /* function setupSelectDragDrop()
@@ -478,7 +482,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         // Loop through all current items on page
         // 1. Add draggable to every item
         // 2. Add droppable only on folders
-        $('#application-tabs-' + this.elementID + ' .file-explorer > li.file-explore-item').each(function() {
+        $('#application-tabs-' + this.options.uid + ' .file-explorer > li.file-explore-item').each(function() {
             var fileType = $(this).attr('data-type');
             // We must destroy draggable            
             if ($(this).data('draggable')) {
@@ -496,7 +500,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     // Just in case selectedItem is added from selectable handler (direct drag)
                     $(this).addClass("selectedItem");
                     // Reset selectedItems variables and add all items with selectedItems class to it
-                    self.selectedItems = $(".selectedItem");
+                    self.selectedItems = $('#application-tabs-' + this.options.uid + ' .file-explorer > li.selectedItem');
 
                 },
                 // On element Draging loop through all selected elements and move them with it
@@ -504,7 +508,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     // Hold reference to this element so we can bind next to it in loop
                     var previousElement = $(this);
                     // Current system details
-                    var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['display']);
+                    var systemDetails = App.Public.System.mainUI.views.apps[self.options.uid].FilesMain.getKeys(['display']);
                     // take all the elements that are selected expect $("this"), 
                     // which is the element being dragged and loop through each.
                     var my, at;
@@ -589,11 +593,11 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                                 // Execute copyFileSync() on all items
                                 App.Utils.FileSystem.copyFileSync(itemsDetails, 'cut');
                                 // Remove item(s) from view by itemsCIDs
-                                App.Apps.App["com.files"].Main.Public.Init.removeFolderModels(itemsCIDs);
+                                App.Public.System.mainUI.views.apps[self.options.uid].FilesMain.removeFolderModels(itemsCIDs);
                                 // Reset global select variables
                                 self.selectedItems = $([]);
                                 // Save action for future reference
-                                App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                                App.Public.System.mainUI.views.apps[self.options.uid].setKeys({
                                     userActions: {
                                         activeAction: 'paste'
                                     }
@@ -671,7 +675,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                 console.log("de-selecting item");
             }
         }
-        $('#application-tabs-' + this.elementID + ' .file-explorer').data("ui-selectable")._mouseStop(null);
+        $('#application-tabs-' + this.options.uid + ' .file-explorer').data("ui-selectable")._mouseStop(null);
     }
 
 });

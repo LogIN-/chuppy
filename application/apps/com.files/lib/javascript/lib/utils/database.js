@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 11:29:25
+ * @Last Modified time: 2014-08-26 09:28:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -103,15 +103,7 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
                         if (callback && typeof(callback) === "function") {
                             callback.apply(this, [err, data]);
                         } else {
-                            // Set default navigation values
-                            App.Apps.App["com.files"].Main.Public.Init.setKeys({
-                                items: {
-                                    itemsStart: 0,
-                                    itemsEnd: 0
-                                }
-                            });
-                            // Calculate items per page and getDirectoryIndex()
-                            App.Apps.App["com.files"].Main.Public.Init.findItemsToPaginator();
+                            console.log("No callback defined!");
                         }
                     });
                 }
@@ -120,10 +112,10 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
     };
 
     // Read items from directory index
-    self.getDirectoryIndex = function(dbPath) {
+    self.getDirectoryIndex = function(dbPath, uid) {
         console.info("Reading directory index:", dbPath);
         var dbID = crypt.createHash('md5').update(dbPath).digest('hex');
-        var systemDetails = App.Apps.App["com.files"].Main.Public.Init.getKeys(['items']);
+        var systemDetails = App.Public.System.mainUI.views.apps[uid].FilesMain.getKeys(['items']);
 
         console.info("Finding items by: start - " + systemDetails.items.itemsStart + " end - " + systemDetails.items.itemsEnd);
         // Check if database store is already initialized
@@ -152,25 +144,25 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
                             if (err) {
                                 console.log(err);
                             } else {
-                                App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                                App.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
                                     items: {
                                         currentItems: items,
                                         dirItemsTotal: directory.total_count,
                                         dirItemsTotalSize: directory.total_size
                                     }
                                 });
-                                App.Apps.App["com.files"].Main.Public.Init.addItemsToPaginator();
+                                App.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
                             }
                         });
                     } else {
-                        App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                        App.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
                             items: {
                                 currentItems: null,
                                 dirItemsTotal: 0,
                                 dirItemsTotalSize: 0
                             }
                         });
-                        App.Apps.App["com.files"].Main.Public.Init.addItemsToPaginator();
+                        App.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
                     }
                 }
             });

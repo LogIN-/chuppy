@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 17:25:46
+ * @Last Modified time: 2014-08-26 10:04:32
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -217,19 +217,16 @@ App.View.ApplicationBody = Backbone.View.extend({
         var appID = model.get('name-space');
         var uid = model.get('uid');
 
-        var options = {
-            uid: uid,
-        };
         if (document.getElementById("application-tabs-" + uid) === null) {
             console.log("ERROR HTML ISNT IN PLACE", uid, appID);
             return;
         }
         // Create new app Object
-        this._itemViews[uid]._itemSystemView = new App.Apps.App[appID].Setup(options);
+        App.Public.System.mainUI.views.apps[uid] = new App.Apps.App[appID].Setup(model.toJSON());
         // Insert app styles and scripts directly into DOM
-        this._itemViews[uid]._itemSystemView.setupDependencies();
+        App.Public.System.mainUI.views.apps[uid].setupDependencies();
         // Start app 
-        this._itemViews[uid]._itemSystemView.initilizeAppUI();
+        App.Public.System.mainUI.views.apps[uid].initilizeAppUI();
     },
     checkTabVisibility: function(){
         var activeViews = Object.keys(this._itemViews).length;

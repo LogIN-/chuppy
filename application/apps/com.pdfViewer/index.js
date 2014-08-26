@@ -57,7 +57,7 @@ App.Apps.App["com.pdfViewer"].Setup = function(options){
         // ID of parent application css container added dynamically from ApplicationBody.js main view
         // {container: "#application-tabs-" + uid}
         // But will always have #application-tabs[data-namespace='app.namespace']
-        "container": "#application-tabs[data-namespace='com.pdfViewer']",
+        "uid": null,
         // Path to File/Directory if needed
         "filePath": null
     };
@@ -72,7 +72,7 @@ App.Apps.App["com.pdfViewer"].Setup = function(options){
     // Here is a place where magic should happen
     self.initilizeAppUI = function () {
         console.info("Opening PDF File", self.options.filePath);
-        $(self.options.container).html($('<iframe>', {
+        $("#application-tabs-" + self.options.uid).html($('<iframe>', {
             id: "iframeViewer",
             src: "apps/" + self.options["name-space"] + "/?cp=" + self.options.filePath,
             "nwdisable": "",

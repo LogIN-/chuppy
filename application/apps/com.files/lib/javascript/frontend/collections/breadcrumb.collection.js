@@ -30,5 +30,10 @@
 */
 
 App.Apps.App["com.files"].Main.Collection.BreadCrumb = Backbone.Collection.extend({
-  model: App.Apps.App["com.files"].Main.Model.BreadCrumbItems 
+    model: App.Apps.App["com.files"].Main.Model.BreadCrumbItems,
+    getByUid: function(uid){
+        return this.filter(function(val) {
+            return val.get("uid") === uid;
+        });
+    }
 });

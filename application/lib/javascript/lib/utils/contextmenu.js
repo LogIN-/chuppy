@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 14:57:35
+ * @Last Modified time: 2014-08-25 18:56:30
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -45,20 +45,23 @@
 //     // File or Folder
 //     itemType: element.attr('data-type'),
 //     // App memory keys storage
-//     systemDetails: App.Apps.App["com.files"].Main.Public.Init.getKeys(['location', 'userActions'])
+//     systemDetails: App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.getKeys(['location', 'userActions'])
 // };
 // @returns {array}
 
 App.Utils.ContextMenu = function(menuDetails) {
+    console.info("Initializing Context menu");
+    console.log(JSON.stringify(menuDetails));
+
     var menu = [];
     // Add "open" action only if item is directory
     // and if only one item is selected
-    if (menuDetails.itemType === "1" && $("li.selectedItem").length === 1) {
+    if (menuDetails.itemType === "1") {
         menu.push({
             // ContextMenu Item Html name
             'Open': {
                 onclick: function(menuItem, menu) {
-                    App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'open',
                             open: {
@@ -66,7 +69,8 @@ App.Utils.ContextMenu = function(menuDetails) {
                             }
                         }
                     });
-                    App.Apps.App["com.files"].Main.Public.Init.openDirectory(menuDetails.itemPath);
+                    // App.Public.System.mainUI.views.apps[uid]
+                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.openDirectory(menuDetails.itemPath);
                 },
                 // Context Menu item Icon
                 icon: '/lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
@@ -78,7 +82,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // ContextMenu Item Html name
             'Open in Tab': {
                 onclick: function(menuItem, menu) {
-                    App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'open',
                             open: {
@@ -121,7 +125,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     selectedItemsResults.push(selectedItemDetails);
                 });
                 // Set Action and  details array
-                App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                     userActions: {
                         activeAction: 'copy',
                         copy: selectedItemsResults
@@ -154,7 +158,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     selectedItemsResults.push(selectedItemDetails);
                 });
                 // Set Action and  details array
-                App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                     userActions: {
                         activeAction: 'cut',
                         cut: selectedItemsResults
@@ -202,7 +206,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                         App.Utils.FileSystem.copyFileSync(itemsDetails, 'cut');
                     }
 
-                    App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'paste'
                         }
@@ -264,11 +268,11 @@ App.Utils.ContextMenu = function(menuDetails) {
                                 return;
                             }
                             // Remove item from view
-                            App.Apps.App["com.files"].Main.Public.Init.removeFolderModels([itemCID]);
+                            App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.removeFolderModels([itemCID]);
                         });
 
                         // Set last user action to "deleteItem"
-                        App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                        App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                             userActions: {
                                 activeAction: 'deleteItem'
                             }
@@ -309,7 +313,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 if (menuDetails.itemType === "1") {
                     // Start web server to serve this folder
                     App.Utils.Share.LocalTunel.registerShare(menuDetails.itemPath);
-                    App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'share',
                             share: {
@@ -334,7 +338,7 @@ App.Utils.ContextMenu = function(menuDetails) {
         // ContextMenu Item Html name
         'Details': {
             onclick: function(menuItem, menu) {
-                App.Apps.App["com.files"].Main.Public.Init.setKeys({
+                App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                     userActions: {
                         activeAction: 'details',
                         details: {

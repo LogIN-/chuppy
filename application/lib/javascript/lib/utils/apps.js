@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 14:47:13
+ * @Last Modified time: 2014-08-26 11:49:42
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -58,7 +58,8 @@ App.Utils.Apps = {
                     "order": model.get('order'),
                     "default": model.get('default')
                 };
-                App.Apps.Public.pushAppUserApp(_.extend(app, userApp));
+                // Save app in User App List
+                App.Apps.Public.pushAppUserApp(_.extend(app, userApp)); 
             }else{
                 new App.Database.UserApps({
                     "uid": user.userMain.id,
@@ -72,6 +73,7 @@ App.Utils.Apps = {
                         console.log("SYSTEM: App.Utils.Apps.initilizeAppDB: ERROR");
                         return;
                     }
+                    // Save app in User App List
                     App.Apps.Public.pushAppUserApp(app);
                     console.log("System, App.Utils.Apps.initilizeAppDB: ", app["name-space"]);
                 });
