@@ -4,7 +4,7 @@
 * @Email:  unicoart@gmail.com
 * @URL:    https://github.com/LogIN-/chuppy
 * @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-27 10:28:52
+* @Last Modified time: 2014-08-27 13:23:12
 * Use of this source code is governed by a license: 
 * The MIT License (MIT)
 * 
@@ -28,25 +28,16 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+
 @charset "UTF-8";
 
-/* Disable user select in app */
-
-* {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none; 
-    -ms-user-select: none;
-    user-select: none;
-}
 ::selection {
-    background: greenyellow;
-    color: rgba(53, 47, 47, 0.63); 
+    background-color: rgb(171, 171, 171);
+    color: rgb(255, 255, 255);
 }
 ::-moz-selection {
-    background: greenyellow;
-    color: rgba(53, 47, 47, 0.63);
+    background-color: rgb(171, 171, 171);
+    color: rgb(255, 255, 255);
 }
 html {
     margin: 0;
@@ -139,7 +130,9 @@ header {
     outline: 0;
 }
 /* Our main header */
-
+#top-headers {
+    -webkit-user-select: none;
+}
 #header-bar {
     height: 85px;
     background-color: #F5F5F5;
@@ -257,6 +250,7 @@ footer {
     z-index: 10;
     color: #999;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+    -webkit-user-select: none;
     -webkit-app-region: drag;
 }
 footer > .small {
@@ -542,6 +536,7 @@ footer > .small {
     float: left;
     height: 100%;
     background-color: #F5F5F5;
+    -webkit-user-select: none;
 }
 #left-navigation .sidebar-nav .navbar .navbar-collapse {
     padding: 0;

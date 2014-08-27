@@ -85,6 +85,7 @@ App.Apps.App["com.files"].Setup = function(options){
         var interval = setInterval(function() {
             if(counter === 100){
                 console.log("App loading canceled");
+                clearInterval(interval);
                 return;
             }
             if (typeof App.Apps.App["com.files"].Main.Private !== "undefined") {     

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:47:18
+ * @Last Modified time: 2014-08-27 13:00:09
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -77,6 +77,35 @@ App.Utils.FileSystem = {
         }
 
         return false;
+    },
+    loadTextFile: function(filePath, isPreview, callback) {
+        console.log("Loading file: " + filePath);
+        if (isPreview) {
+            var stream = fs.createReadStream(filePath, {
+                start: 0,
+                end: 10000
+            });
+            stream.on('error', function(err) {
+                console.log("Loading file " + filePath + " failed " + err);
+                return;
+            });
+            stream.on('data', function(content) {
+                console.log("Stream: " + content);
+                if (callback && typeof(callback) === "function") {
+                    callback(content);
+                }
+            });
+        } else {
+            fs.readFile(filePath, 'utf8', function(error, content) {
+                if (error) {
+                    console.log("Loading file " + filePath + " failed " + error);
+                    return;
+                }
+                if (callback && typeof(callback) === "function") {
+                    callback(content);
+                }
+            });
+        }
     },
     // Remove directory(s) synchronously and recursively
     // {parm} paths {array} Array of filename paths
@@ -254,5 +283,8 @@ App.Utils.FileSystem = {
             }
             console.log("saveTextFile DONE!");
         });
+    },
+    extractContainingDirectoryPath: function(filePath) {
+        return filePath.substring(0, filePath.lastIndexOf("/"));
     }
 };

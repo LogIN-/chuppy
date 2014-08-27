@@ -56,7 +56,7 @@ module.exports = function(grunt) {
                 src: ['application/lib/javascript/frontend/**/*.js']
             },
             addons: {
-                src: ['application/apps/**/*.js', '!application/apps/**/vendor/*.js', '!application/apps/**/3rdparty/**/*.js', '!application/apps/com.pdfViewer/**/*.js']
+                src: ['application/apps/**/*.js', '!application/apps/**/vendor/**/*.js', '!application/apps/**/3rdparty/**/*.js', '!application/apps/com.pdfViewer/**/*.js', '!application/apps/com.mdViewer/lib/javascript/vendor/**/*.js', '!application/apps/com.editorAce/lib/javascript/vendor/**/*.js']
             }
         },
         csslint: {

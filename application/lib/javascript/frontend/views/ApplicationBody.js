@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 12:23:53
+ * @Last Modified time: 2014-08-27 13:25:30
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -39,6 +39,7 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
               '<% if(app.supportedFileTypes) { %>' +
               '<div class="pull-left">' +
               '    <img ' +
+              '    style="position: absolute; top: 2px; left: 2px"' +
               '    onerror="$(this).avatar();" ' +
               '    data-fontSize="13"' +
               '    data-name="<%- app.name %>"' +

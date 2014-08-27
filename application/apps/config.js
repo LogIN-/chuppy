@@ -74,6 +74,48 @@ App.Apps.Configuration = {
         // How should system display this app
         "display": "iframe"
     },
+    2: {
+        // file-system name of app must be unique ("name-space") and app folder must have same name
+        "name-space": "com.mdViewer",
+        // Name variable of app (same as in i18n variable ) 
+        "name": "mdViewer",
+        // Path to the app folder default (/apps/{app.system.name})
+        "path": "apps/com.mdViewer/index.js",
+        // Is app enabled or disabled
+        "enabled": true,
+        // If system is true then this is default app
+        "isDefault": false,
+        "order": 1, 
+        // "icon": "/apps/com.files/lib/images/favicon.png"
+        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        // Is app visible in menu?
+        "visible": false,
+        // Any specific file-types supported by this application?
+        "supportedFileTypes": ['md', 'markdown', 'mdown'],
+        // How should system display this app
+        "display": "iframe"
+    },
+    3: {
+        // file-system name of app must be unique ("name-space") and app folder must have same name
+        "name-space": "com.editorAce",
+        // Name variable of app (same as in i18n variable ) 
+        "name": "editorAce",
+        // Path to the app folder default (/apps/{app.system.name})
+        "path": "apps/com.editorAce/index.js",
+        // Is app enabled or disabled
+        "enabled": true,
+        // If system is true then this is default app
+        "isDefault": false,
+        "order": 1, 
+        // "icon": "/apps/com.files/lib/images/favicon.png"
+        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        // Is app visible in menu?
+        "visible": false,
+        // Any specific file-types supported by this application?
+        "supportedFileTypes": ["h", "c", "clj", "coffee", "coldfusion", "cpp", "cs", "css", "groovy", "haxe", "htm", "html", "java", "js", "jsm", "json", "latex", "less", "ly", "ily", "lua", "markdown", "md", "mdown", "mdwn", "mkd", "ml", "mli", "pl", "php", "powershell", "py", "rb", "scad", "scala", "scss", "sh", "sql", "svg", "textile", "txt", "xml"],
+        // How should system display this app
+        "display": "iframe"
+    },
 }; 
 
 // Initialize apps main context where apps will be loaded

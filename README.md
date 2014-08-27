@@ -10,8 +10,8 @@ At the end Chuppy enables you to collaborate with your team members, friends, fa
 
 ## Implemented Features
 
-* **File managing:** Chuppy provides a workspace interface for browsing, viewing and tagging, editing and sharing your projects files
-* **Direct folder-sharing:** You can create as many folder shares you wont. All shares have secret URL that you can give to your friend(s) and all shared files will be accessible from any machine with Internet access by direct traffic tunneling.
+* **File managing:** Chuppy provides a workspace interface for browsing, viewing and tagging, editing and sharing your project files
+* **Direct folder-sharing:** You can create as many folder shares you want. All shares have secret URL that you can give to your friend(s) and all shared files will be accessible from any machine with Internet access by direct traffic tunneling.
 * **Cross-platform:** Chuppy runs perfectly on all major platforms.
 
 ## Documentation
