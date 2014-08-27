@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 14:54:02
+ * @Last Modified time: 2014-08-27 15:03:49
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -29,6 +29,7 @@
  * THE SOFTWARE.
  */
 /* global ace */
+
 /* Main file-explorer application class */
 App.Apps.App["com.editorAce"].Main.Private.Init = function(options) {
 
