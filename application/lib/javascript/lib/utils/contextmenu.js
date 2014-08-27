@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 10:19:45
+ * @Last Modified time: 2014-08-27 19:32:58
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -107,10 +107,11 @@ App.Utils.ContextMenu = function(menuDetails) {
     } // Check if item is directory
 
     if (menuDetails.itemType === "0") {
-       var mimeType = mime.lookup(menuDetails.itemPath);
-       var supportedApps = App.Apps.Public.getSupportedAppsForMimeType(mimeType);
-       // If there are any supported apps lets build menu
-       if(supportedApps !== null){
+        var mimeType = mime.lookup(menuDetails.itemPath);
+        // FIX
+        var supportedApps = _.uniq(App.Apps.Public.getSupportedAppsForMimeType(mimeType));
+        // If there are any supported apps lets build menu
+        if (supportedApps !== null) {
             menu.push({
                 // ContextMenu Item Html name
                 'Open': {
@@ -123,13 +124,49 @@ App.Utils.ContextMenu = function(menuDetails) {
                                 }
                             }
                         });
-                        var firstAppNameSpace = _.first(supportedApps);
-                        var options = App.Apps.Public.getUserAppDetails(firstAppNameSpace);
+                        if (supportedApps.length > 1) {
+                            // Dialog variables
+                            var dialogTitle = i18n.__('Select app to open this file?');
+                            var dialogContent = '';
+                            var appDetails;
+                            _.each(supportedApps, function(app) {
+                                appDetails = App.Apps.Public.getUserAppDetails(app);
+                                dialogContent += '<li>' + appDetails.name + '</li>';
+                            });
+                            var dialogButtons = [{
+                                text: i18n.__('Ok'),
+                                click: function() {
+                                    // play confirmation sound
+                                    App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
+                                    // Destroy dialog
+                                    $(this).dialog("close");
+                                    $(this).remove();
+                                    App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
 
-                        App.Public.System.mainUI.collection.applications.add(_.extend(options, {
-                            uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
-                            filePath: menuDetails.itemPath
-                        }));
+                                    App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                                }
+                            }, {
+                                text: i18n.__('Cancel'),
+                                click: function() {
+                                    // play warning sound
+                                    App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
+                                    // Destroy dialog
+                                    $(this).dialog("close");
+                                    $(this).remove();
+                                }
+                            }];
+                            // Show dialog
+                            App.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
+                        } else {
+                            var firstAppNameSpace = _.first(supportedApps);
+                            var options = App.Apps.Public.getUserAppDetails(firstAppNameSpace);
+
+                            App.Public.System.mainUI.collection.applications.add(_.extend(options, {
+                                uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
+                                filePath: menuDetails.itemPath
+                            }));
+                        }
+
                     },
                     // Context Menu item Icon
                     icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
@@ -139,9 +176,9 @@ App.Utils.ContextMenu = function(menuDetails) {
             });
             // Add separator line to Context Menu
             menu.push($.contextMenu.separator);
-       }
+        }
 
-    }// Check if item is file
+    } // Check if item is file
 
     menu.push({
         // ContextMenu Item Html name

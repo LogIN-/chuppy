@@ -137,6 +137,27 @@ App.Apps.Configuration = {
         // How should system display this app
         "display": "iframe"
     },
+    5: {
+        // file-system name of app must be unique ("name-space") and app folder must have same name
+        "name-space": "com.editorHtml",
+        // Name variable of app (same as in i18n variable ) 
+        "name": "editorHtml",
+        // Path to the app folder default (/apps/{app.system.name})
+        "path": "apps/com.editorHtml/index.js",
+        // Is app enabled or disabled
+        "enabled": true,
+        // If system is true then this is default app
+        "isDefault": false,
+        "order": 1, 
+        // "icon": "/apps/com.files/lib/images/favicon.png"
+        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        // Is app visible in menu?
+        "visible": false,
+        // Any specific file-types supported by this application?
+        "supportedFileTypes": ["htm", "html"],
+        // How should system display this app
+        "display": "iframe"
+    },
 }; 
 
 // Initialize apps main context where apps will be loaded

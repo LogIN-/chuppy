@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 13:01:30
+ * @Last Modified time: 2014-08-27 19:10:45
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -31,7 +31,7 @@
 /* global marked */
 
 /* Main file-explorer application class */
-App.Apps.App["com.mdViewer"].Main.Private.Init = function(options) {
+App.Apps.App["com.mdViewer"].Main.Private.Init = function(options) { 
 
     var self = this;
     self.md2htmlConverter = null;
