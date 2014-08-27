@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 14:30:46
+ * @Last Modified time: 2014-08-27 09:53:44
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -93,11 +93,11 @@ App.Utils.User = {
     loginUser: function(username, password, loginView) {
         loginView = typeof loginView !== 'undefined' ? loginView : null;
         var self = this;
-        self.user["configuration-user-username"] = username;
-        self.user["configuration-user-password"] = password;
+        self.user.username = username;
+        self.user.password = password;
         // Select user by Username
         new App.Database.User({
-            username: self.user["configuration-user-username"]
+            username: self.user.username
         }).fetch({
             withRelated: ['userDetails']
         }).then(function(model) {
@@ -108,28 +108,25 @@ App.Utils.User = {
             }
             self.user.id = model.get('id');
             self.user.password_hash = model.get('password');
-            self.user["configuration-user-autologin"] = model.related('userDetails').get('autologin');
+            self.user.autologin = model.related('userDetails').get('autologin');
 
             // Load hash from DB and compare it
-            bcrypt.compare(self.user["configuration-user-password"], self.user.password_hash, function(err, res) {
-
+            bcrypt.compare(self.user.password, self.user.password_hash, function(err, res) {
+                // Password compare successful
                 if (res === true) {
                     // Initialize userDetails object
                     self.userDetails();
                     // Login is successful so remove view
-                    self.loginStatus(true, "Welcome " + self.user["configuration-user-username"] + "!", loginView);
-
-
-                    console.log("System: App.Utils.User.loginUser SUCCESS", self.user["configuration-user-username"]);
+                    self.loginStatus(true, "Welcome " + self.user.username + "!", loginView);
+                    console.log("System: App.Utils.User.loginUser SUCCESS", self.user.username);
 
                 } else {
-                    // If user set that he doesn't wont password login lets automatically login him
-                    if (self.user["configuration-user-autologin"] === 1) {
+                    // Check if user has auto-login feature?
+                    if (self.user.autologin === 1) {
                         // Initialize userDetails object
                         self.userDetails();
                         // Login is successful so remove view
                         self.loginStatus(true, "Welcome " + self.user.username + "!", loginView);
-
                         console.log("System: App.Utils.User.loginUser SUCCESS", self.user.username);
 
                     } else {
@@ -138,10 +135,8 @@ App.Utils.User = {
                             login_attempts: 1
                         });
                         self.loginStatus(false, "Wrong credentials! Please try again!", loginView);
-
                         console.log("System: App.Utils.User.loginUser FAILED");
                         console.log(self.user);
-
                     }
                 }
             });

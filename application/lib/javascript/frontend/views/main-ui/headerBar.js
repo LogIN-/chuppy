@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 15:03:28
+ * @Last Modified time: 2014-08-27 10:08:41
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -72,10 +72,10 @@ App.View.headerBar = Backbone.View.extend({
 
         if (actionType === "0") { // data-id 0 shutdown Chuppy action
             // Dialog variables
-            var dialogTitle = "Confirm to quit:";
-            var dialogContent = "Any unsaved changes will be permanently deleted and cannot be recovered. Are you sure to quit?";
+            var dialogTitle = i18n.__('Confirm to quit:');
+            var dialogContent = i18n.__('Any unsaved changes will be permanently deleted and cannot be recovered. Are you sure to quit?');
             var dialogButtons = [{
-                text: "Exit",
+                text: i18n.__('Exit'),
                 click: function() {
                     App.Utils.Functions.doPlaySound('lib/sounds/service-logout.oga');
                     $(this).dialog("close");
@@ -86,7 +86,7 @@ App.View.headerBar = Backbone.View.extend({
                     App.Utils.Helpers.exit();
                 }
             }, {
-                text: "Cancel",
+                text: i18n.__('Cancel'),
                 click: function() {
                     $(this).dialog("close");
                     $(this).remove();

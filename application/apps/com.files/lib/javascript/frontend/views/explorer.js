@@ -1,33 +1,33 @@
 /* 
-* @Author: LogIN
-* @Date:   2014-08-22 16:11:25
-* @Email:  unicoart@gmail.com
-* @URL:    https://github.com/LogIN-/chuppy
-* @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-22 16:43:10
-* Use of this source code is governed by a license: 
-* The MIT License (MIT)
-* 
-* Copyright (c) 2014-08-22 16:11:25 The Chuppy Authors
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
+ * @Author: LogIN
+ * @Date:   2014-08-22 16:11:25
+ * @Email:  unicoart@gmail.com
+ * @URL:    https://github.com/LogIN-/chuppy
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-27 10:15:24
+ * Use of this source code is governed by a license:
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-08-22 16:11:25 The Chuppy Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /* com.files application main Folder Views */
 
@@ -72,7 +72,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
     initialize: function(options) {
         // Container of passed arguments
         // this.options.uid
-        this.options = options;        
+        this.options = options;
         // Ensure our methods keep the `this` reference to the view itself
         _.bindAll(this, 'render');
 
@@ -174,7 +174,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     initialize: function(options) {
         // Container of passed arguments
         // this.options.uid
-        this.options = options;        
+        this.options = options;
         // Ensure our methods keep the `this` reference to the view itself
         _(this).bindAll('add', 'remove');
         // add each item to the view
@@ -289,10 +289,13 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             if (fileDetails.length > 0) {
 
                 // Dialog variables
-                var dialogTitle = "What do you wont to do?";
-                var dialogContent = "You dropped " + fileDetails.length + " item(s) to " + path.basename(systemDetails.location.currentLocation) + ". What do you wont to do next?";
+                var dialogTitle = i18n.__('What do you wont to do?');
+                var dialogContent = i18n.__('You dropped {{filesCount}} item(s) to {{currentLocation}}. What do you wont to do next?', {
+                    filesCount: fileDetails.length,
+                    currentLocation: path.basename(systemDetails.location.currentLocation)
+                });
                 var dialogButtons = [{
-                    text: "Move",
+                    text: i18n.__('Move'),
                     click: function() {
                         // play confirmation sound
                         App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
@@ -304,7 +307,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                         App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                     }
                 }, {
-                    text: "Copy",
+                    text: i18n.__('Copy'),
                     click: function() {
                         // play confirmation sound
                         App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
@@ -316,7 +319,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                         App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                     }
                 }, {
-                    text: "Cancel",
+                    text: i18n.__('Cancel'),
                     click: function() {
                         // play warning sound
                         App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
@@ -365,7 +368,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             // Our unique model id in DB
             modelUID: element.attr('data-uid'),
             // File system Path of element
-            itemPath: element.attr('data-path'), 
+            itemPath: element.attr('data-path'),
             // File or Folder
             itemType: element.attr('data-type'),
             // App memory keys storage
@@ -460,7 +463,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
      */
     checkScroll: function() {
         var itemsDOM = $('#application-tabs-' + this.options.uid + ' .file-explorer > li.file-explore-item');
-        var triggerPoint = 100; 
+        var triggerPoint = 100;
         if (this.el.scrollTop + this.el.clientHeight + triggerPoint > this.el.scrollHeight && itemsDOM.length > 10) {
             // Remove any context menus on scroll if they exist
             this.hideContextMenu();
@@ -482,7 +485,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         // Loop through all current items on page
         // 1. Add draggable to every item
         // 2. Add droppable only on folders
-        $('#application-tabs-' + this.options.uid + ' .file-explorer > li.file-explore-item').each(function() {
+        $('#application-tabs-' + self.options.uid + ' .file-explorer > li.file-explore-item').each(function() {
             var fileType = $(this).attr('data-type');
             // We must destroy draggable            
             if ($(this).data('draggable')) {
@@ -500,7 +503,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     // Just in case selectedItem is added from selectable handler (direct drag)
                     $(this).addClass("selectedItem");
                     // Reset selectedItems variables and add all items with selectedItems class to it
-                    self.selectedItems = $('#application-tabs-' + this.options.uid + ' .file-explorer > li.selectedItem');
+                    self.selectedItems = $('#application-tabs-' + self.options.uid + ' .file-explorer > li.selectedItem');
 
                 },
                 // On element Draging loop through all selected elements and move them with it
@@ -613,7 +616,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                             }
                         }];
                         // Show dialog
-                        App.Utils.Template.confirmDialog("Are you sure?", "Item(s) will be permanently moved.", dialogButtons);
+                        App.Utils.Template.confirmDialog(i18n.__('Are you sure?'), i18n.__('Item(s) will be permanently moved.'), dialogButtons);
                     }
                 });
             }
@@ -666,7 +669,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                 // Reset selectedItems and add only current clicked element
                 self.selectedItems = $([element]);
             }
-        }else{
+        } else {
             // If element is already selected we must deselect him and remove from selectedItems array
             if (element.hasClass("selectedItem")) {
                 // remove selected class from element if already selected

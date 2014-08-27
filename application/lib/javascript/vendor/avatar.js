@@ -13,14 +13,14 @@
                 textColor: '#ffffff',
                 height: 100,
                 width: 100,
-                fontSize: 25,
+                fontsize: 25,
                 fontWeight: 400,
                 fontFamily: 'HelveticaNeue-Light,Helvetica Neue Light,Helvetica Neue,Helvetica, Arial,Lucida Grande, sans-serif'
             }, options);
 
             // overriding from data attributes
             settings = $.extend(settings, e.data());
-
+            console.info("AVATAR Settings: ", settings);
             // making the text object
             var c = settings.name.substr(0, settings.charCount).toUpperCase();
             var cobj = $('<text text-anchor="middle"></text>').attr({
@@ -32,7 +32,7 @@
                 'font-family': settings.fontFamily
             }).html(c).css({
                 'font-weight': settings.fontWeight,
-                'font-size': settings.fontSize + 'px',
+                'font-size': settings.fontsize + 'px',
             });
 
             var svg = $('<svg></svg>').attr({

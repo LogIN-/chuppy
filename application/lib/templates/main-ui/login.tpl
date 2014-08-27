@@ -1,7 +1,7 @@
 <div id="loginBox" class="container">
     <div class="container_row">
         <div class="container bounceIn" id="loginContainerUserList">
-            <h4>Please login:</h4>
+            <h4><%= i18n.__('Please login:') %></h4>
             <div class="loginUserContainer">
                 <% _.each( users_models, function( user ){ %>
                     <div class="loginUserChooser clearfix" data-id="1" data-username="<%- user.attributes.username %>" data-password-login="<%- user.relations.userDetails.attributes.autologin %>"> 
@@ -30,10 +30,10 @@
             <div class="loginUserAvatar clearfix">
                 <img src="http://placehold.it/150/8e44ad/FFF&amp;text=J" class="img-rounded">
             </div>
-            <h4>Please enter login details:</h4>
+            <h4><%= i18n.__('Please enter login details:') %></h4>
             <div class="loginUserPromptInput">
-                <input id="loginUserPromptUsername" type="text" placeholder="username" value="">
-                <input id="loginUserPromptpassword" type="password" placeholder="password" value="">
+                <input id="loginUserPromptUsername" type="text" placeholder="<%= i18n.__('username') %>" value="">
+                <input id="loginUserPromptpassword" type="password" placeholder="<%= i18n.__('password') %>" value="">
                 <button class="btn btn-default btn-login">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>

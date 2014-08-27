@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 14:12:54
+ * @Last Modified time: 2014-08-27 10:10:50
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -85,7 +85,7 @@ App.View.ChuppySetUp = Backbone.View.extend({
     initializeValidator: function() {
         $(this.setupForm).bootstrapValidator({
             container: 'tooltip',
-            message: 'This value is not valid',
+            message: i18n.__('This value is not valid'),
             live: 'enabled',
             excluded: [':disabled', ':hidden', ':not(:visible)'],
             feedbackIcons: {
@@ -352,7 +352,7 @@ App.View.ChuppySetUp = Backbone.View.extend({
                         console.log('System, Template: webkitGetUserMedia, could not connect webRTCStream');
                     });
                 } else {
-                    App.Utils.Template.globalNotify('info', i18n.__('Sorry it seems we cant detect your camera!'), 'body', '', '', 10000);
+                    App.Utils.Template.globalNotify('info', i18n.__('Sorry it seems we can\'t detect your camera!'), 'body', '', '', 10000);
                 }
                 break;
             default: // defoult use default server and remove server input URL

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 15:03:36
+ * @Last Modified time: 2014-08-27 10:19:45
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -75,7 +75,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 // Context Menu item Icon
                 icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
                 // Context Menu item hover Title
-                title: 'Click to open'
+                title: i18n.__('Click to open')
             }
         });
         menu.push({
@@ -99,7 +99,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 // Context Menu item Icon
                 icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
                 // Context Menu item hover Title
-                title: 'Click to open'
+                title: i18n.__('Click to open')
             }
         });
         // Add separator line to Context Menu
@@ -134,7 +134,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     // Context Menu item Icon
                     icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
                     // Context Menu item hover Title
-                    title: 'Click to open'
+                    title: i18n.__('Click to open')
                 }
             });
             // Add separator line to Context Menu
@@ -173,7 +173,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // Context Menu item Icon
             icon: 'lib/images/system-icons/system/holo_light/01_core_copy/drawable-xhdpi/ic_action_copy.png',
             // Context Menu item hover Title
-            title: 'Copy'
+            title: i18n.__('Copy')
         }
     });
     menu.push({
@@ -205,7 +205,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // Context Menu item Icon
             icon: 'lib/images/system-icons/system/holo_light/01_core_cut/drawable-xhdpi/ic_action_cut.png',
             // Context Menu item hover Title
-            title: 'Cut'
+            title: i18n.__('Cut')
         }
     });
 
@@ -253,7 +253,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                 // Context Menu item Icon
                 icon: 'lib/images/system-icons/system/holo_light/01_core_paste/drawable-xhdpi/ic_action_paste.png',
                 // Context Menu item hover Title
-                title: 'Paste'
+                title: i18n.__('Paste')
             }
         });
     }
@@ -266,8 +266,8 @@ App.Utils.ContextMenu = function(menuDetails) {
                 var selectedItems = $("li.selectedItem");
 
                 // Dialog variables
-                var dialogTitle = "Confirm to delete:";
-                var dialogContent = "Item(s) will be permanently deleted. Are you sure to delete?";
+                var dialogTitle = i18n.__('Confirm to delete:');
+                var dialogContent = i18n.__('Item(s) will be permanently deleted. Are you sure to delete?');
                 var dialogButtons = [{
                     text: "Delete",
                     click: function() {
@@ -337,7 +337,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // Context Menu item Icon
             icon: 'lib/images/system-icons/system/holo_light/01_core_remove/drawable-xhdpi/ic_action_remove.png',
             // Context Menu item hover Title
-            title: 'Delete'
+            title: i18n.__('Delete')
         }
     });
     // Add separator line to Context Menu
@@ -366,7 +366,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // Context Menu item Icon
             icon: 'lib/images/system-icons/system/holo_light/01_core_share/drawable-xhdpi/ic_action_share.png',
             // Context Menu item hover Title
-            title: 'Share with public URL'
+            title: i18n.__('Share with public URL')
         }
     });
     // Add separator line to Context Menu
@@ -387,7 +387,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // Context Menu item Icon
             icon: 'lib/images/system-icons/system/holo_light/13_extra_actions_about/drawable-xhdpi/ic_action_about.png',
             // Context Menu item hover Title
-            title: 'Item Details'
+            title: i18n.__('Item Details')
         }
     });
 

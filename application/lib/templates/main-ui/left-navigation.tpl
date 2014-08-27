@@ -4,12 +4,12 @@
         <div class="navbar" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only"><%= i18n.__('Toggle navigation') %></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <span class="visible-xs navbar-brand">Sidebar</span>
+                <span class="visible-xs navbar-brand"><%= i18n.__('Sidebar') %></span>
             </div>
             <div class="navbar-collapse collapse sidebar-navbar-collapse">
                 <ul class="nav navbar-nav" id="nav-side-left">
@@ -29,7 +29,7 @@
                                     alt="<%- menuItem.name %>" 
                                     class="animated swing img-circle" />
                                 </div>
-                                <div class="menuItemName pull-left"><%- menuItem.name %></div>
+                                <div class="menuItemName pull-left"><%= i18n.__(menuItem.name) %></div>
                         </li>
                         <% } %>
                     <% }); %>

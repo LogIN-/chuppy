@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 11:49:42
+ * @Last Modified time: 2014-08-27 09:39:04
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -86,10 +86,10 @@ App.Utils.Apps = {
     // also deletes their objects 
     resetValues: function(appsList) {
         _.each(appsList, function(app) {
-            console.log("Removing app:", app.path);
+            console.log("Removing app:", app.path); 
             // Remove app internals
-            if (typeof App.Apps.App[app["name-space"]].Main.Public.Init.removeView === 'function') {
-                App.Apps.App[app["name-space"]].Main.Public.Init.removeView();
+            if (App.Apps.App[app["name-space"]]) {
+                App.Apps.App[app["name-space"]] = null;
             }
             // Delete nodes (application main file, any specific includes??)
             $("[data-id^='" + app["name-space"] + "']").each(function() {
@@ -98,9 +98,5 @@ App.Utils.Apps = {
             // Delete Object from Window
             delete App.Apps.App[app["name-space"]];
         });
-
-        // At the end lets clear Apps.App object completely
-        // App.Apps.App = {};
     }
-
 };

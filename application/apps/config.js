@@ -45,7 +45,7 @@ App.Apps.Configuration = {
         "isDefault": true,
         "order": 0, 
         // "icon": "/apps/com.files/lib/images/favicon.png"
-        "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+        "icon": "lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
         // Is app visible in menu?
         "visible": true,
         // Any specific file-types supported by this application?
@@ -144,9 +144,15 @@ App.Apps.Private = function () {
 
     self.resetValues = function () {
         console.log("USER PUBLIC: resetValues");
-        self.appList = [];
-        self.appUser = [];
+        // ID of current user
         self.userID = null;
+        // Container of all detected apps
+        self.appList = [];
+        // Container of all detected apps for current user
+        self.appUser = [];
+        // File-type actions
+        self.supportedFileTypes = {};
+        // ['application/pdf' => 'com.pdfViewer']
     };
 };
 // Return keys and values of appID -> name-space

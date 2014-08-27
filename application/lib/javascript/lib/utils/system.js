@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 14:12:53
+ * @Last Modified time: 2014-08-27 09:36:37
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -55,11 +55,13 @@ App.Private.System = function() {
 
     self.initilize = function() {
         self.user = App.Public.User.getUserKeysAll();
-
+        console.info("INITILIZING SYSTEM:", self.user);
         // if userID isn't set (from setup form etc) we need to display login view
         // TODO: But first destroy main app view
         if (self.user.userMain.logged_in === false) {
+            console.info("User isn't loged-in");
             if (self.mainUI.views.main.loginView === null) {
+                console.info("Starting login view");
                 self.mainUI.views.main.loginView = new App.View.loginView();
             }
         } else {
@@ -121,35 +123,35 @@ App.Private.System = function() {
     self.resetValues = function() {
         self.user = null;
         self.apps = null;
-        self.mainUI.views.main = {};
+        self.mainUI.collection.applications = null;
+
+        self.mainUI.views.main.loginView = null;
+        self.mainUI.views.main.headerBar = null;
+        self.mainUI.views.main.navigation = null;
+        self.mainUI.views.main.footerBar = null;
+        self.mainUI.views.main.applicationBody = null;
+
         self.mainUI.views.apps = [];
     };
     // TODO: remove any active APPS like files app!!!!!
     self.reInitilize = function() {
-        // Remove main app views
+        // Remove apps views
+        self.mainUI.collection.applications.remove(self.mainUI.collection.applications.models);
+        
+        // Remove main system views
         _.each(self.mainUI.views.main, function(view) {
             if (typeof view.removeView === 'function') {
                 view.removeView();
             }
         });
-        // Remove apps views
-        _.each(self.mainUI.views.apps, function(app) {
-            if (typeof app.removeView === 'function') {
-                app.removeView();
-            }
-        });
         // Reset User Object
         App.Public.User.resetValues();
-        // Remove loaded apps from DOM and delete their object
+        // Remove loaded apps objects
         App.Utils.Apps.resetValues(self.apps);
         // Reset System Object
         self.resetValues();
         // remove any user application from User Apps configuration
         App.Apps.Public.resetValues();
-        // Reset our internal route
-        App.Router.navigate('/', {
-            trigger: true
-        });
         // Stat system with new values
         self.initilize();
     };

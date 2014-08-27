@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 10:04:32
+ * @Last Modified time: 2014-08-27 12:23:53
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -35,7 +35,26 @@
 App.View.ApplicationBodyItemHeader = Backbone.View.extend({
     // Bind to the existing skeleton of
     // the App already present in the HTML.
-    template: '<a href="#application-tabs-<%- app.uid %>"><%- app.name %><span class="glyphicon glyphicon-remove"></span></a>',
+    template: '<a href="#application-tabs-<%- app.uid %>">' +
+              '<% if(app.supportedFileTypes) { %>' +
+              '<div class="pull-left">' +
+              '    <img ' +
+              '    onerror="$(this).avatar();" ' +
+              '    data-fontSize="13"' +
+              '    data-name="<%- app.name %>"' +
+              '    data-width="18" ' +
+              '    data-height="18" ' +
+              '    width="18" ' +
+              '    height="18" ' +
+              '    src="lib/images/system-icons/extensions/<%- app.supportedFileTypes[0] %>.png" ' +
+              '    alt="<%- app.name %>" ' +
+              '    class="animated swing img-circle" />' +
+              '</div>' +
+              '<% } %>' + 
+              '<span class="titleText"><%= i18n.__(app.name) %></span>' +
+              '<span class="glyphicon glyphicon-remove"></span></a>',
+
+    scrollTitleInterval: null,
     // Element container
     tagName: 'li',
     // Item html data attributes
@@ -46,8 +65,10 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
             'data-namespace': this.model.get('name-space')
         };
     },
-    events : {
-        "click span.glyphicon-remove": "removeTabView"
+    events: {
+        "click span.glyphicon-remove": "removeTabView",
+        "mouseenter": "mouseOverStart",
+        "mouseleave": "mouseOverStop"
     },
     // Item initialization function
     initialize: function() {
@@ -65,7 +86,7 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
         $(this.el).html(this.template);
         return this;
     },
-    removeTabView: function (e) {
+    removeTabView: function(e) {
         var element = $(this.el);
         var modelCID = element.attr('data-cid');
         var model = App.Public.System.mainUI.collection.applications.get({
@@ -75,8 +96,41 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
             console.log(model);
             console.info("Removing model from main View collection: ", modelCID);
             App.Public.System.mainUI.collection.applications.remove(model);
-        } 
+        }
     },
+    mouseOverStart: function(e) {
+        var titleElement = $(e.currentTarget).find('span.titleText');
+        var title = titleElement.text(); 
+        var titleLenght = title.length; 
+        if(titleLenght > 10){
+            var start = 1; 
+            var newTitle;
+            console.info("Title scroll interval started!");
+            console.info(title);
+
+            this.scrollTitleInterval = setInterval(function() {
+                newTitle = title.substring(start, titleLenght) + title.substring(0, start);
+                titleElement.html(newTitle); 
+                start++;
+                if (start === titleLenght + 1) {
+                    start = 0;
+                }
+            }, 100);
+        }
+    },
+    mouseOverStop: function(e) {
+        if(this.scrollTitleInterval !== null){
+            console.info("Title scroll interval stopped!");
+            clearInterval(this.scrollTitleInterval);
+            this.scrollTitleInterval = null;
+
+            var modelCID = $(e.currentTarget).attr('data-cid');
+            var model = App.Public.System.mainUI.collection.applications.get({
+                cid: modelCID
+            });
+            $(e.currentTarget).find('span.titleText').html(model.get('tile')); 
+        }
+    }
 });
 
 App.View.ApplicationBodyItemBody = Backbone.View.extend({
@@ -125,7 +179,7 @@ App.View.ApplicationBody = Backbone.View.extend({
         // bind this view to the add and remove events of the collection!
         this.collection.bind('add', this.add);
         this.collection.bind('remove', this.remove);
-        // this.collection.bind('reset', this.reset);
+        // this.collection.bind('reset', this.removeAll);
         this.render();
     },
     // Re-rendering the App just means refreshing the statistics -- the rest
@@ -162,6 +216,21 @@ App.View.ApplicationBody = Backbone.View.extend({
 
         return this;
     },
+    /* UNUSED FUNCTION */
+    removeAll: function() {
+        console.info("Application body collection hard reset!");
+        var self = this;
+        console.log(self._itemViews);
+        // Remove every model from view
+        self._itemViews.forEach(function(model) {
+            console.info("Removing main model view!");
+            console.log(model._itemBodyView.get('uid'));
+            self.remove(model._itemBodyView);
+        });
+        // Reset our check variables and model view container
+        this._itemViews = null;
+        this._rendered = false;
+    },
     // Add model(item) to view
     add: function(model) {
         console.info("Adding new module to main view!!");
@@ -194,23 +263,20 @@ App.View.ApplicationBody = Backbone.View.extend({
             // 1. Render item view and append it to main folder view
             $(this._itemViews[uid]._itemHeaderView.render().el).appendTo($(this.viewHeaderEl));
             $(this._itemViews[uid]._itemBodyView.render().el).appendTo($(this.el));
-            $(this.el).tabs("refresh");            
+            $(this.el).tabs("refresh");
         }
-        if (model.get('isDefault') === true) {
-            console.info("Activating active tab by settings!");
-            var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
-            $(this.el).tabs("option", "active", index);
-            $(this.el).find(".ui-tabs-nav").sortable({
-                axis: "x",
-                stop: function() {
-                    $(this.el).tabs("refresh");
-                }
-            });
-        }
+
+        console.info("Activating active tab by settings!");
+        var index = $('#application-tabs a[href="#application-tabs-' + uid + '"]').parent().index();
+        $(this.el).tabs("option", "active", index);
+        $(this.el).find(".ui-tabs-nav").sortable({
+            axis: "x",
+            stop: function() {
+                $(this.el).tabs("refresh");
+            }
+        });
         this.startAppTab(model);
         this.checkTabVisibility();
-
-
     },
     startAppTab: function(model) {
         console.info("Plug-in view appended starting internals");
@@ -228,13 +294,16 @@ App.View.ApplicationBody = Backbone.View.extend({
         // Start app 
         App.Public.System.mainUI.views.apps[uid].initilizeAppUI();
     },
-    checkTabVisibility: function(){
+    checkTabVisibility: function() {
         var activeViews = Object.keys(this._itemViews).length;
         console.info("Checking - checkTabVisibility, total:", activeViews);
-        if(activeViews === 1){
+        if (activeViews === 1) {
             $("#application-tabs .ui-tabs-nav").hide();
-        }else{
+        } else {
             $("#application-tabs .ui-tabs-nav").show();
+        }
+        if (activeViews === 0) {
+            $(this.el).tabs("destroy");
         }
     },
     // Remove one model(item) from view
@@ -244,9 +313,9 @@ App.View.ApplicationBody = Backbone.View.extend({
         var uid = model.get('uid');
         console.info("Model remove started uid:", uid);
         if (self._rendered === true && self._itemViews[uid] !== null) {
-
             $(self._itemViews[uid]._itemHeaderView.el).remove();
             $(self._itemViews[uid]._itemBodyView.el).remove();
+            console.info("Model removed:", uid);
             delete self._itemViews[uid];
             $(this.el).tabs("refresh");
         } else {
@@ -260,8 +329,7 @@ App.View.ApplicationBody = Backbone.View.extend({
     },
     // Remove this view completely
     removeView: function() {
-        $(this.el).remove();
-        this.undelegateEvents();
+
         console.log("SYSTEM: ExplorerMain removeView");
     },
 
