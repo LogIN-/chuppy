@@ -3,8 +3,8 @@
 # @Date:   2014-08-22 20:09:24
 # @Email:  unicoart@gmail.com
 # @URL:    https://github.com/LogIN-/chuppy
-# @Last Modified by:   login
-# @Last Modified time: 2014-08-22 20:12:50
+# @Last Modified by:   LogIN
+# @Last Modified time: 2014-08-28 11:07:58
 # Use of this source code is governed by a license: 
 # The MIT License (MIT)
 # 
@@ -28,4 +28,5 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-git log 0.1.0-alpha..HEAD --no-merges --format=%B > CHANGELOG.TXT
+# git log 0.1.0-alpha..HEAD --no-merges --format=%B > CHANGELOG.TXT
+git log --no-merges --format=%B > CHANGELOG.TXT

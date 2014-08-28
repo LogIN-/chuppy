@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:57:28
+ * @Last Modified time: 2014-08-28 11:03:25
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -132,8 +132,7 @@ var Chuppy = {
     // Configuration variables for our app 
     // - /lib/javascript/lib/settings.js
     Settings: {},
-    // Object with apps configuration
-    // - /apps/config.js
+    // Object with system apps configuration and runtime
     Apps: {
         Configuration : require('./apps/config.json'),
         App: []

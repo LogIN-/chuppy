@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:43:07
+ * @Last Modified time: 2014-08-28 11:05:20
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -86,10 +86,6 @@ Chuppy.Apps.Private = function () {
                 console.log("App index file doesn't exist:", app.path);
             }
         });
-    };
-    // on user setup insert default apps into user_apps table
-    self.installUserApps = function () {
-        var self = this;
     };
     self.getAllUserApps = function () {
         return self.appUser;

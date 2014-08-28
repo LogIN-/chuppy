@@ -1,2 +1,17 @@
 ##Chuppy 0.1.0-alpha
-- [All] Pre-alpha stage
+- Fix: converted app config to json from js
+- Fix: rename global 'App' object to 'Chuppy'
+- Feature: com.editorHtml
+- Feature: added com.editorOdf
+- Feature: added AceEditor and markdown viewer
+- Feature: added AceEditor and markdown viewer
+- Fix: tabbed navigation && system init
+- Feature: pdfViewer, Bug-fix: internal file-system api
+- Feature: support for mimeTypes
+- Feature: com.files app tabbed display
+- Fix: tabbed navigation && app structure
+- Fix: nested-main views && apps config design
+- Feature: tabbed navigation structure
+- Fix: database folder index
+- Fix: Clean-up commit
+- Pre-alpha stage
