@@ -1,16 +1,50 @@
+.htmlEditor {
+    width: 100%;
+    height: 100%;
+}
 .note-editor {
-    border-width: 0px !important; 
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
+    border: none;
 }
-
-.note-codable {
-    height: 95% !important;
-    overflow: auto;
+.note-editor .note-toolbar {
+    margin: 0;
+    height: 50px;
+    width: calc(100% + 100px);
+    background-color: rgb(245, 245, 245);
+    border-bottom: 1px solid rgb(85, 85, 85);
 }
-
-.note-editable {
-    height: 95% !important;
-    overflow: auto;    
-    font-size: 140%;
+.note-editor .btn-toolbar .btn-group {
+    float: left;
+    margin-top: 11px;
+}
+.note-dialog .note-help-dialog {
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0)!important;
+    border: 0;
+    opacity: 1;
+    -webkit-user-select: none;
+    cursor: default;
+}
+.note-help-dialog .modal-dialog {
+    margin: auto;
+    margin-top: calc(50% - 340px);
+    background-color: rgb(85, 85, 85);
+}
+.note-dialog .note-help-dialog .modal-content {
+    background: rgb(85, 85, 85);
+    border-radius: 0;
+}
+.note-editor.fullscreen {
+    position: fixed;
+    top: 20px;
+    left: 0;
+    z-index: 10;
+    width: 100% !important;
+    height: calc(100% - 50px);
+}
+.note-editor.codeview .note-codable {
+    height: 100% !important;
+    position: relative;
 }

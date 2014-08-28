@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:06:30
+ * @Last Modified time: 2014-08-28 14:10:33
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -122,7 +122,7 @@ Chuppy.Utils.Functions = {
      */
     doPlaySound: function(file, volume) {
         if (typeof volume === 'undefined') {
-            volume = 1.0;
+            volume = 1;
         }
         console.info('doPlaySound()', file);
         var audio = new Audio(file);

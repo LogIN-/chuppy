@@ -4,22 +4,22 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:10:51
- * Use of this source code is governed by a license: 
+ * @Last Modified time: 2014-08-28 12:50:29
+ * Use of this source code is governed by a license:
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2014-08-27 18:25:21 The Chuppy Authors
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,8 +51,8 @@ Chuppy.Apps.App["com.editorHtml"].Main.Private.Init = function(options) {
 
     self.initialize = function() {
 
-        $('#application-tabs-' + self.directory.system.uid).append('<div id="htmlEditor"></div>');
-        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data){
+        $('#application-tabs-' + self.directory.system.uid).append('<div class="htmlEditor"></div>');
+        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data) {
             self.setContent(data);
         });
     };
@@ -61,33 +61,19 @@ Chuppy.Apps.App["com.editorHtml"].Main.Private.Init = function(options) {
         var reg = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
 
         var bodyContent = null;
-        
+
         // TODO try this 
         try {
-            bodyContent = content.match(reg)[1];                  
-        } catch(e) {
-            console.log("Error parsing HTML document. "+e);
+            bodyContent = content.match(reg)[1];
+        } catch (e) {
+            console.log("Error parsing HTML document. " + e);
             // "Probably a body tag was not found in the document. Document will be closed.","Error parsing HTML document");
         }
 
-        var cleanedBodyContent = bodyContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,"");         
+        var cleanedBodyContent = bodyContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
 
-        $('#htmlEditor').append(cleanedBodyContent);
-        $('#htmlEditor').summernote({
-          focus: true,
-          toolbar: [
-            ['style', ['style']], 
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['fontsize', ['fontsize']],
-            ['color', ['color']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ['insert', ['picture', 'link']], 
-            ['table', ['table']], 
-            ['view', ['codeview']]
-            //['help', ['help']] //no help button
-          ]
-        });
+        $('#application-tabs-' + self.directory.system.uid + ' .htmlEditor').append(cleanedBodyContent);
+        $('#application-tabs-' + self.directory.system.uid + ' .htmlEditor').summernote();
     };
 
 };

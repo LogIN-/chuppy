@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:10:19
+ * @Last Modified time: 2014-08-28 11:57:00
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -117,7 +117,8 @@ Chuppy.Apps.App["com.editorHtml"].Setup.prototype.setupIncludes = function(){
     ];
     // Needed Styles
     var styles = [
-        'apps/com.editorHtml/lib/javascript/vendor/summernote/summernote.css'
+        'apps/com.editorHtml/lib/javascript/vendor/summernote/summernote.css',
+        'apps/com.editorHtml/lib/stylesheets/main.css'
     ];
     // Actually include them:
     if(scripts.length > 0){ 

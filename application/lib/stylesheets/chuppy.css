@@ -4,7 +4,7 @@
 * @Email:  unicoart@gmail.com
 * @URL:    https://github.com/LogIN-/chuppy
 * @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-27 13:23:12
+* @Last Modified time: 2014-08-28 13:31:14
 * Use of this source code is governed by a license: 
 * The MIT License (MIT)
 * 
@@ -252,6 +252,7 @@ footer {
     border-top: 1px solid rgba(0, 0, 0, 0.05);
     -webkit-user-select: none;
     -webkit-app-region: drag;
+    cursor: default;
 }
 footer > .small {
     font-size: 13px;
@@ -259,7 +260,7 @@ footer > .small {
 }
 /* First run declaimer */
 
-#chuppy-firstrun {} .quitting:before {
+#chuppy-firstrun  .quitting:before {
     color: #ffffff;
     content: "Quitting application....";
     display: inline-block;
@@ -363,6 +364,8 @@ footer > .small {
     padding: 0;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 10;
+    -webkit-user-select: none;
+    cursor: default;
 }
 #loginBox .container_row {
     min-height: 60%;
@@ -686,4 +689,19 @@ div#application-tabs {
     width: 100%;
     height: 100%;
     border-width: 0;
+}
+
+ul.multipleActionDialogChooser {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+ul.multipleActionDialogChooser li {
+    height: 35px;
+    line-height: 35px;
+}
+ul.multipleActionDialogChooser li.actionSelected {
+    border: 1px dashed;
 }

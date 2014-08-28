@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:06:47
+ * @Last Modified time: 2014-08-28 11:51:34
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -109,8 +109,7 @@ Chuppy.Utils.ContextMenu = function(menuDetails) {
 
     if (menuDetails.itemType === "0") {
         var mimeType = mime.lookup(menuDetails.itemPath);
-        // FIX
-        var supportedApps = _.uniq(Chuppy.Apps.Public.getSupportedAppsForMimeType(mimeType));
+        var supportedApps = Chuppy.Apps.Public.getSupportedAppsForMimeType(mimeType);
         // If there are any supported apps lets build menu
         if (supportedApps !== null) {
             menu.push({
@@ -128,40 +127,18 @@ Chuppy.Utils.ContextMenu = function(menuDetails) {
                         if (supportedApps.length > 1) {
                             // Dialog variables
                             var dialogTitle = i18n.__('Select app to open this file?');
-                            var dialogContent = '';
-                            var appDetails;
-                            _.each(supportedApps, function(app) {
-                                appDetails = Chuppy.Apps.Public.getUserAppDetails(app);
-                                dialogContent += '<li>' + appDetails.name + '</li>';
+                            Chuppy.Utils.Template.multipleActionDialogChooser(dialogTitle, supportedApps, function(err, response){
+                                // Check if application is successfully selected
+                                if(response.action === true){
+                                    Chuppy.Public.System.mainUI.collection.applications.add(_.extend(response.options, {
+                                        uid: crypt.createHash('md5').update(response.options["name-space"]).digest('hex'),
+                                        filePath: menuDetails.itemPath
+                                    }));
+                                }
                             });
-                            var dialogButtons = [{
-                                text: i18n.__('Ok'),
-                                click: function() {
-                                    // play confirmation sound
-                                    Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
-                                    // Destroy dialog
-                                    $(this).dialog("close");
-                                    $(this).remove();
-                                    Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
-
-                                    Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
-                                }
-                            }, {
-                                text: i18n.__('Cancel'),
-                                click: function() {
-                                    // play warning sound
-                                    Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
-                                    // Destroy dialog
-                                    $(this).dialog("close");
-                                    $(this).remove();
-                                }
-                            }];
-                            // Show dialog
-                            Chuppy.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
                         } else {
                             var firstAppNameSpace = _.first(supportedApps);
                             var options = Chuppy.Apps.Public.getUserAppDetails(firstAppNameSpace);
-
                             Chuppy.Public.System.mainUI.collection.applications.add(_.extend(options, {
                                 uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
                                 filePath: menuDetails.itemPath

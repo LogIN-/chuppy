@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 11:05:20
+ * @Last Modified time: 2014-08-28 13:39:25
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -111,7 +111,8 @@ Chuppy.Apps.Private = function () {
 Chuppy.Apps.Private.prototype.getSupportedAppsForMimeType = function (mimeType) {
     var results = null;
     if(this.supportedFileTypes[mimeType]){
-        results = this.supportedFileTypes[mimeType];
+        // Produces a duplicate-free version of the array
+        results = _.uniq(this.supportedFileTypes[mimeType]);
     }
     return results;
 };
