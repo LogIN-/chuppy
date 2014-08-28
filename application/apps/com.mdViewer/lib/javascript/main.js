@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 12:43:11
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 19:10:45
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:08:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,10 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 /* global marked */
 
 /* Main file-explorer application class */
-App.Apps.App["com.mdViewer"].Main.Private.Init = function(options) { 
+Chuppy.Apps.App["com.mdViewer"].Main.Private.Init = function(options) { 
 
     var self = this;
     self.md2htmlConverter = null;
@@ -63,7 +65,7 @@ App.Apps.App["com.mdViewer"].Main.Private.Init = function(options) {
             smartLists: true,
             smartypants: false
         });
-        App.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data){
+        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data){
             self.setContent(data);
         });
     };
@@ -81,7 +83,7 @@ App.Apps.App["com.mdViewer"].Main.Private.Init = function(options) {
             .append(self.md2htmlConverter(cleanedContent))
             );
        
-       var fileDirectory = App.Utils.FileSystem.extractContainingDirectoryPath(self.directory.location.filePath);
+       var fileDirectory = Chuppy.Utils.FileSystem.extractContainingDirectoryPath(self.directory.location.filePath);
 
        // fixing embedding of local images
        $('#application-tabs-' + self.directory.system.uid + ' img[src]').each(function(){

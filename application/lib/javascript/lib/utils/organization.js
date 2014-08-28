@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:21
+ * @Last Modified time: 2014-08-28 10:06:12
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,18 +28,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 // Global application organization related operations
-App.Utils.Organization = {
+Chuppy.Utils.Organization = {
     createInitialOrganization: function(organizationData) {
         console.log(organizationData);
-        // App.Settings.setLocal("username", user["configuration-user-username"]);
+        // Chuppy.Settings.setLocal("username", user["configuration-user-username"]);
         return true;
 
     },
     joinExsistingOrganization: function(organizationData) {
         console.log(organizationData);
-        // App.Settings.setLocal("username", user["configuration-user-username"]);
+        // Chuppy.Settings.setLocal("username", user["configuration-user-username"]);
         return true;
 
     },

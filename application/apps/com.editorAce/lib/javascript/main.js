@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 13:54:29
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 15:03:49
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:11:11
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,10 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 /* global ace */
 
 /* Main file-explorer application class */
-App.Apps.App["com.editorAce"].Main.Private.Init = function(options) {
+Chuppy.Apps.App["com.editorAce"].Main.Private.Init = function(options) {
 
     var self = this;
     self.aceEditor = null;
@@ -64,7 +66,7 @@ App.Apps.App["com.editorAce"].Main.Private.Init = function(options) {
             self.aceEditor.getSession().setMode("ace/mode/" + self.filetype[fileExt]);
         }
 
-        App.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data) {
+        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data) {
             self.aceEditor.setValue(data);
             self.aceEditor.clearSelection();
         });

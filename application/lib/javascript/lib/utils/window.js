@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:02
+ * @Last Modified time: 2014-08-28 10:05:06
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/* global dumpWindowState, restoreWindowState, openExternal */
+// Set global variable for Jslint
+/* global dumpWindowState, restoreWindowState, openExternal, Chuppy */
 
 // Global window behaver functions
-App.Utils.Window = {
+Chuppy.Utils.Window = {
     // Maximize current window
     minimize: function() {
         win.minimize();
@@ -53,19 +53,19 @@ App.Utils.Window = {
     action: function(action_type) {
         switch (action_type) {
             case 0: // data-id 0 minimize window action
-                App.Utils.Window.minimize();
+                Chuppy.Utils.Window.minimize();
                 break;
             case 1: // data-id 1 maximize window action
-                App.Utils.Window.maximize();
+                Chuppy.Utils.Window.maximize();
                 break;
             case 2: // data-id 2 unmaximize window action
-                App.Utils.Window.unmaximize();
+                Chuppy.Utils.Window.unmaximize();
                 break;
             case 3: // data-id 3 shutdown window action
-                App.Utils.Helpers.exit();
+                Chuppy.Utils.Helpers.exit();
                 break;
             default: // defoult action is to maximize window
-                App.Utils.Window.maximize();
+                Chuppy.Utils.Window.maximize();
 
         }
 
@@ -91,7 +91,7 @@ App.Utils.Window = {
                     // console.log("We're closing...");
                     // win.close(true);
                     // Quit current app
-                    App.Utils.Helpers.exit();
+                    Chuppy.Utils.Helpers.exit();
                 }
             }));
             tray.menu = menu;

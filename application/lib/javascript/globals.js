@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 13:13:50
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-23 11:43:45
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:04:02
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -28,7 +28,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+ 
 var
 // Configuration variable
     applicationRoot = './',
@@ -111,8 +111,8 @@ var
     // resize maximized window, so it's no longer maximized
     isMaximizationEvent = false;
 
-// Global App object for application skeleton structure
-var App = {
+// Global Chuppy object for application skeleton structure
+var Chuppy = {
     // Our main application router
     Router: null,
     // All backbone collections will be initialized in this context

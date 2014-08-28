@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 16:11:25
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 10:15:24
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:09:38
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 /* com.files application main Folder Views */
 
 // Explorer item view (file/directory)
-App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
+Chuppy.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
     // Underscore template for Icons view
     templateIconsHTML: '<div class="item-icon"><img alt="<%- item.name %>" src="lib/images/system-icons/extensions/<%- item.icon %>.png" /></div> ' +
         '<div title="<%- item.name %>" class="item-name"><span><%- item.name %></span></div>',
@@ -77,7 +79,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
         _.bindAll(this, 'render');
 
         // Get current view folder details
-        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
+        var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
         // Set display type and template (icons or list)
         this.navType = systemDetails.display.navType;
         // console.info("Adding item with view:", this.navType);
@@ -89,9 +91,9 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
         var fileType = this.model.get('fileType');
 
         // Set Item display settings:
-        this.model.set("extension", App.Utils.Functions.findExtension(this.model.get('name')));
-        this.model.set("size_human", App.Utils.Functions.humanSize(this.model.get('file_stats').size));
-        this.model.set("icon", App.Utils.Functions.findExtensionIcon(this.model.get('extension'), fileType));
+        this.model.set("extension", Chuppy.Utils.Functions.findExtension(this.model.get('name')));
+        this.model.set("size_human", Chuppy.Utils.Functions.humanSize(this.model.get('file_stats').size));
+        this.model.set("icon", Chuppy.Utils.Functions.findExtensionIcon(this.model.get('extension'), fileType));
         // Set item full path attribute
         var path = systemDetails.location.currentLocation + this.model.get('name');
         if (fileType === 1) {
@@ -140,7 +142,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
             // File or Folder
             itemType: parentElement.attr('data-type'),
             // App memory keys storage
-            systemDetails: App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location', 'userActions'])
+            systemDetails: Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location', 'userActions'])
         };
         console.log(actionDetails.itemPath + " action: " + actionType);
 
@@ -148,7 +150,7 @@ App.Apps.App["com.files"].Main.View.ExplorerItem = Backbone.View.extend({
 });
 
 // Main folder items display view
-App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
+Chuppy.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     // Is view rendered or not helper?
     _rendered: false,
     // Container for nested sub-views (item-views)
@@ -210,7 +212,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         if (this._itemViews[uid]) {
             return;
         }
-        this._itemViews[uid] = new App.Apps.App["com.files"].Main.View.ExplorerItem({
+        this._itemViews[uid] = new Chuppy.Apps.App["com.files"].Main.View.ExplorerItem({
             uid: this.options.uid,
             model: model
         });
@@ -275,7 +277,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             }
             var fileDetails = [];
             var fileInfo = {};
-            var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location']);
+            var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location']);
 
             // Loop through all files dropped and save them to array
             _.each(files, function(file) {
@@ -298,38 +300,38 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     text: i18n.__('Move'),
                     click: function() {
                         // play confirmation sound
-                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
+                        Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
                         // Destroy dialog
                         $(this).dialog("close");
                         $(this).remove();
-                        App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
-                        App.Utils.FileSystem.copyFileSync(fileDetails, 'cut');
-                        App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                        Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
+                        Chuppy.Utils.FileSystem.copyFileSync(fileDetails, 'cut');
+                        Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                     }
                 }, {
                     text: i18n.__('Copy'),
                     click: function() {
                         // play confirmation sound
-                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
+                        Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
                         // Destroy dialog
                         $(this).dialog("close");
                         $(this).remove();
-                        App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
-                        App.Utils.FileSystem.copyFileSync(fileDetails, 'copy');
-                        App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                        Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
+                        Chuppy.Utils.FileSystem.copyFileSync(fileDetails, 'copy');
+                        Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                     }
                 }, {
                     text: i18n.__('Cancel'),
                     click: function() {
                         // play warning sound
-                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
+                        Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
                         // Destroy dialog
                         $(this).dialog("close");
                         $(this).remove();
                     }
                 }];
                 // Show dialog
-                App.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
+                Chuppy.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
             }
 
         } else {
@@ -347,7 +349,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
 
         // If clicked item is directory lets open it
         if (itemType === "1") {
-            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(itemPath);
+            Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(itemPath);
         } else if (itemType === "0") {
             // Remove any context menus if they exist
             this.hideContextMenu();
@@ -372,16 +374,16 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             // File or Folder
             itemType: element.attr('data-type'),
             // App memory keys storage
-            systemDetails: App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location', 'userActions'])
+            systemDetails: Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location', 'userActions'])
         };
         // Remove any context menus if they exist
         this.hideContextMenu();
         // Make and show Context menu
-        $(e.currentTarget).contextMenu(App.Utils.ContextMenu(menuDetails), {
+        $(e.currentTarget).contextMenu(Chuppy.Utils.ContextMenu(menuDetails), {
             theme: 'vista'
         }, e);
         // Set values to our app
-        App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
+        Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
             system: {
                 contextActive: true
             },
@@ -409,7 +411,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     //           - new page opened           - this.removeAll()
     //           - selectable start and draggable star
     hideContextMenu: function() {
-        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['system']);
+        var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['system']);
         if (systemDetails.system.contextActive === true) {
             $('.contextMenuItem').remove();
         }
@@ -418,7 +420,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
     // Sets start and end number to retrieve from directory index database
     detectItemsPerPage: function() {
         // Current system variables
-        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['items', 'display']);
+        var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['items', 'display']);
         // Internal Details
         var details = {
             // Navigation type
@@ -449,7 +451,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
         details.items_end = details.items_start + details.itemsPerPage;
         console.info("Automatic calculated values:", details.items_start, details.items_end);
         // Set values to our app
-        App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
+        Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
             items: {
                 itemsStart: details.items_start,
                 itemsEnd: details.items_end
@@ -468,7 +470,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
             // Remove any context menus on scroll if they exist
             this.hideContextMenu();
             // Add next models to collection and trigger add() function
-            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.findItemsToPaginator();
+            Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.findItemsToPaginator();
         }
     },
     /* function setupSelectDragDrop()
@@ -511,7 +513,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                     // Hold reference to this element so we can bind next to it in loop
                     var previousElement = $(this);
                     // Current system details
-                    var systemDetails = App.Public.System.mainUI.views.apps[self.options.uid].FilesMain.getKeys(['display']);
+                    var systemDetails = Chuppy.Public.System.mainUI.views.apps[self.options.uid].FilesMain.getKeys(['display']);
                     // take all the elements that are selected expect $("this"), 
                     // which is the element being dragged and loop through each.
                     var my, at;
@@ -582,7 +584,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                                 $(this).dialog("close");
                                 $(this).remove();
                                 // Start loading screen
-                                App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
+                                Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
                                 console.info("Moving files to:", destinationPath);
                                 // loop through selected items and populate arrays
                                 self.selectedItems.each(function() {
@@ -594,19 +596,19 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                                     itemsCIDs.push($(this).attr('data-cid'));
                                 });
                                 // Execute copyFileSync() on all items
-                                App.Utils.FileSystem.copyFileSync(itemsDetails, 'cut');
+                                Chuppy.Utils.FileSystem.copyFileSync(itemsDetails, 'cut');
                                 // Remove item(s) from view by itemsCIDs
-                                App.Public.System.mainUI.views.apps[self.options.uid].FilesMain.removeFolderModels(itemsCIDs);
+                                Chuppy.Public.System.mainUI.views.apps[self.options.uid].FilesMain.removeFolderModels(itemsCIDs);
                                 // Reset global select variables
                                 self.selectedItems = $([]);
                                 // Save action for future reference
-                                App.Public.System.mainUI.views.apps[self.options.uid].setKeys({
+                                Chuppy.Public.System.mainUI.views.apps[self.options.uid].setKeys({
                                     userActions: {
                                         activeAction: 'paste'
                                     }
                                 });
                                 // Remove loading screen
-                                App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                                Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                             }
                         }, {
                             text: "Cancel",
@@ -616,7 +618,7 @@ App.Apps.App["com.files"].Main.View.ExplorerMain = Backbone.View.extend({
                             }
                         }];
                         // Show dialog
-                        App.Utils.Template.confirmDialog(i18n.__('Are you sure?'), i18n.__('Item(s) will be permanently moved.'), dialogButtons);
+                        Chuppy.Utils.Template.confirmDialog(i18n.__('Are you sure?'), i18n.__('Item(s) will be permanently moved.'), dialogButtons);
                     }
                 });
             }

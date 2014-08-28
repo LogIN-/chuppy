@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 19:14:22
+ * @Last Modified time: 2014-08-28 10:10:51
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -28,8 +28,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
+
 /* Main file-explorer application class */
-App.Apps.App["com.editorHtml"].Main.Private.Init = function(options) {
+Chuppy.Apps.App["com.editorHtml"].Main.Private.Init = function(options) {
 
     var self = this;
     self.md2htmlConverter = null;
@@ -49,7 +52,7 @@ App.Apps.App["com.editorHtml"].Main.Private.Init = function(options) {
     self.initialize = function() {
 
         $('#application-tabs-' + self.directory.system.uid).append('<div id="htmlEditor"></div>');
-        App.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data){
+        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data){
             self.setContent(data);
         });
     };

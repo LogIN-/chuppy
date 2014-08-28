@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:47:13
+ * @Last Modified time: 2014-08-28 10:06:30
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,9 +28,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 // Common functions
-App.Utils.Functions = {
+Chuppy.Utils.Functions = {
     //  Converts form elements to a valid JSON object 
     serilizeObject: function(form) {
         "use strict";

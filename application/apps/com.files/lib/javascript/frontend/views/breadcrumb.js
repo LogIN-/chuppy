@@ -28,8 +28,10 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+// Set global variable for Jslint
+/* global Chuppy */
 
-App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
+Chuppy.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
 
     templateHTML: '<li title="Force directory index reload?" data-id="reload" class="system-actions pull-right"><i class="fa fa-refresh"></i></li>' +
         '<li title="View details as list" data-id="list" class="animated view-actions"><i class="fa fa-list"></i></li>' +
@@ -55,17 +57,17 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
     },
     changeViewType: function(e) {
         var dataType = $(e.currentTarget).attr('data-id');
-        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
+        var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
 
         if (systemDetails.display.navType !== dataType) {
             console.info("Change view type from:", systemDetails.display.navType);
             console.info("Change view type to:", dataType);
             // Set Display Type in main Explorer class
-            App.Apps.App["com.files"].Main.Public.Init.setKeys({
+            Chuppy.Apps.App["com.files"].Main.Public.Init.setKeys({
                 display: {navType: dataType} 
             });
             // Reopen current directory with new display class 
-            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(systemDetails.location.currentLocation);
+            Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(systemDetails.location.currentLocation);
 
             // Re-class main container
             $('#application-tabs-' + this.options.uid + ' .file-explorer').attr( "class", "file-explorer");
@@ -82,13 +84,13 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
     },
     systemActions: function(e) {
         var dataType = $(e.currentTarget).attr('data-id');
-        var systemDetails = App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location']);
+        var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['location']);
         if (dataType === "reload") {
-            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
+            Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
                 system: {reloadIndex: true} 
             });
             // Reopen current directory with new data 
-            App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(systemDetails.location.currentLocation); 
+            Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(systemDetails.location.currentLocation); 
         }
     },
     removeView: function (){
@@ -98,7 +100,7 @@ App.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend({
     }
 });
 
-App.Apps.App["com.files"].Main.View.BreadCrumbItem = Backbone.View.extend({
+Chuppy.Apps.App["com.files"].Main.View.BreadCrumbItem = Backbone.View.extend({
 
     templateHTML: '<a href="#"><% if(item.name === "/") { %> <i class="fa fa-folder-open"></i> <% }else{ %> <%- item.name %> <% } %></a>',
 
@@ -125,7 +127,7 @@ App.Apps.App["com.files"].Main.View.BreadCrumbItem = Backbone.View.extend({
     }
 });
 
-App.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
+Chuppy.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
     events: {
         "click .file-explorer-breadcrumb-item": "open"
     },
@@ -171,7 +173,7 @@ App.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
         }
         // We create an updating Item view for each Item that is added.
         // And add it to the collection so that it's easy to reuse.
-        this._itemViews[uid] = new App.Apps.App["com.files"].Main.View.BreadCrumbItem({
+        this._itemViews[uid] = new Chuppy.Apps.App["com.files"].Main.View.BreadCrumbItem({
             model: model
         });       
 
@@ -199,7 +201,7 @@ App.Apps.App["com.files"].Main.View.BreadCrumb = Backbone.View.extend({
         var item = $(e.currentTarget);
         var itemPath = item.attr('data-path');
         console.log("BREADCRUMB OPEN DIR CLICK");
-        App.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(itemPath);
+        Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.openDirectory(itemPath);
         e.preventDefault();
     },
     removeView: function (){

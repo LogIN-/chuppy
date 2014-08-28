@@ -3,8 +3,8 @@
  * @Date:   2014-08-21 18:20:14
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-23 13:53:56
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:09:19
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,9 +28,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global crypt, mime, async, urlRoute, Cookies, Keygrip, moment */
-App.Apps.App["com.files"].Main.Private.Webserver = function() {
+
+Chuppy.Apps.App["com.files"].Main.Private.Webserver = function() {
     var self = this;
     // Array of available web servers
     self.webserver = [];
@@ -53,8 +55,8 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
                 DbAbsolute: path.join(itemPath, "." + crypt.createHash('md5').update(itemPath).digest('hex'))
             },
             template: {
-                dirRaw: App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/public/directory.tpl', 'sync'),
-                errorRaw: App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/public/error.tpl', 'sync'),
+                dirRaw: Chuppy.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/public/directory.tpl', 'sync'),
+                errorRaw: Chuppy.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/public/error.tpl', 'sync'),
                 dirHtml: null,
                 errorHtml: null
             },
@@ -63,7 +65,7 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
                 serverID: sid,
                 // API calling relative path prefix for this server
                 // Equal: MD5 hash of: Installation generated token(UUID) + current PORT + current creation time
-                serverApiPath: crypt.createHash('md5').update(App.Settings.getLocal('token') + sid + moment()).digest('hex'),
+                serverApiPath: crypt.createHash('md5').update(Chuppy.Settings.getLocal('token') + sid + moment()).digest('hex'),
                 // Server created time
                 createdTime: moment(),
                 // Set from create tunnel function
@@ -86,7 +88,7 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
             },
             // Current cookie handler object
             cookies: {
-                keys: new Keygrip([App.Settings.getLocal('token'), App.Settings.getLocal('install_uuid'), App.Settings.getLocal('salt')])
+                keys: new Keygrip([Chuppy.Settings.getLocal('token'), Chuppy.Settings.getLocal('install_uuid'), Chuppy.Settings.getLocal('salt')])
             }
         };
 
@@ -119,7 +121,7 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
             });
             if (!clientID) {
                 // On first request generate random clientID
-                clientID = App.Utils.Helpers.genUUID();
+                clientID = Chuppy.Utils.Helpers.genUUID();
                 // Set clientID to signed cookie
                 cookies.set("signed", clientID, {
                     maxAge: 21600000,
@@ -193,7 +195,7 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
                 // Check if database exist in directory
                 if (!fs.existsSync(DbAbsolute)) {
                     // If database doesnt exist lets index directory, create database and continue
-                    App.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(reqAbsolute, DbAbsolute, function(err, data) {
+                    Chuppy.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(reqAbsolute, DbAbsolute, function(err, data) {
                         if (err) {
                             console.log(err);
                             self.pathNotFoundPage(req, res, page);
@@ -207,7 +209,7 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
                     console.info("Reading Directory index file:");
                     // Get all items from directory index and server template
                     async.parallel({
-                            items: App.Apps.App["com.files"].Main.Public.Database.getDirectoryIndexAPI(DbAbsolute)
+                            items: Chuppy.Apps.App["com.files"].Main.Public.Database.getDirectoryIndexAPI(DbAbsolute)
                         },
                         function(result) {
                             if(!result){
@@ -241,21 +243,21 @@ App.Apps.App["com.files"].Main.Private.Webserver = function() {
 };
 // Set directory object options
 // Merge two objects recursively, modifying the first.
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.setKeys = function(sid, newObject) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.setKeys = function(sid, newObject) {
     this.webserver[sid] = $.extend(true, this.webserver[sid], newObject);
 };
 // Return keys from directory object
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.getKeys = function(sid, keys) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.getKeys = function(sid, keys) {
     return _.pick(this.webserver[sid], keys);
 };
 // Stops server by server SID (port)
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.stopServer = function(sid) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.stopServer = function(sid) {
     this.webserver[sid].system.server.close(function() {
         console.log('Server stopped: ', sid);
     });
 };
 // Stops server by server SID (port)
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.getServersList = function() {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.getServersList = function() {
     var serverItem;
     var results = [];
 
@@ -271,7 +273,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.getServersList = func
 };
 
 // Template serve if request is directory
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveDirectoryContents = function(req, res, page) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.serveDirectoryContents = function(req, res, page) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
@@ -285,7 +287,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveDirectoryContent
     res.end(self.webserver[sid].template.dirHtml);
 };
 // Template serve if request is file
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveFileDownloadPage = function(req, res, page) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.serveFileDownloadPage = function(req, res, page) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
@@ -300,7 +302,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.serveFileDownloadPage
 };
 
 // Template serve if 404
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.pathNotFoundPage = function(req, res, page) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.pathNotFoundPage = function(req, res, page) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
@@ -316,7 +318,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.pathNotFoundPage = fu
 /* URL API CALL METHODS */
 
 // File download stream serve
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.downloadFileDirect = function(req, res, match) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.downloadFileDirect = function(req, res, match) {
     var self = this;
     var sid = req.socket.localPort.toString();
     var reqAbsolute = match.params.path;
@@ -333,7 +335,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.downloadFileDirect = 
     filestream.pipe(res);
 };
 // File download stream serve for our assets (CSS, JS etc..)
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.serverStaticAssets = function(req, res, match) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.serverStaticAssets = function(req, res, match) {
     var self = this;
     var sid = req.socket.localPort.toString();
 
@@ -341,7 +343,7 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.serverStaticAssets = 
     res.end('static files');
 };
 // API to check user credentials if password required
-App.Apps.App["com.files"].Main.Private.Webserver.prototype.authentificatePublicUser = function(req, res, match) {
+Chuppy.Apps.App["com.files"].Main.Private.Webserver.prototype.authentificatePublicUser = function(req, res, match) {
     if (1 === 1) {
         match = match.next();
         if (match) {
@@ -351,4 +353,4 @@ App.Apps.App["com.files"].Main.Private.Webserver.prototype.authentificatePublicU
     }
 };
 
-App.Apps.App["com.files"].Main.Public.Webserver = new App.Apps.App["com.files"].Main.Private.Webserver();
+Chuppy.Apps.App["com.files"].Main.Public.Webserver = new Chuppy.Apps.App["com.files"].Main.Private.Webserver();

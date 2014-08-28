@@ -29,9 +29,12 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Files application core functions
-App.Apps.App["com.files"].Main.Utils.Actions = { 
+
+Chuppy.Apps.App["com.files"].Main.Utils.Actions = { 
 
     // Index directory contents to directory index database
     // @param {string} dir Absolute path to directory to index
@@ -73,7 +76,7 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
 
             // Save directory info into database
             // And make default action if callback() isn't defined
-            App.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, callback);            
+            Chuppy.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, callback);            
 
         });
 
@@ -102,15 +105,15 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
         } else {
             details.fileType = 0;
             // Read and display size only for files:
-            // details.file_stats.size_human = App.Utils.Functions.humanSize(details.file_stats.size);
+            // details.file_stats.size_human = Chuppy.Utils.Functions.humanSize(details.file_stats.size);
         }
         // UID: MD5 hash : name - size - fileType - created_time
 
         var uid = item + file_stats.size + details.fileType + file_stats.ctime.toString();
         details.uid = crypt.createHash('md5').update(uid).digest('hex');
 
-        // details.extension = App.Utils.Functions.findExtension(item);
-        // details.icon = App.Utils.Functions.findExtensionIcon(details.extension, details.fileType);
+        // details.extension = Chuppy.Utils.Functions.findExtension(item);
+        // details.icon = Chuppy.Utils.Functions.findExtensionIcon(details.extension, details.fileType);
 
         return details;
     },
@@ -141,7 +144,7 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
     }
 };
 
-App.Apps.App["com.files"].Main.Utils.Operations = {
+Chuppy.Apps.App["com.files"].Main.Utils.Operations = {
 
     openFolder: function() {
         console.log(this.data);

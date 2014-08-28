@@ -3,8 +3,8 @@
  * @Date:   2014-08-04 15:02:47
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 14:43:48
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:07:32
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,13 +28,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // The Application window bar 
-// ---------------
-
 // Our overall **loginView** is the top-level piece of UI.
 
-App.View.loginView = Backbone.View.extend({
+Chuppy.View.loginView = Backbone.View.extend({
     template: null,
     // Bind to the existing skeleton of
     // the App already present in the HTML.
@@ -55,14 +55,14 @@ App.View.loginView = Backbone.View.extend({
         var self = this;
         // if debugging let us notify about firstRun init
         if (isDebug) {
-            console.log("initialized: App.View.loginView");
+            console.log("initialized: Chuppy.View.loginView");
         }
 
-        new App.Database.User().fetchAll({
+        new Chuppy.Database.User().fetchAll({
             withRelated: ['userDetails']
         }).then(function(collection) {
 
-            self.template = _.template(App.Utils.Template.loadTemplate('lib/templates/main-ui/login.tpl', 'sync'), collection.models, {
+            self.template = _.template(Chuppy.Utils.Template.loadTemplate('lib/templates/main-ui/login.tpl', 'sync'), collection.models, {
                 variable: 'users_models'
             });
             self.render();
@@ -86,7 +86,7 @@ App.View.loginView = Backbone.View.extend({
             // 0- no
             // 1- yes
             if (autoLogin === "1") {
-                App.Utils.User.loginUser(username, "", this);
+                Chuppy.Utils.User.loginUser(username, "", this);
             } else {
                 $("#loginContainerUserList").removeClass('bounceIn').addClass('bounceOut').hide();
                 $("#loginContainerPrompt").show();
@@ -113,7 +113,7 @@ App.View.loginView = Backbone.View.extend({
         var username = $("#loginUserPromptUsername").val();
         var password = $("#loginUserPromptpassword").val();
 
-        App.Utils.User.loginUser(username, password, this);
+        Chuppy.Utils.User.loginUser(username, password, this);
     },
     removeView: function() {
         var self = this;
@@ -125,7 +125,7 @@ App.View.loginView = Backbone.View.extend({
         // // Remove view from DOM
         // this.remove(); 
 
-        //App.Utils.Helpers.exitDelay("body", 3000);
+        //Chuppy.Utils.Helpers.exitDelay("body", 3000);
         console.log("SYSTEM: LOGIN removeView");
 
         //Backbone.View.prototype.remove.call(this);

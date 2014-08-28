@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 09:58:26
+ * @Last Modified time: 2014-08-28 10:06:57
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,7 +28,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* Our user class, unique per login session
  * all user main details are saved here
  * STRUCTURE of user object:
@@ -37,7 +38,7 @@
  *      userOrganizations: userOrganizationsData  
  */
 
-App.Private.User = function() {
+Chuppy.Private.User = function() {
     var self = this;
     self.user = {};
 
@@ -88,4 +89,4 @@ App.Private.User = function() {
     };
 };
 
-App.Public.User = new App.Private.User();
+Chuppy.Public.User = new Chuppy.Private.User();

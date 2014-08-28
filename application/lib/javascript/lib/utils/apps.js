@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 09:39:04
+ * @Last Modified time: 2014-08-28 10:06:52
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 // Global application apps/plugins related operations
-App.Utils.Apps = {
+Chuppy.Utils.Apps = {
     // Insert enabled application main javascript file into html
-    // Called from: App.Apps.Private.initilizeUserApps
+    // Called from: Chuppy.Apps.Private.initilizeUserApps
     initilizeApp: function(app) {
         this.initilizeAppHTML(app);
         this.initilizeAppDB(app);
@@ -40,28 +41,28 @@ App.Utils.Apps = {
     },
     // Inserts index.js app file into HTML
     initilizeAppHTML: function(app) {
-        App.Utils.Template.createHTMLTag(app.path, app["name-space"], "script");
+        Chuppy.Utils.Template.createHTMLTag(app.path, app["name-space"], "script");
     },
     initilizeAppDB: function(app) {
 
-        var user = App.Public.User.getUserKeys('userMain');
+        var user = Chuppy.Public.User.getUserKeys('userMain');
         var userApp = null;
 
-        new App.Database.UserApps({
+        new Chuppy.Database.UserApps({
             "uid": user.userMain.id,
             "name-space": app["name-space"]
         }).fetch().then(function(model) {
             if (model !== null) {
-                console.log("SYSTEM: App.Utils.Apps.initilizeAppDB: App DB is already initialized");
+                console.log("SYSTEM: Chuppy.Utils.Apps.initilizeAppDB: App DB is already initialized");
                 userApp = {
                     "name-space": model.get('name-space'),
                     "order": model.get('order'),
                     "default": model.get('default')
                 };
                 // Save app in User App List
-                App.Apps.Public.pushAppUserApp(_.extend(app, userApp)); 
+                Chuppy.Apps.Public.pushAppUserApp(_.extend(app, userApp)); 
             }else{
-                new App.Database.UserApps({
+                new Chuppy.Database.UserApps({
                     "uid": user.userMain.id,
                     "name-space": app["name-space"],
                     "order": app.order,
@@ -70,12 +71,12 @@ App.Utils.Apps = {
                 }).save().then(function(user_app) {
 
                     if (user_app === null) {
-                        console.log("SYSTEM: App.Utils.Apps.initilizeAppDB: ERROR");
+                        console.log("SYSTEM: Chuppy.Utils.Apps.initilizeAppDB: ERROR");
                         return;
                     }
                     // Save app in User App List
-                    App.Apps.Public.pushAppUserApp(app);
-                    console.log("System, App.Utils.Apps.initilizeAppDB: ", app["name-space"]);
+                    Chuppy.Apps.Public.pushAppUserApp(app);
+                    console.log("System, Chuppy.Utils.Apps.initilizeAppDB: ", app["name-space"]);
                 });
             }
         });
@@ -88,15 +89,15 @@ App.Utils.Apps = {
         _.each(appsList, function(app) {
             console.log("Removing app:", app.path); 
             // Remove app internals
-            if (App.Apps.App[app["name-space"]]) {
-                App.Apps.App[app["name-space"]] = null;
+            if (Chuppy.Apps.App[app["name-space"]]) {
+                Chuppy.Apps.App[app["name-space"]] = null;
             }
             // Delete nodes (application main file, any specific includes??)
             $("[data-id^='" + app["name-space"] + "']").each(function() {
                 $(this).remove();
             });
             // Delete Object from Window
-            delete App.Apps.App[app["name-space"]];
+            delete Chuppy.Apps.App[app["name-space"]];
         });
     }
 };

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 09:28:46
+ * @Last Modified time: 2014-08-28 10:09:31
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,7 +28,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global crypt */
 
 /* Files app indexed database operations
@@ -38,7 +39,7 @@
  * @method getDirectoryIndexAPI {public}
  * @method removeItemByUID      {public}
  */
-App.Apps.App["com.files"].Main.Private.Database = function() {
+Chuppy.Apps.App["com.files"].Main.Private.Database = function() {
     var self = this;
     self.database = {};
 
@@ -115,7 +116,7 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
     self.getDirectoryIndex = function(dbPath, uid) {
         console.info("Reading directory index:", dbPath);
         var dbID = crypt.createHash('md5').update(dbPath).digest('hex');
-        var systemDetails = App.Public.System.mainUI.views.apps[uid].FilesMain.getKeys(['items']);
+        var systemDetails = Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.getKeys(['items']);
 
         console.info("Finding items by: start - " + systemDetails.items.itemsStart + " end - " + systemDetails.items.itemsEnd);
         // Check if database store is already initialized
@@ -144,25 +145,25 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
                             if (err) {
                                 console.log(err);
                             } else {
-                                App.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
+                                Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
                                     items: {
                                         currentItems: items,
                                         dirItemsTotal: directory.total_count,
                                         dirItemsTotalSize: directory.total_size
                                     }
                                 });
-                                App.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
+                                Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
                             }
                         });
                     } else {
-                        App.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
+                        Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
                             items: {
                                 currentItems: null,
                                 dirItemsTotal: 0,
                                 dirItemsTotalSize: 0
                             }
                         });
-                        App.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
+                        Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
                     }
                 }
             });
@@ -236,4 +237,4 @@ App.Apps.App["com.files"].Main.Private.Database = function() {
         });
     };
 };
-App.Apps.App["com.files"].Main.Public.Database = new App.Apps.App["com.files"].Main.Private.Database();
+Chuppy.Apps.App["com.files"].Main.Public.Database = new Chuppy.Apps.App["com.files"].Main.Private.Database();

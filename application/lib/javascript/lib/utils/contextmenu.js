@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 19:32:58
+ * @Last Modified time: 2014-08-28 10:06:47
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,7 +28,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global crypt, mime */
 
 // Context Menu Builder
@@ -45,11 +46,11 @@
 //     // File or Folder
 //     itemType: element.attr('data-type'),
 //     // App memory keys storage
-//     systemDetails: App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.getKeys(['location', 'userActions'])
+//     systemDetails: Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.getKeys(['location', 'userActions'])
 // };
 // @returns {array}
 
-App.Utils.ContextMenu = function(menuDetails) {
+Chuppy.Utils.ContextMenu = function(menuDetails) {
     console.info("Initializing Context menu");
     console.log(JSON.stringify(menuDetails));
 
@@ -61,7 +62,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // ContextMenu Item Html name
             'Open': {
                 onclick: function(menuItem, menu) {
-                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                    Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'open',
                             open: {
@@ -69,8 +70,8 @@ App.Utils.ContextMenu = function(menuDetails) {
                             }
                         }
                     });
-                    // App.Public.System.mainUI.views.apps[uid]
-                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.openDirectory(menuDetails.itemPath);
+                    // Chuppy.Public.System.mainUI.views.apps[uid]
+                    Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.openDirectory(menuDetails.itemPath);
                 },
                 // Context Menu item Icon
                 icon: 'lib/images/system-icons/system/holo_light/01_core_new/drawable-xhdpi/ic_action_new.png',
@@ -82,7 +83,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // ContextMenu Item Html name
             'Open in Tab': {
                 onclick: function(menuItem, menu) {
-                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                    Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'open',
                             open: {
@@ -90,8 +91,8 @@ App.Utils.ContextMenu = function(menuDetails) {
                             }
                         }
                     });
-                    var options = App.Apps.Public.getUserAppDetails("com.files");
-                    App.Public.System.mainUI.collection.applications.add(_.extend(options, {
+                    var options = Chuppy.Apps.Public.getUserAppDetails("com.files");
+                    Chuppy.Public.System.mainUI.collection.applications.add(_.extend(options, {
                         uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
                         filePath: menuDetails.itemPath
                     }));
@@ -109,14 +110,14 @@ App.Utils.ContextMenu = function(menuDetails) {
     if (menuDetails.itemType === "0") {
         var mimeType = mime.lookup(menuDetails.itemPath);
         // FIX
-        var supportedApps = _.uniq(App.Apps.Public.getSupportedAppsForMimeType(mimeType));
+        var supportedApps = _.uniq(Chuppy.Apps.Public.getSupportedAppsForMimeType(mimeType));
         // If there are any supported apps lets build menu
         if (supportedApps !== null) {
             menu.push({
                 // ContextMenu Item Html name
                 'Open': {
                     onclick: function(menuItem, menu) {
-                        App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                        Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                             userActions: {
                                 activeAction: 'open',
                                 open: {
@@ -130,38 +131,38 @@ App.Utils.ContextMenu = function(menuDetails) {
                             var dialogContent = '';
                             var appDetails;
                             _.each(supportedApps, function(app) {
-                                appDetails = App.Apps.Public.getUserAppDetails(app);
+                                appDetails = Chuppy.Apps.Public.getUserAppDetails(app);
                                 dialogContent += '<li>' + appDetails.name + '</li>';
                             });
                             var dialogButtons = [{
                                 text: i18n.__('Ok'),
                                 click: function() {
                                     // play confirmation sound
-                                    App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
+                                    Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
                                     // Destroy dialog
                                     $(this).dialog("close");
                                     $(this).remove();
-                                    App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
+                                    Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
 
-                                    App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                                    Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                                 }
                             }, {
                                 text: i18n.__('Cancel'),
                                 click: function() {
                                     // play warning sound
-                                    App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
+                                    Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
                                     // Destroy dialog
                                     $(this).dialog("close");
                                     $(this).remove();
                                 }
                             }];
                             // Show dialog
-                            App.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
+                            Chuppy.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
                         } else {
                             var firstAppNameSpace = _.first(supportedApps);
-                            var options = App.Apps.Public.getUserAppDetails(firstAppNameSpace);
+                            var options = Chuppy.Apps.Public.getUserAppDetails(firstAppNameSpace);
 
-                            App.Public.System.mainUI.collection.applications.add(_.extend(options, {
+                            Chuppy.Public.System.mainUI.collection.applications.add(_.extend(options, {
                                 uid: crypt.createHash('md5').update(options["name-space"]).digest('hex'),
                                 filePath: menuDetails.itemPath
                             }));
@@ -199,7 +200,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     selectedItemsResults.push(selectedItemDetails);
                 });
                 // Set Action and  details array
-                App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                     userActions: {
                         activeAction: 'copy',
                         copy: selectedItemsResults
@@ -232,7 +233,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     selectedItemsResults.push(selectedItemDetails);
                 });
                 // Set Action and  details array
-                App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                     userActions: {
                         activeAction: 'cut',
                         cut: selectedItemsResults
@@ -256,7 +257,7 @@ App.Utils.ContextMenu = function(menuDetails) {
             // ContextMenu Item Html name
             'Paste': {
                 onclick: function(menuItem, menu) {
-                    App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
+                    Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
                     var itemsDetails = [];
                     // If previous action is "copy" lets copy files
                     if (menuDetails.systemDetails.userActions.activeAction === 'copy') {
@@ -267,7 +268,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                             });
                         });
                         // Execute Copy action
-                        App.Utils.FileSystem.copyFileSync(itemsDetails, 'copy');
+                        Chuppy.Utils.FileSystem.copyFileSync(itemsDetails, 'copy');
                         // If previous action is "cut" 1. copy files  2. delete source
                     } else if (menuDetails.systemDetails.userActions.activeAction === 'cut') {
                         _.each(menuDetails.systemDetails.userActions.cut, function(item) {
@@ -277,15 +278,15 @@ App.Utils.ContextMenu = function(menuDetails) {
                             });
                         });
                         // Execute Cut action
-                        App.Utils.FileSystem.copyFileSync(itemsDetails, 'cut');
+                        Chuppy.Utils.FileSystem.copyFileSync(itemsDetails, 'cut');
                     }
 
-                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                    Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'paste'
                         }
                     });
-                    App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                    Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                 },
                 // Context Menu item Icon
                 icon: 'lib/images/system-icons/system/holo_light/01_core_paste/drawable-xhdpi/ic_action_paste.png',
@@ -309,12 +310,12 @@ App.Utils.ContextMenu = function(menuDetails) {
                     text: "Delete",
                     click: function() {
                         // play confirmation sound
-                        App.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
+                        Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
                         // Remove dialog
                         $(this).dialog("close");
                         $(this).remove();
                         // Start loading screen
-                        App.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
+                        Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 1, "files_loading_screen");
                         // Prepare item variables for loop
                         var itemType;
                         var itemPath;
@@ -329,32 +330,32 @@ App.Utils.ContextMenu = function(menuDetails) {
                             // itemType 0: file
                             if (itemType === "0") {
                                 console.info("Deleting file:", itemPath, itemType);
-                                App.Utils.FileSystem.rmFileSync([itemPath]);
+                                Chuppy.Utils.FileSystem.rmFileSync([itemPath]);
                                 // itemType 1: directory
                             } else if (itemType === "1") {
                                 console.info("Deleting directory:", itemPath, itemType);
-                                App.Utils.FileSystem.rmDirSync([itemPath]);
+                                Chuppy.Utils.FileSystem.rmDirSync([itemPath]);
                             } else {
                                 // Remove loading screen
-                                App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                                Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                                 // Notify user about share action status
-                                App.Utils.Template.globalNotify('warning', i18n.__('Error: cant detect item type.'), 'body', '', '', 5000);
+                                Chuppy.Utils.Template.globalNotify('warning', i18n.__('Error: cant detect item type.'), 'body', '', '', 5000);
                                 return;
                             }
                             // Remove item from view
-                            App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.removeFolderModels([itemCID]);
+                            Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.removeFolderModels([itemCID]);
                         });
 
                         // Set last user action to "deleteItem"
-                        App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                        Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                             userActions: {
                                 activeAction: 'deleteItem'
                             }
                         });
                         // Remove loading screen
-                        App.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
+                        Chuppy.Utils.Template.loadingScreen("#files-loading-screen", 0, "files_loading_screen");
                         // Notify user about delete action status
-                        App.Utils.Template.globalNotify('success', i18n.__('"{{total}}"" item(s) successfully deleted.', {
+                        Chuppy.Utils.Template.globalNotify('success', i18n.__('"{{total}}"" item(s) successfully deleted.', {
                             total: selectedItems.length
                         }), 'body', '', '', 5000);
 
@@ -368,7 +369,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     }
                 }];
                 // Show dialog
-                App.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
+                Chuppy.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
 
             },
             // Context Menu item Icon
@@ -386,8 +387,8 @@ App.Utils.ContextMenu = function(menuDetails) {
                 // If item is Folder
                 if (menuDetails.itemType === "1") {
                     // Start web server to serve this folder
-                    App.Utils.Share.LocalTunel.registerShare(menuDetails.itemPath);
-                    App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                    Chuppy.Utils.Share.LocalTunel.registerShare(menuDetails.itemPath);
+                    Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                         userActions: {
                             activeAction: 'share',
                             share: {
@@ -397,7 +398,7 @@ App.Utils.ContextMenu = function(menuDetails) {
                     });
                 } else {
                     // Notify user about share action status
-                    App.Utils.Template.globalNotify('warning', i18n.__('Sharing item must be directory for now.'), 'body', '', '', 5000);
+                    Chuppy.Utils.Template.globalNotify('warning', i18n.__('Sharing item must be directory for now.'), 'body', '', '', 5000);
                 }
             },
             // Context Menu item Icon
@@ -412,7 +413,7 @@ App.Utils.ContextMenu = function(menuDetails) {
         // ContextMenu Item Html name
         'Details': {
             onclick: function(menuItem, menu) {
-                App.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
+                Chuppy.Public.System.mainUI.views.apps[menuDetails.uid].FilesMain.setKeys({
                     userActions: {
                         activeAction: 'details',
                         details: {

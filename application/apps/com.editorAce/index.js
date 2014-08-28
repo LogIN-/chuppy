@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 14:59:56
+ * @Last Modified time: 2014-08-28 10:11:04
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -28,12 +28,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Define our app starting objects
 // others are defined in lib/globals.js
-App.Apps.App["com.editorAce"] = {Main: {}, Setup: null};
 
-App.Apps.App["com.editorAce"].Setup = function(options){
+Chuppy.Apps.App["com.editorAce"] = {Main: {}, Setup: null};
+
+Chuppy.Apps.App["com.editorAce"].Setup = function(options){
     var self = this;
     self.AceEditor = null;
 
@@ -65,7 +68,7 @@ App.Apps.App["com.editorAce"].Setup = function(options){
     self.setupDependencies = function () {
         console.info("Setting up app dependencies");
         // main application template
-        // var template = _.template(App.Utils.FileSystem.readFileLocal('apps/com.editorAce/lib/templates/main.tpl', 'sync'));
+        // var template = _.template(Chuppy.Utils.FileSystem.readFileLocal('apps/com.editorAce/lib/templates/main.tpl', 'sync'));
         // $("#application-tabs-" + self.options.uid).html(template);
         self.setupIncludes();
 
@@ -81,11 +84,11 @@ App.Apps.App["com.editorAce"].Setup = function(options){
                 clearInterval(interval);
                 return;
             }
-            if (typeof App.Apps.App["com.editorAce"].Main.Private !== "undefined") {     
-                 if (typeof App.Apps.App["com.editorAce"].Main.Private.Init === "function") {         
+            if (typeof Chuppy.Apps.App["com.editorAce"].Main.Private !== "undefined") {     
+                 if (typeof Chuppy.Apps.App["com.editorAce"].Main.Private.Init === "function") {         
                     clearInterval(interval);
                     // Create our application object
-                    self.AceEditor = new App.Apps.App["com.editorAce"].Main.Private.Init(self.options);
+                    self.AceEditor = new Chuppy.Apps.App["com.editorAce"].Main.Private.Init(self.options);
                     // Render application
                     self.AceEditor.initialize();
                 }else{
@@ -98,15 +101,15 @@ App.Apps.App["com.editorAce"].Setup = function(options){
         }, 100);
     };
     // Remove current app dependencies 
-    // Called from App.Utils.Apps
+    // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        App.Utils.Apps.resetValues(['com.editorAce']);
+        Chuppy.Utils.Apps.resetValues(['com.editorAce']);
     };
 
 };
 // Any app scripts(depencies), CCS files that should be included in body
-App.Apps.App["com.editorAce"].Setup.prototype.setupIncludes = function(){
+Chuppy.Apps.App["com.editorAce"].Setup.prototype.setupIncludes = function(){
 
     var self = this;
     var scripts = [];
@@ -123,13 +126,13 @@ App.Apps.App["com.editorAce"].Setup.prototype.setupIncludes = function(){
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){
-            App.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
+            Chuppy.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
         });
     }
     if(styles.length > 0){ 
         // Create external style tags
         _.each(styles, function(style){
-            App.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
+            Chuppy.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
         });
     }
 

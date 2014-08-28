@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 14:45:07
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 09:36:37
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:05:56
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,10 +28,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/* global crypt */
+ // Set global variable for Jslint
+/* global crypt, Chuppy */
 
 // Global application AppSystem related operations
-App.Private.System = function() {
+Chuppy.Private.System = function() {
     var self = this;
 
     self.user = null;
@@ -54,7 +55,7 @@ App.Private.System = function() {
     };
 
     self.initilize = function() {
-        self.user = App.Public.User.getUserKeysAll();
+        self.user = Chuppy.Public.User.getUserKeysAll();
         console.info("INITILIZING SYSTEM:", self.user);
         // if userID isn't set (from setup form etc) we need to display login view
         // TODO: But first destroy main app view
@@ -62,21 +63,21 @@ App.Private.System = function() {
             console.info("User isn't loged-in");
             if (self.mainUI.views.main.loginView === null) {
                 console.info("Starting login view");
-                self.mainUI.views.main.loginView = new App.View.loginView();
+                self.mainUI.views.main.loginView = new Chuppy.View.loginView();
             }
         } else {
             // Now loading main application variables.. lets show user loading screen 
             // and what with operations until all of them are loaded!!
-            App.Utils.Template.loadingScreen("#overlay", 1);
+            Chuppy.Utils.Template.loadingScreen("#overlay", 1);
             self.initilizeSystem();
         }
     };
     self.initilizeSystem = function() {
         var self = this;
         // Set apps for current user
-        App.Apps.Public.initilizeUserApps(self.user.id);
+        Chuppy.Apps.Public.initilizeUserApps(self.user.id);
         // Get apps for current user        
-        self.apps = App.Apps.Public.getAllUserApps();
+        self.apps = Chuppy.Apps.Public.getAllUserApps();
 
         // Little Hack to display loading while waiting async operations
         var interval = setInterval(function() {
@@ -94,23 +95,23 @@ App.Private.System = function() {
         console.log("initilizeSystemUI");
 
         if (self.mainUI.views.main.headerBar === null) {
-            self.mainUI.views.main.headerBar = new App.View.headerBar();
+            self.mainUI.views.main.headerBar = new Chuppy.View.headerBar();
         }
         if (self.mainUI.views.main.navigation === null) {
-            self.mainUI.views.main.navigation = new App.View.navigation({
+            self.mainUI.views.main.navigation = new Chuppy.View.navigation({
                 menuItems: self.apps
             });
         }
         if (self.mainUI.views.main.footerBar === null) {
-            self.mainUI.views.main.footerBar = new App.View.footerBar();
+            self.mainUI.views.main.footerBar = new Chuppy.View.footerBar();
         }
         // MAIN APPLICATION MODULE CONTAINER
         if (self.mainUI.collection.applications === null) {
-            self.mainUI.collection.applications = new App.Collections.ApplicationBody();
+            self.mainUI.collection.applications = new Chuppy.Collections.ApplicationBody();
 
         }
         if (self.mainUI.views.main.applicationBody === null) {
-            self.mainUI.views.main.applicationBody = new App.View.ApplicationBody({
+            self.mainUI.views.main.applicationBody = new Chuppy.View.ApplicationBody({
                 collection: self.mainUI.collection.applications
             });
         }
@@ -118,7 +119,7 @@ App.Private.System = function() {
         self.initilizeDefaultApp();
 
         // Remove loading animation
-        App.Utils.Template.loadingScreen("#overlay", 0);
+        Chuppy.Utils.Template.loadingScreen("#overlay", 0);
     };
     self.resetValues = function() {
         self.user = null;
@@ -145,19 +146,19 @@ App.Private.System = function() {
             }
         });
         // Reset User Object
-        App.Public.User.resetValues();
+        Chuppy.Public.User.resetValues();
         // Remove loaded apps objects
-        App.Utils.Apps.resetValues(self.apps);
+        Chuppy.Utils.Apps.resetValues(self.apps);
         // Reset System Object
         self.resetValues();
         // remove any user application from User Apps configuration
-        App.Apps.Public.resetValues();
+        Chuppy.Apps.Public.resetValues();
         // Stat system with new values
         self.initilize();
     };
 
 };
-App.Private.System.prototype.initilizeDefaultApp = function() {
+Chuppy.Private.System.prototype.initilizeDefaultApp = function() {
     var self = this;
     var appFound = false;
 
@@ -169,21 +170,21 @@ App.Private.System.prototype.initilizeDefaultApp = function() {
         }
     });
 };
-App.Private.System.prototype.startApp = function(appID) {
+Chuppy.Private.System.prototype.startApp = function(appID) {
     var self = this;
-    console.log("App.Private.System.prototype.startApp: ", appID);
-    var options = App.Apps.Public.getUserAppDetails(appID);
+    console.log("Chuppy.Private.System.prototype.startApp: ", appID);
+    var options = Chuppy.Apps.Public.getUserAppDetails(appID);
     console.log(options);   
 
     // Little Hack to display loading while waiting async operations
     // (Browser JS script injections)
     var interval = setInterval(function() {
-        if (typeof App.Apps.App[appID].Setup === "function") {
+        if (typeof Chuppy.Apps.App[appID].Setup === "function") {
             clearInterval(interval);
             self.mainUI.collection.applications.add(_.extend(options, {uid: crypt.createHash('md5').update(options["name-space"]).digest('hex')}));
         } else {
             console.log("Loading application data from SYSTEM");
-            console.log(typeof App.Apps.App[appID].Setup);
+            console.log(typeof Chuppy.Apps.App[appID].Setup);
         }
     }, 100);
 
@@ -191,4 +192,4 @@ App.Private.System.prototype.startApp = function(appID) {
     $("#nav-side-left").find("[data-href='" + appID + "']").addClass('active');
 };
 
-App.Public.System = new App.Private.System();
+Chuppy.Public.System = new Chuppy.Private.System();

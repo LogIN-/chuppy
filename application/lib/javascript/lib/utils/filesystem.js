@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 13:00:09
+ * @Last Modified time: 2014-08-28 10:06:35
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 // Global application file-system related operations
-App.Utils.FileSystem = {
+Chuppy.Utils.FileSystem = {
     initTempFolder: function() {
-        var tempCache = App.Settings.getLocal('temp');
+        var tempCache = Chuppy.Settings.getLocal('temp');
         if (typeof tempCache !== 'string') {
             console.log('System, initTempFolder, tempCache isnt a string');
             return;
@@ -43,7 +44,7 @@ App.Utils.FileSystem = {
         }
     },
     wipeTempFolder: function() {
-        var tempCache = App.Settings.getLocal('temp');
+        var tempCache = Chuppy.Settings.getLocal('temp');
         if (typeof tempCache !== 'string') {
             console.log('System, wipeTempFolder, tempCache isnt a string');
             return false;
@@ -109,7 +110,7 @@ App.Utils.FileSystem = {
     },
     // Remove directory(s) synchronously and recursively
     // {parm} paths {array} Array of filename paths
-    // Remove item from database App.Apps.App["com.files"].Main.Public.Database.removeItemByUID(menuDetails.systemDetails.location.dbLocation, menuDetails.modelUID);
+    // Remove item from database Chuppy.Apps.App["com.files"].Main.Public.Database.removeItemByUID(menuDetails.systemDetails.location.dbLocation, menuDetails.modelUID);
     rmDirSync: function(paths) {
         var filename;
         var stat;
@@ -123,7 +124,7 @@ App.Utils.FileSystem = {
                     // pass these files
                 } else if (stat.isDirectory()) {
                     // rmdir recursively
-                    App.Utils.FileSystem.rmDirSync([filename]);
+                    Chuppy.Utils.FileSystem.rmDirSync([filename]);
                 } else {
                     // rm fiilename
                     fs.unlinkSync(filename);
@@ -171,29 +172,29 @@ App.Utils.FileSystem = {
 
             console.log("Copy file: " + sourceFilePath + " to " + targetFilePath);
             if (sourceFilePath.toLowerCase() === targetFilePath.toLowerCase()) {
-                App.Utils.Template.globalNotify('warning', i18n.__('File was not copied. Initial and target file names are the same.'), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('warning', i18n.__('File was not copied. Initial and target file names are the same.'), 'body', '', '', 5000);
                 return false;
             }
             if (fs.lstatSync(sourceFilePath).isDirectory()) {
-                App.Utils.Template.globalNotify('warning', i18n.__("'" + sourceFileName + "' is a directory and can not be moved."), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('warning', i18n.__("'" + sourceFileName + "' is a directory and can not be moved."), 'body', '', '', 5000);
                 return false;
             }
             if (fs.existsSync(targetFilePath)) {
-                App.Utils.Template.globalNotify('warning', i18n.__("Target file '" + targetFileName + "' already exists.", "File copy failed!"), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('warning', i18n.__("Target file '" + targetFileName + "' already exists.", "File copy failed!"), 'body', '', '', 5000);
                 return false;
             }
             var rd = fs.createReadStream(sourceFilePath);
             rd.on("error", function(err) {
-                App.Utils.Template.globalNotify('warning', i18n.__("Copying of '" + sourceFileName + "' failed."), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('warning', i18n.__("Copying of '" + sourceFileName + "' failed."), 'body', '', '', 5000);
             });
             var wr = fs.createWriteStream(targetFilePath);
             wr.on("error", function(err) {
-                App.Utils.Template.globalNotify('warning', i18n.__("Copying of '" + sourceFileName + "' failed."), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('warning', i18n.__("Copying of '" + sourceFileName + "' failed."), 'body', '', '', 5000);
             });
             wr.on("close", function(ex) {
-                App.Utils.Template.globalNotify('success', i18n.__("Copying of '" + sourceFileName + "' successful."), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('success', i18n.__("Copying of '" + sourceFileName + "' successful."), 'body', '', '', 5000);
                 if (action === 'cut') {
-                    App.Utils.FileSystem.rmFileSync([sourceFilePath]);
+                    Chuppy.Utils.FileSystem.rmFileSync([sourceFilePath]);
                 }
             });
             rd.pipe(wr);
@@ -218,23 +219,23 @@ App.Utils.FileSystem = {
 
             console.log("Renaming file: " + sourceFileName + " to " + targetFileName);
             if (sourceFilePath.toLowerCase() === targetFilePath.toLowerCase()) {
-                App.Utils.Template.globalNotify('info', i18n.__("Initial and target file names are the same.", "File was not moved/renamed."), 'body', '', '', 2000);
+                Chuppy.Utils.Template.globalNotify('info', i18n.__("Initial and target file names are the same.", "File was not moved/renamed."), 'body', '', '', 2000);
                 return false;
             }
             if (fs.lstatSync(sourceFilePath).isDirectory()) {
-                App.Utils.Template.globalNotify('info', i18n.__("'" + sourceFileName + "' is a directory and can not be moved."), 'body', '', '', 2000);
+                Chuppy.Utils.Template.globalNotify('info', i18n.__("'" + sourceFileName + "' is a directory and can not be moved."), 'body', '', '', 2000);
                 return false;
             }
             if (fs.existsSync(targetFilePath)) {
-                App.Utils.Template.globalNotify('info', i18n.__("Target file '" + targetFileName + "' already exists.", "File renaming failed!"), 'body', '', '', 2000);
+                Chuppy.Utils.Template.globalNotify('info', i18n.__("Target file '" + targetFileName + "' already exists.", "File renaming failed!"), 'body', '', '', 2000);
                 return false;
             }
             fs.rename(sourceFilePath, targetFilePath, function(error) {
                 if (error) {
-                    App.Utils.Template.globalNotify('info', i18n.__("Renaming of '" + sourceFileName + "' failed. The file is probably on a different partion."), 'body', '', '', 2000);
+                    Chuppy.Utils.Template.globalNotify('info', i18n.__("Renaming of '" + sourceFileName + "' failed. The file is probably on a different partion."), 'body', '', '', 2000);
                     return;
                 }
-                App.Utils.Template.globalNotify('success', i18n.__("File '" + sourceFileName + "' renamed successful."), 'body', '', '', 5000);
+                Chuppy.Utils.Template.globalNotify('success', i18n.__("File '" + sourceFileName + "' renamed successful."), 'body', '', '', 5000);
                 console.info("renameFile done:", sourceFilePath, targetFilePath);
             });
         });
@@ -245,11 +246,11 @@ App.Utils.FileSystem = {
         console.log("Renaming file: " + dirPath + " to " + newDirPath);
         // TODO check if file opened for editing in the same directory as source dir
         if (dirPath.toLowerCase() === newDirPath.toLowerCase()) {
-            App.Utils.Template.globalNotify('info', i18n.__("Initial and target directories are the same.", "Directory was not renamed."), 'body', '', '', 2000);
+            Chuppy.Utils.Template.globalNotify('info', i18n.__("Initial and target directories are the same.", "Directory was not renamed."), 'body', '', '', 2000);
             return false;
         }
         if (fs.existsSync(newDirPath)) {
-            App.Utils.Template.globalNotify('info', i18n.__("Target directory name '" + newDirPath + "' already exists.", "Directory renaming failed!"), 'body', '', '', 2000);
+            Chuppy.Utils.Template.globalNotify('info', i18n.__("Target directory name '" + newDirPath + "' already exists.", "Directory renaming failed!"), 'body', '', '', 2000);
             return false;
         }
         var dirStatus = fs.statSync(dirPath);
@@ -262,7 +263,7 @@ App.Utils.FileSystem = {
                 console.log("renameDirectory DONE!");
             });
         } else {
-            App.Utils.Template.globalNotify('info', i18n.__("Path '" + dirPath + "' is not a directory.", "Directory renaming failed!"), 'body', '', '', 2000);
+            Chuppy.Utils.Template.globalNotify('info', i18n.__("Path '" + dirPath + "' is not a directory.", "Directory renaming failed!"), 'body', '', '', 2000);
             return false;
         }
     },

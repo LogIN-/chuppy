@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-23 09:38:51
+ * @Last Modified time: 2014-08-28 10:09:11
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,10 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 /* Global settings */
 
-App.Apps.App["com.files"].Main = {
+Chuppy.Apps.App["com.files"].Main = {
     Model: {},
     Collection: {},
     View: {},

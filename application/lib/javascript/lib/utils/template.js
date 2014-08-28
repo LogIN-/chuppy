@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 14:20:32
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 15:03:53
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:05:42
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,19 +28,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Global application template related operations
-App.Utils.Template = {
+Chuppy.Utils.Template = {
     loadTemplate: function(path, readType) {
         var template = "";
         var path_system = path;
-        var current_theme = App.Settings.getLocal('theme');
+        var current_theme = Chuppy.Settings.getLocal('theme');
         // If user doesn't has Theme defined in Settings lets use default template
         if (typeof current_theme === 'undefined') {
-            template = App.Utils.FileSystem.readFileLocal(path_system, readType);
+            template = Chuppy.Utils.FileSystem.readFileLocal(path_system, readType);
         } else {
             var path_theme = path_system.replace('lib', 'themes/' + current_theme);
-            template = App.Utils.FileSystem.readFileLocal(path_theme, readType);
+            template = Chuppy.Utils.FileSystem.readFileLocal(path_theme, readType);
         }
         return template;
     },
@@ -58,7 +60,7 @@ App.Utils.Template = {
         var dialogSound = "dialog-information.oga";
         // If CSS class of alter box isn't given lets generate random "uuid" for it as class reference
         if (alert_class === "") {
-            alert_class = App.Utils.Helpers.genUUID();
+            alert_class = Chuppy.Utils.Helpers.genUUID();
         }
         // Assign element to its css class
         alertElement = "." + alert_class;
@@ -71,7 +73,7 @@ App.Utils.Template = {
             dialogSound = "dialog-warning.oga";
         }
         // play desired sound
-        App.Utils.Functions.doPlaySound('lib/sounds/' + dialogSound);
+        Chuppy.Utils.Functions.doPlaySound('lib/sounds/' + dialogSound);
 
         // Default is show action
         if (action === "") {
@@ -115,7 +117,7 @@ App.Utils.Template = {
      * {returns} {void}
      */
     confirmDialog: function(dialogTitle, dialogContent, dialogButtons) {
-        var dialogClass = App.Utils.Helpers.genUUID();
+        var dialogClass = Chuppy.Utils.Helpers.genUUID();
         var html = '<div class="dialogNotificationBox ' + dialogClass + '">' + dialogContent + '</div>';
         $(html).appendTo('body');
 
@@ -134,7 +136,7 @@ App.Utils.Template = {
                 duration: 500
             },
             open: function(event, ui) {
-                App.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
+                Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
             },
             title: dialogTitle,
             buttons: dialogButtons
@@ -211,7 +213,7 @@ App.Utils.Template = {
                 document.getElementsByTagName("head")[0].appendChild(style).setAttributeNode(style_type);
             }
         } else {
-            console.log("SYSTEM: App.Utils.Template.createHTMLTag invalid size");
+            console.log("SYSTEM: Chuppy.Utils.Template.createHTMLTag invalid size");
         }
     },
     removeHTMLTag: function() {

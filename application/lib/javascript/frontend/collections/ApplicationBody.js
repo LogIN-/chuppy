@@ -3,8 +3,8 @@
  * @Date:   2014-07-25 11:34:07
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-24 10:01:23
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:08:13
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,13 +28,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Main App UI Collection
-// ---------------
 
-App.Collections.ApplicationBody = Backbone.Collection.extend({
+Chuppy.Collections.ApplicationBody = Backbone.Collection.extend({
 
     // Reference to this collection's model.
-    model: App.Model.ApplicationBody,
+    model: Chuppy.Model.ApplicationBody,
 
 });

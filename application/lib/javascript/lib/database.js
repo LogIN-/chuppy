@@ -3,8 +3,8 @@
  * @Date:   2014-08-07 10:00:57
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 14:23:12
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:04:53
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,8 +28,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/* global dbORM:true, dbLocation:true, knex:true */
+// Set global variable for Jslint
+/* global dbORM:true, dbLocation:true, knex:true, Chuppy */
 
 /* 
  * Database management models based on Knex and Bookshelf
@@ -37,21 +37,21 @@
  *
  */
 
-App.Database.connect = function() {
+Chuppy.Database.connect = function() {
     var database_name;
 
     // If app is on 1. RUN let assign DB name
-    if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
-        database_name = App.Settings.getLocal('install_uuid');
-        App.Settings.setLocal('DBLocation', database_name);
+    if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0") {
+        database_name = Chuppy.Settings.getLocal('install_uuid');
+        Chuppy.Settings.setLocal('DBLocation', database_name);
     } else {
-        database_name = App.Settings.getLocal('DBLocation');
+        database_name = Chuppy.Settings.getLocal('DBLocation');
     }
 
-    dbLocation = path.join(gui.App.dataPath, database_name);
+    dbLocation = path.join(gui.Chuppy.dataPath, database_name);
 
     // If app is on 1. RUN and database already exists this shouldn't happen lets delete it!!
-    if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0" && fs.existsSync(dbLocation)) {
+    if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0" && fs.existsSync(dbLocation)) {
         fs.unlinkSync(dbLocation);
     } else if (!fs.existsSync(dbLocation)) {
         fs.openSync(dbLocation, 'w');
@@ -74,7 +74,7 @@ App.Database.connect = function() {
     dbORM = require('bookshelf')(knex);
 };
 
-App.Database.createSchema = function() {
+Chuppy.Database.createSchema = function() {
     // Drops a table conditionally if the table exists, specified by tableName
 
     dbORM.knex.schema.dropTableIfExists('users');
@@ -82,7 +82,7 @@ App.Database.createSchema = function() {
     dbORM.knex.schema.dropTableIfExists('users_apps');
     dbORM.knex.schema.dropTableIfExists('users_organizations');
     dbORM.knex.schema.dropTableIfExists('organizations');
-    console.log("System: App.Database.createSchema Tables dropped");
+    console.log("System: Chuppy.Database.createSchema Tables dropped");
 
     // Creates a new table on the database, with a callback function
     dbORM.knex.schema.hasTable('users').then(function(exists) {
@@ -177,29 +177,29 @@ App.Database.createSchema = function() {
 };
 
 // Lets connect to our Database
-App.Database.connect();
+Chuppy.Database.connect();
 
 // On first application run create database and SCHEMA
-if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
-    App.Database.createSchema();
+if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0") {
+    Chuppy.Database.createSchema();
 }
-App.Database.User = dbORM.Model.extend({
+Chuppy.Database.User = dbORM.Model.extend({
     tableName: 'users',
     hasTimestamps: ['created_at', 'updated_at'],
 
     userDetails: function() {
-        return this.hasOne(App.Database.UserDetails, 'uid');
+        return this.hasOne(Chuppy.Database.UserDetails, 'uid');
     },
     userOrganizations: function() {
-        return this.hasMany(App.Database.UserOrganizations, 'uid');
+        return this.hasMany(Chuppy.Database.UserOrganizations, 'uid');
     },
     userApps: function() {
-        return this.hasMany(App.Database.UserApps, 'uid');
+        return this.hasMany(Chuppy.Database.UserApps, 'uid');
     }
 });
 
 
-App.Database.UserDetails = dbORM.Model.extend({
+Chuppy.Database.UserDetails = dbORM.Model.extend({
     tableName: 'users_details',
     hasTimestamps: ['created_at', 'updated_at'],
 
@@ -211,24 +211,24 @@ App.Database.UserDetails = dbORM.Model.extend({
     },
 
 });
-App.Database.UserApps = dbORM.Model.extend({
+Chuppy.Database.UserApps = dbORM.Model.extend({
     tableName: 'users_apps',
     hasTimestamps: ['created_at', 'updated_at']
 });
 
-App.Database.UserOrganizations = dbORM.Model.extend({
+Chuppy.Database.UserOrganizations = dbORM.Model.extend({
     tableName: 'users_organizations',
     hasTimestamps: ['created_at', 'updated_at'],
     orgDetails: function() {
-        return this.hasOne(App.Database.Organizations, 'id', 'org_id');
+        return this.hasOne(Chuppy.Database.Organizations, 'id', 'org_id');
     },
 });
 
-App.Database.Organizations = dbORM.Model.extend({
+Chuppy.Database.Organizations = dbORM.Model.extend({
     tableName: 'organizations',
     hasTimestamps: ['created_at', 'updated_at'],
     orgUsers: function() {
-        return this.hasMany(App.Database.UserOrganizations, 'org_id');
+        return this.hasMany(Chuppy.Database.UserOrganizations, 'org_id');
     },
 });
 

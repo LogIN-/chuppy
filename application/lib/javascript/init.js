@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 16:21:53
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-26 14:50:46
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:03:44
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,14 +28,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Create the System Temp Folder. This is used to store temporary data files.
-App.Utils.FileSystem.initTempFolder();
+Chuppy.Utils.FileSystem.initTempFolder();
 
 // Wipe the tmpFolder when closing the app (this frees up disk space)
 win.on('close', function() {
-    App.Utils.FileSystem.wipeTempFolder();
-    App.Utils.Window.closewin();
+    Chuppy.Utils.FileSystem.wipeTempFolder();
+    Chuppy.Utils.Window.closewin();
 });
 
 // Handles language detection and internationalization
@@ -51,11 +53,11 @@ i18n.configure({
 });
 
 // lets try to detect and set app language - The default is English
-App.Utils.Helpers.detectLanguage('en');
+Chuppy.Utils.Helpers.detectLanguage('en');
 
 
 // Not debugging, hide all messages!
-App.Utils.Developer.initDebugTools();
+Chuppy.Utils.Developer.initDebugTools();
 
 
 // Set the app title (for Windows mostly)
@@ -65,7 +67,7 @@ win.title = 'Chuppy';
 win.focus();
 
 // Lets set Try icon and Menu
-App.Utils.Window.initTray();
+Chuppy.Utils.Window.initTray();
 
 // Cancel all new windows (Middle clicks / New Tab)
 win.on('new-win-policy', function(frame, url, policy) {
@@ -75,10 +77,10 @@ win.on('new-win-policy', function(frame, url, policy) {
 
 
 // Prevent dropping files into the window (this can be overridden from subapps views if needed)
-window.addEventListener("dragover", App.Utils.Window.manageDragAndDrop, false);
-window.addEventListener("drop", App.Utils.Window.manageDragAndDrop, false);
+window.addEventListener("dragover", Chuppy.Utils.Window.manageDragAndDrop, false);
+window.addEventListener("drop", Chuppy.Utils.Window.manageDragAndDrop, false);
 // Prevent dragging files outside the window
-window.addEventListener("dragstart", App.Utils.Window.manageDragAndDrop, false);
+window.addEventListener("dragstart", Chuppy.Utils.Window.manageDragAndDrop, false);
 
 // ***********************************************************
 // if(!isDebug){
@@ -97,15 +99,15 @@ window.addEventListener("dragstart", App.Utils.Window.manageDragAndDrop, false);
 // Initialize application
 // Our default system window top bar with window actions
 $(function() {
-    if (!App.View.windowBar) {
-        App.View.windowBar = new App.View.WindowBar();
+    if (!Chuppy.View.windowBar) {
+        Chuppy.View.windowBar = new Chuppy.View.WindowBar();
     }
     // If app is run for first time show user configuration interface
-    if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
-        if (!App.View.chuppySetUp) {
-            App.View.chuppySetUp = new App.View.ChuppySetUp();
+    if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0") {
+        if (!Chuppy.View.chuppySetUp) {
+            Chuppy.View.chuppySetUp = new Chuppy.View.ChuppySetUp();
         }
     } else {
-        App.Public.System.initilize();
+        Chuppy.Public.System.initilize();
     }
 });

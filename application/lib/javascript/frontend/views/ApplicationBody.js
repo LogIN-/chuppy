@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 13:25:30
+ * @Last Modified time: 2014-08-28 10:07:10
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+ // Set global variable for Jslint
+/* global Chuppy */
 /* global crypt, moment */
 // The Application(s) main body container, responsible for managing tabs, sub-views etc..
 // Our overall **ApplicationBody** is the top-level piece of UI.
 
-App.View.ApplicationBodyItemHeader = Backbone.View.extend({
+Chuppy.View.ApplicationBodyItemHeader = Backbone.View.extend({
     // Bind to the existing skeleton of
     // the App already present in the HTML.
     template: '<a href="#application-tabs-<%- app.uid %>">' +
@@ -90,13 +92,13 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
     removeTabView: function(e) {
         var element = $(this.el);
         var modelCID = element.attr('data-cid');
-        var model = App.Public.System.mainUI.collection.applications.get({
+        var model = Chuppy.Public.System.mainUI.collection.applications.get({
             cid: modelCID
         });
         if (model !== null) {
             console.log(model);
             console.info("Removing model from main View collection: ", modelCID);
-            App.Public.System.mainUI.collection.applications.remove(model);
+            Chuppy.Public.System.mainUI.collection.applications.remove(model);
         }
     },
     mouseOverStart: function(e) {
@@ -126,7 +128,7 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
             this.scrollTitleInterval = null;
 
             var modelCID = $(e.currentTarget).attr('data-cid');
-            var model = App.Public.System.mainUI.collection.applications.get({
+            var model = Chuppy.Public.System.mainUI.collection.applications.get({
                 cid: modelCID
             });
             $(e.currentTarget).find('span.titleText').html(model.get('tile')); 
@@ -134,7 +136,7 @@ App.View.ApplicationBodyItemHeader = Backbone.View.extend({
     }
 });
 
-App.View.ApplicationBodyItemBody = Backbone.View.extend({
+Chuppy.View.ApplicationBodyItemBody = Backbone.View.extend({
     // Element container
     tagName: 'div',
     id: function() {
@@ -158,7 +160,7 @@ App.View.ApplicationBodyItemBody = Backbone.View.extend({
     },
 });
 
-App.View.ApplicationBody = Backbone.View.extend({
+Chuppy.View.ApplicationBody = Backbone.View.extend({
     // Bind to the existing skeleton of
     // the App already present in the HTML.
     el: $("div#application-tabs"),
@@ -199,10 +201,10 @@ App.View.ApplicationBody = Backbone.View.extend({
             var uid = model.get('uid');
             // Our application sub-view has two elements tabs header and application body
             this._itemViews[uid] = {};
-            this._itemViews[uid]._itemHeaderView = new App.View.ApplicationBodyItemHeader({
+            this._itemViews[uid]._itemHeaderView = new Chuppy.View.ApplicationBodyItemHeader({
                 model: model
             });
-            this._itemViews[uid]._itemBodyView = new App.View.ApplicationBodyItemBody({
+            this._itemViews[uid]._itemBodyView = new Chuppy.View.ApplicationBodyItemBody({
                 model: model
             });
 
@@ -251,10 +253,10 @@ App.View.ApplicationBody = Backbone.View.extend({
         // Our application sub-view has two elements tabs header and application body
         this._itemViews[uid] = {};
         // We create an updating Application view for each Application that is started.
-        this._itemViews[uid]._itemHeaderView = new App.View.ApplicationBodyItemHeader({
+        this._itemViews[uid]._itemHeaderView = new Chuppy.View.ApplicationBodyItemHeader({
             model: model
         });
-        this._itemViews[uid]._itemBodyView = new App.View.ApplicationBodyItemBody({
+        this._itemViews[uid]._itemBodyView = new Chuppy.View.ApplicationBodyItemBody({
             model: model
         });
         // If the view has been rendered, then
@@ -289,11 +291,11 @@ App.View.ApplicationBody = Backbone.View.extend({
             return;
         }
         // Create new app Object
-        App.Public.System.mainUI.views.apps[uid] = new App.Apps.App[appID].Setup(model.toJSON());
+        Chuppy.Public.System.mainUI.views.apps[uid] = new Chuppy.Apps.App[appID].Setup(model.toJSON());
         // Insert app styles and scripts directly into DOM
-        App.Public.System.mainUI.views.apps[uid].setupDependencies();
+        Chuppy.Public.System.mainUI.views.apps[uid].setupDependencies();
         // Start app 
-        App.Public.System.mainUI.views.apps[uid].initilizeAppUI();
+        Chuppy.Public.System.mainUI.views.apps[uid].initilizeAppUI();
     },
     checkTabVisibility: function() {
         var activeViews = Object.keys(this._itemViews).length;

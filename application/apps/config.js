@@ -28,10 +28,12 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+// Set global variable for Jslint
+/* global Chuppy */
 /* globals mime */
 
 // Apps configuration file
-App.Apps.Configuration = {
+Chuppy.Apps.Configuration = {
     0: {
         // file-system name of app must be unique ("name-space") and app folder must have same name
         "name-space": "com.files",
@@ -161,9 +163,9 @@ App.Apps.Configuration = {
 }; 
 
 // Initialize apps main context where apps will be loaded
-// exp. -- App.Apps.Com.files {}
+// exp. -- Chuppy.Apps.Com.files {}
 
-App.Apps.Private = function () {
+Chuppy.Apps.Private = function () {
     var self = this;
     // ID of current user
     self.userID = null;
@@ -182,7 +184,7 @@ App.Apps.Private = function () {
         self.resetValues();
         self.userID = userID;
         // loop through configuration file
-        _.each(App.Apps.Configuration, function(app){
+        _.each(Chuppy.Apps.Configuration, function(app){
             // If app file exists on file-system
             if (fs.existsSync(app.path)) {
                 // Add app info to global app info object
@@ -207,7 +209,7 @@ App.Apps.Private = function () {
 
                 // Check if app is DB, if isn't insert it with default values in DB
                 // - populate this.appUser
-                App.Utils.Apps.initilizeApp(app);
+                Chuppy.Utils.Apps.initilizeApp(app);
 
 
             }else{
@@ -240,7 +242,7 @@ App.Apps.Private = function () {
     };
 };
 // Return keys and values of appID -> name-space
-App.Apps.Private.prototype.getSupportedAppsForMimeType = function (mimeType) {
+Chuppy.Apps.Private.prototype.getSupportedAppsForMimeType = function (mimeType) {
     var results = null;
     if(this.supportedFileTypes[mimeType]){
         results = this.supportedFileTypes[mimeType];
@@ -249,9 +251,9 @@ App.Apps.Private.prototype.getSupportedAppsForMimeType = function (mimeType) {
 };
 
 // Return keys and values of appID -> name-space
-App.Apps.Private.prototype.getUserAppDetails = function (appID) {
+Chuppy.Apps.Private.prototype.getUserAppDetails = function (appID) {
     var options = null;
-    console.info("App.Apps.Private getUserAppDetails: ", appID);
+    console.info("Chuppy.Apps.Private getUserAppDetails: ", appID);
     _.each(this.appUser, function(app){
         if(app["name-space"] === appID){
             options = app;
@@ -260,8 +262,8 @@ App.Apps.Private.prototype.getUserAppDetails = function (appID) {
     return options;
 };
 
-App.Apps.Private.prototype.pushAppUserApp = function (newApp) {
+Chuppy.Apps.Private.prototype.pushAppUserApp = function (newApp) {
     this.appUser.push(newApp);
 };
 
-App.Apps.Public = new App.Apps.Private(); 
+Chuppy.Apps.Public = new Chuppy.Apps.Private(); 

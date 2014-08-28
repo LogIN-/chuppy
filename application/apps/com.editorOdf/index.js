@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 15:04:46
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 15:09:49
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:10:12
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,14 +28,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Define our app starting objects
 // others are defined in lib/globals.js
-App.Apps.App["com.editorOdf"] = {
+Chuppy.Apps.App["com.editorOdf"] = {
     Setup: null
 };
 
-App.Apps.App["com.editorOdf"].Setup = function(options) {
+Chuppy.Apps.App["com.editorOdf"].Setup = function(options) {
     var self = this;
 
     self.options = {
@@ -82,10 +84,10 @@ App.Apps.App["com.editorOdf"].Setup = function(options) {
 
     };
     // Remove current app dependencies 
-    // Called from App.Utils.Apps
+    // Called from Chuppy.Utils.Apps
     self.removeView = function() {
         // Remove all HTML tags/includes by data-id
-        App.Utils.Apps.resetValues(['com.pdfViewer']);
+        Chuppy.Utils.Apps.resetValues(['com.pdfViewer']);
     };
 
 };

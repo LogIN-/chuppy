@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:08
+ * @Last Modified time: 2014-08-28 10:06:24
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,9 +28,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 // General global application functions
-App.Utils.Helpers = {
+Chuppy.Utils.Helpers = {
     // Exit application
     exit: function() {
         win.close(true);
@@ -51,7 +52,7 @@ App.Utils.Helpers = {
         // Quit after n miliseconds
         setTimeout(function() {
             // Quit current app
-            App.Utils.Helpers.exit();
+            Chuppy.Utils.Helpers.exit();
         }, miliseconds);
     },
     // Detect the operating system of the user
@@ -73,7 +74,7 @@ App.Utils.Helpers = {
     checkInternetConnection: function(callback) {
         var hasInternetConnection = false;
 
-        var opts = url.parse(App.Settings.getLocal('connectionCheckUrl'));
+        var opts = url.parse(Chuppy.Settings.getLocal('connectionCheckUrl'));
         opts.method = 'HEAD';
         http.get(opts, function(res) {
             if (res.statusCode === 200 || res.statusCode === 302 || res.statusCode === 301) {

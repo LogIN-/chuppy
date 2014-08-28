@@ -28,14 +28,15 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global dbORM:true, knex:true */
 
 // Define our app starting objects
 // others are defined in lib/globals.js
-App.Apps.App["com.files"] = {Main: {}, Setup: null};
+Chuppy.Apps.App["com.files"] = {Main: {}, Setup: null};
 
-App.Apps.App["com.files"].Setup = function(options){
+Chuppy.Apps.App["com.files"].Setup = function(options){
     var self = this;
     self.FilesMain = null;
 
@@ -65,12 +66,12 @@ App.Apps.App["com.files"].Setup = function(options){
 
     // Setup needed database for app and include needed files (js/css)
     // All include JS and CSS files must have app prefix exp. 
-    // JS: App.Apps.App["com.files"].Utils 
+    // JS: Chuppy.Apps.App["com.files"].Utils 
     // CSS: #my-files-app .someclass
     self.setupDependencies = function () {
         console.info("Setting up app dependencies");
         // main application template
-        var template = _.template(App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/main.tpl', 'sync'));
+        var template = _.template(Chuppy.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/main.tpl', 'sync'));
         $("#application-tabs-" + self.options.uid).html(template);
 
         self.setupDatabase();
@@ -88,11 +89,11 @@ App.Apps.App["com.files"].Setup = function(options){
                 clearInterval(interval);
                 return;
             }
-            if (typeof App.Apps.App["com.files"].Main.Private !== "undefined") {     
-                 if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {         
+            if (typeof Chuppy.Apps.App["com.files"].Main.Private !== "undefined") {     
+                 if (typeof Chuppy.Apps.App["com.files"].Main.Private.Init === "function") {         
                     clearInterval(interval);
                     // Create our application object
-                    self.FilesMain = new App.Apps.App["com.files"].Main.Private.Init(self.options);
+                    self.FilesMain = new Chuppy.Apps.App["com.files"].Main.Private.Init(self.options);
                     // Render application
                     self.FilesMain.initialize();
                 }else{
@@ -105,15 +106,15 @@ App.Apps.App["com.files"].Setup = function(options){
         }, 100);
     };
     // Remove current app dependencies 
-    // Called from App.Utils.Apps
+    // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        App.Utils.Apps.resetValues(['com.files']);
+        Chuppy.Utils.Apps.resetValues(['com.files']);
     };
 
 };
 // Any app database tables that should be created
-App.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
+Chuppy.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
     // Check if table is already in DB
     dbORM.knex.schema.hasTable('apps_files').then(function(exists) {
         if (!exists) {
@@ -135,7 +136,7 @@ App.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
 };
 
 // Any app scripts(depencies), CCS files that should be included in body
-App.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
+Chuppy.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
 
     var self = this;
     // Needed scripts
@@ -160,13 +161,13 @@ App.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){
-            App.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
+            Chuppy.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
         });
     }
     if(styles.length > 0){ 
         // Create external style tags
         _.each(styles, function(style){
-            App.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
+            Chuppy.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
         });
     }
 

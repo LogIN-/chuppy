@@ -3,8 +3,8 @@
  * @Date:   2014-08-21 10:44:36
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 10:08:41
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:07:58
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,14 +28,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // The Application window bar 
-// ---------------
-
 // Our overall **loginView** is the top-level piece of UI.
 
-App.View.headerBar = Backbone.View.extend({
-    user: App.Public.User.getUserKeysAll(),
+Chuppy.View.headerBar = Backbone.View.extend({
+    user: Chuppy.Public.User.getUserKeysAll(),
     template: null,
     // Bind to the existing skeleton of
     // the App already present in the HTML.
@@ -52,10 +52,10 @@ App.View.headerBar = Backbone.View.extend({
     initialize: function() {
         // if debugging let us notify about firstRun init
         if (isDebug) {
-            console.log("initialized: App.View.headerBar");
+            console.log("initialized: Chuppy.View.headerBar");
         }
 
-        this.template = _.template(App.Utils.Template.loadTemplate('lib/templates/main-ui/header-bar.tpl', 'sync'), this.user, {
+        this.template = _.template(Chuppy.Utils.Template.loadTemplate('lib/templates/main-ui/header-bar.tpl', 'sync'), this.user, {
             variable: 'user'
         });
 
@@ -77,13 +77,13 @@ App.View.headerBar = Backbone.View.extend({
             var dialogButtons = [{
                 text: i18n.__('Exit'),
                 click: function() {
-                    App.Utils.Functions.doPlaySound('lib/sounds/service-logout.oga');
+                    Chuppy.Utils.Functions.doPlaySound('lib/sounds/service-logout.oga');
                     $(this).dialog("close");
                     $(this).remove();
                     // Just in case clear User and System objects from memory
-                    App.Public.User.resetValues();
-                    App.Public.System.resetValues();
-                    App.Utils.Helpers.exit();
+                    Chuppy.Public.User.resetValues();
+                    Chuppy.Public.System.resetValues();
+                    Chuppy.Utils.Helpers.exit();
                 }
             }, {
                 text: i18n.__('Cancel'),
@@ -93,11 +93,11 @@ App.View.headerBar = Backbone.View.extend({
                 }
             }];
             // Show dialog
-            App.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
+            Chuppy.Utils.Template.confirmDialog(dialogTitle, dialogContent, dialogButtons);
 
         } else if (actionType === "1") { // data-id 1 logout Chuppy action
             // Reset and clear all active classes and system values
-            App.Public.System.reInitilize();
+            Chuppy.Public.System.reInitilize();
 
         } else if (actionType === "2") {
             console.log("User Setting window");
@@ -107,6 +107,6 @@ App.View.headerBar = Backbone.View.extend({
     removeView: function() {
         $("#header-bar").remove();
         this.undelegateEvents();
-        console.log("SYSTEM: App.View.headerBar removeView");
+        console.log("SYSTEM: Chuppy.View.headerBar removeView");
     }
 });

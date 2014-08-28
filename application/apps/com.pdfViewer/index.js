@@ -28,14 +28,15 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global dbORM:true, knex:true */
 
 // Define our app starting objects
 // others are defined in lib/globals.js
-App.Apps.App["com.pdfViewer"] = {Setup: null};
+Chuppy.Apps.App["com.pdfViewer"] = {Setup: null};
 
-App.Apps.App["com.pdfViewer"].Setup = function(options){
+Chuppy.Apps.App["com.pdfViewer"].Setup = function(options){
     var self = this;
 
     self.options = { 
@@ -81,10 +82,10 @@ App.Apps.App["com.pdfViewer"].Setup = function(options){
 
     };
     // Remove current app dependencies 
-    // Called from App.Utils.Apps
+    // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        App.Utils.Apps.resetValues(['com.pdfViewer']);
+        Chuppy.Utils.Apps.resetValues(['com.pdfViewer']);
     };
 
 };

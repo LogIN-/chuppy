@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 13:54:46
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-27 13:55:12
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:11:16
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -28,8 +28,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
-App.Apps.App["com.editorAce"].Main = {
+Chuppy.Apps.App["com.editorAce"].Main = {
     Private: {
         Init: {}
     }

@@ -3,8 +3,8 @@
  * @Date:   2014-07-25 11:34:06
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-25 14:46:11
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:08:06
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -29,12 +29,13 @@
  * THE SOFTWARE.
  */
 
-// Main Application model
-// ----------
+// Set global variable for Jslint
+/* global Chuppy */
 
+// Main Application model
 // Our basic Application model
 
-App.Model.ApplicationBody = Backbone.Model.extend({
+Chuppy.Model.ApplicationBody = Backbone.Model.extend({
     // Default attributes for the our app.
     defaults: {
         "uid": null, // crypt.createHash('md5').update(model.get('name-space')).digest('hex')

@@ -3,8 +3,8 @@
  * @Date:   2014-08-21 19:49:43
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:48:14
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-28 10:06:41
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,10 +28,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global Mousetrap*/
 // Global application user related operations
-App.Utils.Developer = {
+Chuppy.Utils.Developer = {
 
     // Initialize debug developer menu with developer tools
     // Resets console.log function to output nothing
@@ -61,7 +62,7 @@ App.Utils.Developer = {
                         // console.log("We're closing...");
                         // win.close(true);
                         // Quit current app
-                        App.Utils.Helpers.exit();
+                        Chuppy.Utils.Helpers.exit();
                     }
                 });
             menubar.append(developerItem);
@@ -69,7 +70,7 @@ App.Utils.Developer = {
             developerSubmenu.append(exitItem);
             win.menu = menubar;
 
-            App.Utils.FileSystem.rmdirSync('/home/login/documents/apps/science/builds/debug');
+            Chuppy.Utils.FileSystem.rmdirSync('/home/login/documents/apps/science/builds/debug');
             gui.App.setCrashDumpDir('/home/login/documents/apps/science/builds/debug');
         }
         // F12 Opens DevTools
@@ -78,7 +79,7 @@ App.Utils.Developer = {
         });
         // ESC exit Chuppy
         Mousetrap.bindGlobal('esc', function() {
-            App.Utils.Helpers.exit();
+            Chuppy.Utils.Helpers.exit();
         });
 
     }
