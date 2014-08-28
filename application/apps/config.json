@@ -1,0 +1,81 @@
+[{
+    "name-space": "com.files",
+    "name": "files",
+    "path": "apps/com.files/index.js",
+    "enabled": true,
+    "isDefault": true,
+    "order": 0,
+    "icon": "lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": true,
+    "supportedFileTypes": [
+        "directory"
+    ],
+    "display": "tab"
+}, {
+    "name-space": "com.pdfViewer",
+    "name": "pdfViewer",
+    "path": "apps/com.pdfViewer/index.js",
+    "enabled": true,
+    "isDefault": false,
+    "order": 1,
+    "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": false,
+    "supportedFileTypes": [
+        "pdf"
+    ],
+    "display": "iframe"
+}, {
+    "name-space": "com.mdViewer",
+    "name": "mdViewer",
+    "path": "apps/com.mdViewer/index.js",
+    "enabled": true,
+    "isDefault": false,
+    "order": 1,
+    "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": false,
+    "supportedFileTypes": [
+        "md",
+        "markdown",
+        "mdown"
+    ],
+    "display": "iframe"
+}, {
+    "name-space": "com.editorAce",
+    "name": "editorAce",
+    "path": "apps/com.editorAce/index.js",
+    "enabled": true,
+    "isDefault": false,
+    "order": 1,
+    "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": false,
+    "supportedFileTypes": ["h", "c", "clj", "coffee", "coldfusion", "cpp", "cs", "css", "groovy", "haxe", "htm", "html", "java", "js", "jsm", "json", "latex", "less", "ly", "ily", "lua", "markdown", "md", "mdown", "mdwn", "mkd", "ml", "mli", "pl", "php", "powershell", "py", "rb", "scad", "scala", "scss", "sh", "sql", "svg", "textile", "txt", "xml"],
+    "display": "iframe"
+}, {
+    "name-space": "com.editorOdf",
+    "name": "editorOdf",
+    "path": "apps/com.editorOdf/index.js",
+    "enabled": true,
+    "isDefault": false,
+    "order": 1,
+    "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": false,
+    "supportedFileTypes": [
+        "odt",
+        "ods"
+    ],
+    "display": "iframe"
+}, {
+    "name-space": "com.editorHtml",
+    "name": "editorHtml",
+    "path": "apps/com.editorHtml/index.js",
+    "enabled": true,
+    "isDefault": false,
+    "order": 1,
+    "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": false,
+    "supportedFileTypes": [
+        "htm",
+        "html"
+    ],
+    "display": "iframe"
+}]

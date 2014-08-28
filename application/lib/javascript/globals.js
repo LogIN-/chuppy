@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 13:13:50
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:04:02
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-28 10:57:28
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -135,6 +135,7 @@ var Chuppy = {
     // Object with apps configuration
     // - /apps/config.js
     Apps: {
+        Configuration : require('./apps/config.json'),
         App: []
     },
     // Public object class that will hold our current user etc...

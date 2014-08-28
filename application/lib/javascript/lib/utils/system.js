@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 14:45:07
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:05:56
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-28 10:38:16
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -56,7 +56,7 @@ Chuppy.Private.System = function() {
 
     self.initilize = function() {
         self.user = Chuppy.Public.User.getUserKeysAll();
-        console.info("INITILIZING SYSTEM:", self.user);
+        console.info("Initializing main system for::", self.user.username);
         // if userID isn't set (from setup form etc) we need to display login view
         // TODO: But first destroy main app view
         if (self.user.userMain.logged_in === false) {

@@ -3,8 +3,8 @@
  * @Date:   2014-08-07 10:00:57
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:04:53
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-28 10:18:15
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -48,7 +48,7 @@ Chuppy.Database.connect = function() {
         database_name = Chuppy.Settings.getLocal('DBLocation');
     }
 
-    dbLocation = path.join(gui.Chuppy.dataPath, database_name);
+    dbLocation = path.join(gui.App.dataPath, database_name);
 
     // If app is on 1. RUN and database already exists this shouldn't happen lets delete it!!
     if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0" && fs.existsSync(dbLocation)) {
