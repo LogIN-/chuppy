@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:09:05
+ * @Last Modified time: 2014-08-29 09:25:24
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -237,7 +237,13 @@ Chuppy.Apps.App["com.files"].Main.Private.Init = function(options) {
 
         console.log("Items before reading index: ", self.directory.items.itemsStart, self.directory.items.itemsEnd);
         // Get index from index Database
-        Chuppy.Apps.App["com.files"].Main.Public.Database.getDirectoryIndex(self.directory.location.dbLocation, options.uid);
+        Chuppy.Apps.App["com.files"].Main.Public.Database.getDirectoryIndex(self.directory.location.dbLocation, options.uid, function(err, data){
+                
+            self.directory.items.currentItems = data.items;
+            self.directory.items.dirItemsTotal = data.directory.total_count;
+            self.directory.items. dirItemsTotalSize =  data.directory.total_size;
+            self.addItemsToPaginator();
+        });
     };
 
     self.addItemsToPaginator = function() {

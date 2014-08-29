@@ -4,7 +4,7 @@
 * @Email:  unicoart@gmail.com
 * @URL:    https://github.com/LogIN-/chuppy
 * @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-28 13:31:14
+* @Last Modified time: 2014-08-29 09:07:08
 * Use of this source code is governed by a license: 
 * The MIT License (MIT)
 * 
@@ -701,7 +701,15 @@ ul.multipleActionDialogChooser {
 ul.multipleActionDialogChooser li {
     height: 35px;
     line-height: 35px;
+    width: 100%;
+    margin: 5px;
+}
+ul.multipleActionDialogChooser li span.titleText.pull-left {
+    padding-left: 10px;
 }
 ul.multipleActionDialogChooser li.actionSelected {
-    border: 1px dashed;
+    outline: 2px dashed rgb(85, 85, 85);
+} 
+ul.multipleActionDialogChooser li div img {
+    margin-left: 5px;
 }

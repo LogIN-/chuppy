@@ -58,12 +58,14 @@ Chuppy.Apps.App["com.files"].Main.View.BreadCrumbActions = Backbone.View.extend(
     changeViewType: function(e) {
         var dataType = $(e.currentTarget).attr('data-id');
         var systemDetails = Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.getKeys(['display', 'location']);
+        
+        console.info("Changing view type:", dataType);
 
         if (systemDetails.display.navType !== dataType) {
             console.info("Change view type from:", systemDetails.display.navType);
             console.info("Change view type to:", dataType);
             // Set Display Type in main Explorer class
-            Chuppy.Apps.App["com.files"].Main.Public.Init.setKeys({
+            Chuppy.Public.System.mainUI.views.apps[this.options.uid].FilesMain.setKeys({
                 display: {navType: dataType} 
             });
             // Reopen current directory with new display class 

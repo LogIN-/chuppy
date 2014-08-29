@@ -3,8 +3,8 @@
  * @Date:   2014-08-21 18:20:14
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:09:19
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-29 09:30:28
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -208,22 +208,18 @@ Chuppy.Apps.App["com.files"].Main.Private.Webserver = function() {
                 } else {
                     console.info("Reading Directory index file:");
                     // Get all items from directory index and server template
-                    async.parallel({
-                            items: Chuppy.Apps.App["com.files"].Main.Public.Database.getDirectoryIndexAPI(DbAbsolute)
-                        },
-                        function(result) {
-                            if(!result){
-                                console.log("Empty directory found");
-                                page.items = [];
-                            }else{
-                                console.info("Found items in directory:", result.length);
-                                page.items = result;
-                            }
-                            // Serve HTML page
-                            // If no items found process that in template
-                            self.serveDirectoryContents(req, res, page);
-
-                        });
+                    Chuppy.Apps.App["com.files"].Main.Public.Database.getDirectoryIndex(DbAbsolute, null, function(err, data){                            
+                        if(!data.items){
+                            console.log("Empty directory found");
+                            page.items = [];
+                        }else{
+                            console.info("Found items in directory:", data.items.length);
+                            page.items = data.items;
+                        }
+                        // Serve HTML page
+                        // If no items found process that in template
+                        self.serveDirectoryContents(req, res, page);
+                    });
                 }
             // If requested item is download (direct path)
             // add it to items so template can server one page "template"

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:09:31
+ * @Last Modified time: 2014-08-29 09:30:19
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -51,7 +51,7 @@ Chuppy.Apps.App["com.files"].Main.Private.Database = function() {
             console.info("Data-store not initialized - initializing: ", dbPath);
             // Persistent datastore with manual loading
             self.database[dbID] = new Datastore({
-                filename: dbPath,
+                filename: dbPath, 
             });
             // load datastore index file
             self.database[dbID].loadDatabase(function(error) {
@@ -113,11 +113,29 @@ Chuppy.Apps.App["com.files"].Main.Private.Database = function() {
     };
 
     // Read items from directory index
-    self.getDirectoryIndex = function(dbPath, uid) {
+    self.getDirectoryIndex = function(dbPath, uid, callback) {
         console.info("Reading directory index:", dbPath);
+        // Name of database file
         var dbID = crypt.createHash('md5').update(dbPath).digest('hex');
-        var systemDetails = Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.getKeys(['items']);
-
+        var systemDetails = {
+            items: {}
+        };
+        if(uid){
+            // Get pagination info
+            systemDetails = Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.getKeys(['items']);
+        }else{
+            // Limit to 250 items if not server from files app etc (web-server)
+            systemDetails.items.itemsStart = 0;
+            systemDetails.items.itemsEnd = 250;
+        }
+        // Our default return variable
+        var response = {
+            items: null,
+            directory: {
+                total_count: 0,
+                total_size: 0,
+            }
+        };
         console.info("Finding items by: start - " + systemDetails.items.itemsStart + " end - " + systemDetails.items.itemsEnd);
         // Check if database store is already initialized
         // If its not or data-store file doesn't exist lets make it and initialize
@@ -131,7 +149,9 @@ Chuppy.Apps.App["com.files"].Main.Private.Database = function() {
             }, function(err, directory) {
                 if (err) {
                     console.log(err);
-                } else {
+                } else {                    
+                    response.directory.total_count = directory.total_count || 0;
+                    response.directory.total_size  = directory.total_size || 0;
                     // If there are any files in this directory lets list them
                     if (directory && directory.total_count > 0) {
                         // Find all documents in the data-store and sort them by name field
@@ -145,79 +165,26 @@ Chuppy.Apps.App["com.files"].Main.Private.Database = function() {
                             if (err) {
                                 console.log(err);
                             } else {
-                                Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
-                                    items: {
-                                        currentItems: items,
-                                        dirItemsTotal: directory.total_count,
-                                        dirItemsTotalSize: directory.total_size
-                                    }
-                                });
-                                Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
+                                response.items = items;
+                                // If callback function inst defined lets do default action
+                                if (callback && typeof(callback) === "function") {
+                                    callback.apply(this, [err, response]);
+                                } else {
+                                    console.log("No callback defined!");
+                                }
                             }
                         });
                     } else {
-                        Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.setKeys({
-                            items: {
-                                currentItems: null,
-                                dirItemsTotal: 0,
-                                dirItemsTotalSize: 0
-                            }
-                        });
-                        Chuppy.Public.System.mainUI.views.apps[uid].FilesMain.addItemsToPaginator();
+                        // If callback function inst defined lets do default action
+                        if (callback && typeof(callback) === "function") {
+                            callback.apply(this, [err, response]);
+                        } else {
+                            console.log("No callback defined!");
+                        }
                     }
                 }
             });
         });
-    };
-
-    // Read items from directory index ready for async module
-    self.getDirectoryIndexAPI = function(dbPath) {
-        return function(cb) {
-            console.info("Reading directory index (API):", dbPath);
-            var rows = null;
-            var dbID = crypt.createHash('md5').update(dbPath).digest('hex');
-            // Check if database store is already initialized
-            // If its not or data-store file doesn't exist lets make it and initialize
-            self.initDatastore(dbPath, function(err) {
-                if (err !== null) {
-                    console.log(err);
-                }
-                // Find directory info data in index file
-                self.database[dbID].findOne({
-                    fileType: 3
-                }, function(err, directory) {
-                    if (err) {
-                        console.log(err);
-                        rows = null;
-                        cb(rows);
-                    } else {
-                        console.info("Reading directory index (API) successful");
-                        // If there are any files in this directory lets list them
-                        if (directory && directory.total_count > 0) {
-                            // Find all documents in the data-store and sort them by name field
-                            self.database[dbID].find({
-                                $not: {
-                                    fileType: 3
-                                }
-                            }).sort({
-                                name: 1
-                            }).exec(function(err, items) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                                console.info("Reading directory index (API) - found items:", directory.total_count);
-                                rows = items;
-                                cb(rows);
-                            });
-                        } else {
-                            console.info("Reading directory index (API) - no found items:", directory);
-                            rows = null;
-                            cb(rows);
-                        }
-                    }
-                });
-            });
-        };
     };
     self.removeItemByUID = function(dbPath, itemUID) {
         console.info("removeItemByUID itemUID:", itemUID);
