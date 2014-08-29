@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 12:43:11
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:08:46
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-29 12:34:46
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,16 +28,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 // Set global variable for Jslint
-/* global Chuppy */
-/* global marked */
+/* global Chuppy, marked, crypt, path */
 
 /* Main file-explorer application class */
-Chuppy.Apps.App["com.mdViewer"].Main.Private.Init = function(options) { 
+Chuppy.Apps.App["com.mdViewer"].Main.Private.Init = function(options) {
 
     var self = this;
-    self.md2htmlConverter = null;
-
+    // Our HTML to MD converter instance
+    self.md2htmlConverter = marked.setOptions({
+        renderer: new marked.Renderer(),
+        highlight: function (code) {
+            return require('highlight.js').highlightAuto(code).value;
+        },
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        smartLists: true,
+        smartypants: false
+    });
     /* Configuration variable */
     self.directory = {
         location: {
@@ -48,58 +59,63 @@ Chuppy.Apps.App["com.mdViewer"].Main.Private.Init = function(options) {
         },
     };
 
+    self.mainUI = {
+        models: {
+            mainModel: null,
+        },
+        views: {
+            navigation: null,
+            content: {
+                mdViewer: null,
+                mdEditor: null
+            }
+        }
+    };
+
     console.log("NEW mdViewer OBJECT:", options.uid);
 
     self.initialize = function() {
+        // Load Text file and create our model
+        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data) {
+            // Initialize our main content model
+            if (self.mainUI.models.mainModel === null) {
+                self.mainUI.models.mainModel = new Chuppy.Apps.App["com.mdViewer"].Main.Model.File({
+                    uid: crypt.createHash('md5').update(self.directory.location.filePath).digest('hex'),
+                    name: path.basename(self.directory.location.filePath),
+                    filePath: self.directory.location.filePath,
+                    content: self.md2htmlConverter(Chuppy.Apps.App["com.mdViewer"].Main.Utils.cleanFileContent(data, self.directory.location.filePath))
+                });
+            }      
+            // Initialize mdViewer header navigation view
+            if (self.mainUI.views.navigation === null) {
+                self.mainUI.views.navigation = new Chuppy.Apps.App["com.mdViewer"].Main.View.Header({
+                    // ID for current constructed class
+                    uid: options.uid,
+                    // DOM Element
+                    el: $('#application-tabs-' + options.uid + ' .viewerMDHeader')
+                });
+            }
+            // Initialize MDViewer View
+            if (self.mainUI.views.content.mdViewer === null) {
+                self.mainUI.views.content.mdViewer = new Chuppy.Apps.App["com.mdViewer"].Main.View.mdViewer({
+                    model: self.mainUI.models.mainModel,
+                    // ID for current constructed class
+                    uid: options.uid,
+                    // DOM Element
+                    el: $('#application-tabs-' + options.uid + ' .viewerMDContainerViewer')
+                });
+            }
+            // Initialize MDEditor View
+            if (self.mainUI.views.content.mdEditor === null) {
+                self.mainUI.views.content.mdEditor = new Chuppy.Apps.App["com.mdViewer"].Main.View.mdEditor({
+                    model: self.mainUI.models.mainModel,
+                    // ID for current constructed class
+                    uid: options.uid,
+                    // DOM Element
+                    el: $('#application-tabs-' + options.uid + ' .viewerMDContainerEditor')
+                });
+            }
+        }); // Load file 
 
-        self.md2htmlConverter = marked;
-        self.md2htmlConverter.setOptions({
-            renderer: new marked.Renderer(),
-            //highlight: function (code) {
-            //    //return require([extensionDirectory+'/highlightjs/highlight.js']).highlightAuto(code).value;
-            //},
-            gfm: true,
-            tables: true,
-            breaks: false,
-            pedantic: false,
-            smartLists: true,
-            smartypants: false
-        });
-        Chuppy.Utils.FileSystem.loadTextFile(self.directory.location.filePath, null, function(data){
-            self.setContent(data);
-        });
     };
-
-    self.setContent = function(content) {
-       var UTF8_BOM = "\ufeff";
-
-       // removing the UTF8 bom because it brakes thing like #header1 in the beginning of the document
-       if(content.indexOf(UTF8_BOM) === 0) {
-           content = content.substring(1,content.length); 
-       }
-
-       var cleanedContent = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,"");
-       $('#application-tabs-' + self.directory.system.uid).append($("<div>", { class: "viewerMDContainer" })
-            .append(self.md2htmlConverter(cleanedContent))
-            );
-       
-       var fileDirectory = Chuppy.Utils.FileSystem.extractContainingDirectoryPath(self.directory.location.filePath);
-
-       // fixing embedding of local images
-       $('#application-tabs-' + self.directory.system.uid + ' img[src]').each(function(){
-           var currentSrc = $( this ).attr("src");
-           if(currentSrc.indexOf("http://") === 0 || currentSrc.indexOf("https://") === 0 || currentSrc.indexOf("data:") === 0) {
-               // do nothing if src begins with http(s)://
-           } else {
-               $( this ).attr("src","file://"+fileDirectory+'/'+currentSrc);
-           }
-       });
-
-        // making all links open in the user default browser
-        $('#application-tabs-' + self.directory.system.uid + ' a').bind('click', function(e){
-            e.preventDefault();
-            console.log("Click");
-        });
-    };
-
 };

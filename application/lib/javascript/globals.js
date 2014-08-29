@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 11:03:25
+ * @Last Modified time: 2014-08-29 10:42:27
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -82,8 +82,6 @@ var
     util = require('util'),
     // URL resolution and parsing
     url = require("url"),
-    // async flow management module
-    async = require("async"),
     // URL route matching 
     urlRoute = require('routes'),
     // Pure JavaScript implementation for zip

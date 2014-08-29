@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:06:52
+ * @Last Modified time: 2014-08-29 15:34:43
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -41,7 +41,7 @@ Chuppy.Utils.Apps = {
     },
     // Inserts index.js app file into HTML
     initilizeAppHTML: function(app) {
-        Chuppy.Utils.Template.createHTMLTag(app.path, app["name-space"], "script");
+        Chuppy.Utils.Template.createHTMLTag(app.path, app, "script");
     },
     initilizeAppDB: function(app) {
 
@@ -85,19 +85,33 @@ Chuppy.Utils.Apps = {
     },
     // Deletes Inserted application scripts from html and 
     // also deletes their objects 
+    // @parm appsList {arary} Array of app config option objects
+    // If contains uid then is tag is app dependence and must be uniquely included
     resetValues: function(appsList) {
+        var jQuerySelector;
         _.each(appsList, function(app) {
             console.log("Removing app:", app.path); 
-            // Remove app internals
-            if (Chuppy.Apps.App[app["name-space"]]) {
-                Chuppy.Apps.App[app["name-space"]] = null;
+            if(app.uid.length === 45){
+                console.info("Removing specific app resources!");
+                jQuerySelector = $("[data-id^='" + app["name-space"] + "'][data-uid^='" + app.uid + "']");
+            }else{
+                console.info("Removing all app resources!");
+                console.info(app);
+                jQuerySelector = $("[data-id^='" + app["name-space"] + "']");
             }
-            // Delete nodes (application main file, any specific includes??)
-            $("[data-id^='" + app["name-space"] + "']").each(function() {
+            // Deletes 
+            jQuerySelector.each(function() {
                 $(this).remove();
+                console.info("Clearing app DOM:", app["name-space"]);
             });
-            // Delete Object from Window
-            delete Chuppy.Apps.App[app["name-space"]];
+            // Remove app internals
+            if (app.uid === null && Chuppy.Apps.App[app["name-space"]]) {
+                console.info("GLOBAL APP RESET must be logout!");
+                Chuppy.Apps.App[app["name-space"]] = null;
+                // Delete Object from Window
+                delete Chuppy.Apps.App[app["name-space"]];
+            }            
+
         });
     }
 };

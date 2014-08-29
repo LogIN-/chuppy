@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 12:33:36
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:08:38
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-29 14:33:04
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -66,10 +66,11 @@ Chuppy.Apps.App["com.mdViewer"].Setup = function(options){
 
     // Setup needed database for app and include needed files (js/css)
     self.setupDependencies = function () {
-        console.info("Setting up app dependencies");
+        console.info("Setting up com.mdViewer dependencies");
         // main application template
-        // var template = _.template(Chuppy.Utils.FileSystem.readFileLocal('apps/com.mdViewer/lib/templates/main.tpl', 'sync'));
-        // $("#application-tabs-" + self.options.uid).html(template);
+        var template = _.template(Chuppy.Utils.FileSystem.readFileLocal('apps/com.mdViewer/lib/templates/main.tpl', 'sync'));
+        $("#application-tabs-" + self.options.uid).html(template);
+        
         self.setupIncludes();
 
     };
@@ -104,7 +105,7 @@ Chuppy.Apps.App["com.mdViewer"].Setup = function(options){
     // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        Chuppy.Utils.Apps.resetValues(['com.mdViewer']);
+        Chuppy.Utils.Apps.resetValues([self.options]);
     };
 
 };
@@ -115,24 +116,36 @@ Chuppy.Apps.App["com.mdViewer"].Setup.prototype.setupIncludes = function(){
     // Needed scripts
     var scripts = [
         'apps/com.mdViewer/lib/javascript/globals.js',
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/lib/codemirror.js',
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/mode/xml/xml.js',
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/addon/dialog/dialog.js',
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/addon/search/searchcursor.js',
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/addon/search/search.js',        
         'apps/com.mdViewer/lib/javascript/vendor/marked/marked.js',
+        'apps/com.mdViewer/lib/javascript/frontend/models/file.js',
+        'apps/com.mdViewer/lib/javascript/frontend/views/mdEditor.js',
+        'apps/com.mdViewer/lib/javascript/frontend/views/mdViewer.js',
+        'apps/com.mdViewer/lib/javascript/frontend/views/navigation.js',
+        'apps/com.mdViewer/lib/javascript/utils/functions.js',
         'apps/com.mdViewer/lib/javascript/main.js'
     ];
     // Needed Styles
     var styles = [
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/lib/codemirror.css',
+        'apps/com.mdViewer/lib/javascript/vendor/codemirror/addon/dialog/dialog.css',
         'apps/com.mdViewer/lib/stylesheets/main.css'
     ];
     // Actually include them:
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){
-            Chuppy.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
+            Chuppy.Utils.Template.createHTMLTag(script, self.options, "script");
         });
     }
     if(styles.length > 0){ 
         // Create external style tags
         _.each(styles, function(style){
-            Chuppy.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
+            Chuppy.Utils.Template.createHTMLTag(style, self.options, "style");
         });
     }
 

@@ -85,7 +85,7 @@ Chuppy.Apps.App["com.pdfViewer"].Setup = function(options){
     // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        Chuppy.Utils.Apps.resetValues(['com.pdfViewer']);
+        Chuppy.Utils.Apps.resetValues([self.options]);
     };
 
 };

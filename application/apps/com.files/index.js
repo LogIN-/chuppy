@@ -109,7 +109,7 @@ Chuppy.Apps.App["com.files"].Setup = function(options){
     // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        Chuppy.Utils.Apps.resetValues(['com.files']);
+        Chuppy.Utils.Apps.resetValues([self.options]);
     };
 
 };
@@ -161,13 +161,13 @@ Chuppy.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){
-            Chuppy.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
+            Chuppy.Utils.Template.createHTMLTag(script, self.options, "script");
         });
     }
     if(styles.length > 0){ 
         // Create external style tags
         _.each(styles, function(style){
-            Chuppy.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
+            Chuppy.Utils.Template.createHTMLTag(style, self.options, "style");
         });
     }
 

@@ -4,7 +4,7 @@
 * @Email:  unicoart@gmail.com
 * @URL:    https://github.com/LogIN-/chuppy
 * @Last Modified by:   LogIN
-* @Last Modified time: 2014-08-29 09:07:08
+* @Last Modified time: 2014-08-29 15:02:30
 * Use of this source code is governed by a license: 
 * The MIT License (MIT)
 * 
@@ -345,10 +345,11 @@ footer > .small {
 .loading_screen {
     background-color: #000000;
     background-color: rgba(0, 0, 0, 0.9);
-    min-height: 100%;
-    min-width: 100%;
+    height: calc(100% - 50px);
+    width: 100%;
     position: absolute;
     z-index: 10;
+    top: 20px;
 }
 /* LOGIN FORM */
 
@@ -703,6 +704,8 @@ ul.multipleActionDialogChooser li {
     line-height: 35px;
     width: 100%;
     margin: 5px;
+    cursor: pointer;
+    --webkit-user-select: none;
 }
 ul.multipleActionDialogChooser li span.titleText.pull-left {
     padding-left: 10px;

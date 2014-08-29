@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 15:04:46
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:10:12
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-29 14:33:33
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -87,7 +87,7 @@ Chuppy.Apps.App["com.editorOdf"].Setup = function(options) {
     // Called from Chuppy.Utils.Apps
     self.removeView = function() {
         // Remove all HTML tags/includes by data-id
-        Chuppy.Utils.Apps.resetValues(['com.pdfViewer']);
+        Chuppy.Utils.Apps.resetValues([self.options]);
     };
 
 };

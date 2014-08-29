@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:07:10
+ * @Last Modified time: 2014-08-29 14:52:16
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -318,8 +318,12 @@ Chuppy.View.ApplicationBody = Backbone.View.extend({
         if (self._rendered === true && self._itemViews[uid] !== null) {
             $(self._itemViews[uid]._itemHeaderView.el).remove();
             $(self._itemViews[uid]._itemBodyView.el).remove();
+
+            Chuppy.Public.System.mainUI.views.apps[uid].removeView();
+
             console.info("Model removed:", uid);
             delete self._itemViews[uid];
+            
             $(this.el).tabs("refresh");
         } else {
             console.log("no model to remove");

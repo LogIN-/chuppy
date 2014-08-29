@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:38:16
+ * @Last Modified time: 2014-08-29 15:06:22
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -84,7 +84,6 @@ Chuppy.Private.System = function() {
             if (self.user.userMain.username !== null && self.user.userDetails.uid !== null && self.apps !== null) {
                 console.log("Loading user data....");
                 clearInterval(interval);
-                console.log(self.apps);
                 self.initilizeSystemUI();
             }
         }, 100);
@@ -175,21 +174,27 @@ Chuppy.Private.System.prototype.startApp = function(appID) {
     console.log("Chuppy.Private.System.prototype.startApp: ", appID);
     var options = Chuppy.Apps.Public.getUserAppDetails(appID);
     console.log(options);   
-
+    var counter = 0;
     // Little Hack to display loading while waiting async operations
     // (Browser JS script injections)
     var interval = setInterval(function() {
+        if(counter === 100){
+            console.log("App loading canceled");
+            clearInterval(interval);
+            return;
+        }
         if (typeof Chuppy.Apps.App[appID].Setup === "function") {
             clearInterval(interval);
             self.mainUI.collection.applications.add(_.extend(options, {uid: crypt.createHash('md5').update(options["name-space"]).digest('hex')}));
         } else {
             console.log("Loading application data from SYSTEM");
-            console.log(typeof Chuppy.Apps.App[appID].Setup);
+            counter++;
         }
     }, 100);
-
-    // Active element in CSS
-    $("#nav-side-left").find("[data-href='" + appID + "']").addClass('active');
+    if(options.visible === true){
+        // Active element in CSS
+        $("#nav-side-left").find("[data-href='" + appID + "']").addClass('active');
+    }
 };
 
 Chuppy.Public.System = new Chuppy.Private.System();

@@ -3,8 +3,8 @@
  * @Date:   2014-08-27 13:06:58
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-28 10:08:54
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-29 10:34:15
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -36,5 +36,8 @@
 Chuppy.Apps.App["com.mdViewer"].Main = {
     Private: {
         Init: {}
-    }
-};
+    },
+    Utils: {},
+    Model: {},
+    View: {}
+}; 

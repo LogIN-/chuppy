@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 14:00:33
+ * @Last Modified time: 2014-08-29 15:04:31
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -171,11 +171,11 @@ Chuppy.Utils.Template = {
     },
     /* Appends script or style tags to document body
      * @parm {string} data - URI to script/style tag
-     * @parm {string} dataID - unique name-space identifier
+     * @parm {string} app - app options object
      * @parm {string} dataType - script | style
      */
-    createHTMLTag: function(data, dataID, dataType) {
-        if (data.length > 0 && dataID.length > 0 && dataType.length > 0) {
+    createHTMLTag: function(data, app, dataType) {
+        if (data.length > 0 && app["name-space"].length > 0 && dataType.length > 0) {
 
             if (dataType === "script") {
                 console.info("Including script on page", data);
@@ -190,9 +190,14 @@ Chuppy.Utils.Template = {
                 script.src = data;
 
                 var script_type = document.createAttribute("data-id");
-                script_type.value = dataID;
+                script_type.value = app["name-space"];                
 
-                document.getElementsByTagName("head")[0].appendChild(script).setAttributeNode(script_type);
+                var script_uniqueID = document.createAttribute("data-uid");
+                script_uniqueID.value = app.uid || 'system';  
+
+                script.setAttributeNode(script_type);
+                script.setAttributeNode(script_uniqueID);
+                document.getElementsByTagName("head")[0].appendChild(script);
 
             } else if (dataType === "style") {
                 console.info("Including style on page", data);
@@ -207,12 +212,20 @@ Chuppy.Utils.Template = {
                 style.href = data;
 
                 var style_type = document.createAttribute("data-id");
-                style_type.value = dataID;
+                style_type.value = app["name-space"];   
 
-                document.getElementsByTagName("head")[0].appendChild(style).setAttributeNode(style_type);
+                var style_uniqueID = document.createAttribute("data-uid");
+                style_uniqueID.value = app.uid || 'system';  
+
+                style.setAttributeNode(style_type);
+                style.setAttributeNode(style_uniqueID);
+                document.getElementsByTagName("head")[0].appendChild(style);
             }
         } else {
-            console.log("SYSTEM: Chuppy.Utils.Template.createHTMLTag invalid size");
+            console.log("SYSTEM: Chuppy.Utils.Template.createHTMLTag invalid function inputs");
+            console.log(data);
+            console.log(app);
+            console.log(dataType);
         }
     },
     multipleActionDialogChooser: function(dialogTitle, supportedActions, callback) {

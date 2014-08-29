@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:11:04
+ * @Last Modified time: 2014-08-29 14:33:19
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -104,7 +104,7 @@ Chuppy.Apps.App["com.editorAce"].Setup = function(options){
     // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        Chuppy.Utils.Apps.resetValues(['com.editorAce']);
+        Chuppy.Utils.Apps.resetValues([self.options]);
     };
 
 };
@@ -126,13 +126,13 @@ Chuppy.Apps.App["com.editorAce"].Setup.prototype.setupIncludes = function(){
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){
-            Chuppy.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
+            Chuppy.Utils.Template.createHTMLTag(script, self.options, "script");
         });
     }
     if(styles.length > 0){ 
         // Create external style tags
         _.each(styles, function(style){
-            Chuppy.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
+            Chuppy.Utils.Template.createHTMLTag(style, self.options, "style");
         });
     }
 
