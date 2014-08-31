@@ -1,35 +1,33 @@
 /* 
-* @Author: LogIN
-* @Date:   2014-08-22 16:40:33
-* @Email:  unicoart@gmail.com
-* @URL:    https://github.com/LogIN-/chuppy
-* @Last Modified by:   login
-* @Last Modified time: 2014-08-22 16:42:02
-* Use of this source code is governed by a license: 
-* The MIT License (MIT)
-* 
-* Copyright (c) 2014-08-22 16:40:33 The Chuppy Authors
-* 
-* Permission is hereby granted, free of charge, to any person obtaining a copy
-* of this software and associated documentation files (the "Software"), to deal
-* in the Software without restriction, including without limitation the rights
-* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the Software is
-* furnished to do so, subject to the following conditions:
-* 
-* The above copyright notice and this permission notice shall be included in
-* all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-* THE SOFTWARE.
-*/
-
-'use strict';
+ * @Author: LogIN
+ * @Date:   2014-08-22 16:40:33
+ * @Email:  unicoart@gmail.com
+ * @URL:    https://github.com/LogIN-/chuppy
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-31 14:35:30
+ * Use of this source code is governed by a license:
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014-08-22 16:40:33 The Chuppy Authors
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 module.exports = function(grunt) {
 
@@ -100,6 +98,27 @@ module.exports = function(grunt) {
                 linux64: false // We don't need linux64
             },
             src: './application/**/*' // node-webkit app
+        },
+        copy: {
+            main: {
+                files: [{
+                    src: 'libraries/win/ffmpegsumo.dll',
+                    dest: 'builds/releases/Chuppy/win/Chuppy/ffmpegsumo.dll',
+                    flatten: true
+                }, {
+                    src: 'libraries/mac/ffmpegsumo.so',
+                    dest: 'builds/releases/Chuppy/mac/Chuppy.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/ffmpegsumo.so',
+                    flatten: true
+                }, {
+                    src: 'libraries/linux64/ffmpegsumo.so',
+                    dest: 'builds/releases/Chuppy/linux64/Chuppy/libffmpegsumo.so',
+                    flatten: true
+                }, {
+                    src: 'libraries/linux32/ffmpegsumo.so',
+                    dest: 'builds/releases/Chuppy/linux32/Chuppy/libffmpegsumo.so',
+                    flatten: true
+                }]
+            }
         },
         nodemon: {
             dev: {
@@ -180,15 +199,15 @@ module.exports = function(grunt) {
             }
         },
         sshexec: {
-          deployServerProcess: {
-            command: 'uptime',
-            options: {
-                host: '<%= secret.host %>',
-                port: '<%= secret.port %>',
-                username: '<%= secret.username %>',
-                password: '<%= secret.password %>'
+            deployServerProcess: {
+                command: 'uptime',
+                options: {
+                    host: '<%= secret.host %>',
+                    port: '<%= secret.port %>',
+                    username: '<%= secret.username %>',
+                    password: '<%= secret.password %>'
+                }
             }
-          }
         }
     });
 
@@ -201,8 +220,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-nodemon');
     grunt.loadNpmTasks('grunt-docular');
     grunt.loadNpmTasks('grunt-ssh');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     // Default task.
     //grunt.registerTask('default', [ 'sftp', 'sshexec', 'nodewebkit']);
-    grunt.registerTask('default', ['jshint', 'nodewebkit']);
+    grunt.registerTask('default', ['jshint','nodewebkit', 'copy']);
 
 };
