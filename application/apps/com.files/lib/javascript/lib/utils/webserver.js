@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-29 09:30:28
+ * @Last Modified time: 2014-08-31 13:47:27
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -180,9 +180,9 @@ Chuppy.Apps.App["com.files"].Main.Private.Webserver = function() {
         page.title = reqRelative;
 
         // If requested path exists on our client
-        if (fs.existsSync(reqAbsolute)) {
+        if (Chuppy.Utils.FileSystem.existsSync(reqAbsolute)) {
             // If request is directory we must serve our index html template
-            if (fs.lstatSync(reqAbsolute).isDirectory()) {
+            if (Chuppy.Utils.FileSystem.lstatSync(reqAbsolute).isDirectory()) {
                 // Set request type
                 path.type = "directory";
                 // If request items is directory path must end with "/"
@@ -193,7 +193,7 @@ Chuppy.Apps.App["com.files"].Main.Private.Webserver = function() {
                 // Reference to directory index database
                 DbAbsolute = path.join(reqAbsolute, "." + crypt.createHash('md5').update(reqAbsolute).digest('hex'));
                 // Check if database exist in directory
-                if (!fs.existsSync(DbAbsolute)) {
+                if (!Chuppy.Utils.FileSystem.existsSync(DbAbsolute)) {
                     // If database doesnt exist lets index directory, create database and continue
                     Chuppy.Apps.App["com.files"].Main.Utils.Actions.indexDirectory(reqAbsolute, DbAbsolute, function(err, data) {
                         if (err) {

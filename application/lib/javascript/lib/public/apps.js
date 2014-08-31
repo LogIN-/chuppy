@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 13:39:25
+ * @Last Modified time: 2014-08-31 14:11:55
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -56,20 +56,20 @@ Chuppy.Apps.Private = function () {
         // loop through configuration file
         _.each(Chuppy.Apps.Configuration, function(app){
             // If app file exists on file-system
-            if (fs.existsSync(app.path)) {
+            if (Chuppy.Utils.FileSystem.existsSync(app.path)) {
                 // Add app info to global app info object
                 self.appList.push(app);
 
                 var mimeType;
                 _.each(app.supportedFileTypes, function (extension){
-                    console.info("Adding support for extension:", extension);
+                    // console.info("Adding support for extension:", extension);
                     // Support for internal extensions like "directory"
                     if(extension !== 'directory'){
                         mimeType = mime.lookup(extension);
                     }else{
                         mimeType = extension;
                     }                    
-                    console.info(mimeType);
+                    // console.info(mimeType);
                     if(!self.supportedFileTypes[mimeType]){
                         self.supportedFileTypes[mimeType] = [];
                     }    

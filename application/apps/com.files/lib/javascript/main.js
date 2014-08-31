@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-29 09:25:24
+ * @Last Modified time: 2014-08-31 13:41:37
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -205,11 +205,11 @@ Chuppy.Apps.App["com.files"].Main.Private.Init = function(options) {
         
         console.log(self.directory.system);
         // IF index for this directory doesn't exist lets read it from file-system
-        if (fs.existsSync(self.directory.location.dbLocation) === false || self.directory.system.reloadIndex === true) {
+        if (Chuppy.Utils.FileSystem.existsSync(self.directory.location.dbLocation) === false || self.directory.system.reloadIndex === true) {
             console.info("reloading directory index");
             // If database index exist that mens we forced index reload with reload_index = true
             // Otherwise this function wouldn't be called
-            if (fs.existsSync(self.directory.location.dbLocation)) {
+            if (Chuppy.Utils.FileSystem.existsSync(self.directory.location.dbLocation)) {
                 console.log("INDEX DELETED");
                 Chuppy.Utils.FileSystem.rmFileSync([self.directory.location.dbLocation]);
                 self.directory.system.reloadIndex = false;

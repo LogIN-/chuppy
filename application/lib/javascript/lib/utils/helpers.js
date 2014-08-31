@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:06:24
+ * @Last Modified time: 2014-08-31 13:39:01
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -58,17 +58,17 @@ Chuppy.Utils.Helpers = {
     // Detect the operating system of the user
     getOperatingSystem: function() {
         var platform = os.platform();
-
+        var results = null;
         if (platform === 'win32' || platform === 'win64') {
-            return 'windows';
+            results = 'windows';
         }
         if (platform === 'darwin') {
-            return 'mac';
+            results = 'mac';
         }
         if (platform === 'linux') {
-            return 'linux';
+            results = 'linux';
         }
-        return null;
+        return results;
     },
     // Check if the user has a working internet connection (uses Google as reference)
     checkInternetConnection: function(callback) {
@@ -89,6 +89,10 @@ Chuppy.Utils.Helpers = {
     detectLanguage: function(preferredLanguage) {
         var pureLanguage = false;
         var baseLanguage = false;
+        var langPath = {
+            pure: null,
+            base: null
+        };
 
         var language = window.navigator.userLanguage || window.navigator.language || false;
 
@@ -97,33 +101,30 @@ Chuppy.Utils.Helpers = {
             pureLanguage = language.toLowerCase();
             // The global language name (without localization, like "en")
             baseLanguage = language.toLowerCase().slice(0, 2);
-        }
 
+            langPath.pure = path.join('lib/language/', pureLanguage + '.json');
+            langPath.base = path.join('lib/language/', baseLanguage + '.json');
+        }
 
         if (isDebug) {
             console.log('pureLanguage: ' + pureLanguage + ' baseLanguage: ' + baseLanguage + ' preferredLanguage: ' + preferredLanguage);
-        }
-
-        if (pureLanguage !== false && fs.existsSync('lib/language/' + pureLanguage + '.json')) {
+        }      
+        if (pureLanguage !== false && Chuppy.Utils.FileSystem.existsSync(langPath.pure)) {
             i18n.setLocale(pureLanguage);
             if (isDebug) {
                 console.log('detectLanguage : pureLanguage');
             }
-
-        } else if (baseLanguage !== false && fs.existsSync('lib/language/' + baseLanguage + '.json')) {
+        } else if (baseLanguage !== false && Chuppy.Utils.FileSystem.existsSync(langPath.base)) {
             i18n.setLocale(baseLanguage);
             if (isDebug) {
                 console.log('detectLanguage : baseLanguage');
             }
-
         } else {
             i18n.setLocale(preferredLanguage);
             if (isDebug) {
                 console.log('detectLanguage : preferredLanguage');
             }
         }
-
-
     },
     // Throttling function calls
     // http://remysharp.com/2010/07/21/throttling-function-calls/

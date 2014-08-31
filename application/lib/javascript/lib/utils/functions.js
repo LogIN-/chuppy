@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 14:10:33
+ * @Last Modified time: 2014-08-31 13:43:51
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -75,7 +75,7 @@ Chuppy.Utils.Functions = {
             icon = "lib/images/system-icons/extensions/" + extension + ".png";
             iconDefault = "file";
         }
-        if (type === 0 && fs.existsSync(icon)) {
+        if (type === 0 && Chuppy.Utils.FileSystem.existsSync(icon)) {
             return extension;
         } else {
             return iconDefault;

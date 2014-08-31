@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:18:15
+ * @Last Modified time: 2014-08-31 14:08:07
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -51,10 +51,10 @@ Chuppy.Database.connect = function() {
     dbLocation = path.join(gui.App.dataPath, database_name);
 
     // If app is on 1. RUN and database already exists this shouldn't happen lets delete it!!
-    if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0" && fs.existsSync(dbLocation)) {
-        fs.unlinkSync(dbLocation);
-    } else if (!fs.existsSync(dbLocation)) {
-        fs.openSync(dbLocation, 'w');
+    if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0" && Chuppy.Utils.FileSystem.existsSync(dbLocation)) {
+        Chuppy.Utils.FileSystem.unlinkSync(dbLocation);
+    } else if (!Chuppy.Utils.FileSystem.existsSync(dbLocation)) {
+        Chuppy.Utils.FileSystem.openSync(dbLocation, 'w');
     }
 
     // knexjs SQL query builder 

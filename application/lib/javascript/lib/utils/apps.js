@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-29 15:34:43
+ * @Last Modified time: 2014-08-29 16:03:01
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -91,7 +91,8 @@ Chuppy.Utils.Apps = {
         var jQuerySelector;
         _.each(appsList, function(app) {
             console.log("Removing app:", app.path); 
-            if(app.uid.length === 45){
+            // app.uid is MD5 + milliseconds when created
+            if(app.uid.length > 32){
                 console.info("Removing specific app resources!");
                 jQuerySelector = $("[data-id^='" + app["name-space"] + "'][data-uid^='" + app.uid + "']");
             }else{

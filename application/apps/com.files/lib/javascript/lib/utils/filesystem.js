@@ -49,7 +49,7 @@ Chuppy.Apps.App["com.files"].Main.Utils.Actions = {
         console.log("BD : ", dbPath);
 
         // Read current directory
-        fs.readdir(dir, function(err, files) {
+        Chuppy.Utils.FileSystem.readdir(dir, function(err, files) {
             // File details array to insert into database
             var files_details = [];
             // Directory info inserted as Last record in DB
@@ -80,10 +80,6 @@ Chuppy.Apps.App["com.files"].Main.Utils.Actions = {
 
         });
 
-    },
-    readDirectorySync: function(dir) {
-        console.log("Reading directory SYNC: ", dir);
-        return (fs.readdirSync(dir));
     },
     // Create file details object to save in directory index database
     fileDetailsInfo: function(currDir, item) {

@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 13:13:50
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-29 10:42:27
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-31 13:25:54
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -57,7 +57,7 @@ var
     // http module
     http = require('http'),
     // Our templates container object
-    template = {},
+    // template = {},
     // Native implementation of bcrypt for NodeJS
     bcrypt = require('bcrypt-nodejs'),
     // Native node crypto module
@@ -74,7 +74,7 @@ var
     Datastore = require('nedb'),
     // localtunnel exposes your localhost to the world
     localtunnel = require('localtunnel'),
-    // Get free port
+    // Get free port number as reference to start server
     freeport = require('freeport'),
     // Simple featureless FTP server
     ftpd = require('ftp-server'),
