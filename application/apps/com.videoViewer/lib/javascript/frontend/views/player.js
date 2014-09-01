@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-09-01 17:34:12
+ * @Last Modified time: 2014-09-01 19:07:03
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -38,7 +38,7 @@ Chuppy.Apps.App["com.videoViewer"].Main.View.videoViewer = Backbone.View.extend(
               '    id="video-<%- item.uid %>" ' +
               '    class="video-js vjs-default-skin vjs-big-play-centered"' +
               '    controls preload="metadata" width="auto" height="350"' +
-              '    data-setup=\'{"techOrder": ["html5"]}\'>' +
+              '    data-setup=\'{"techOrder": ["html5", "flash"]}\'>' +
               '    <source src="http://video-js.zencoder.com/oceans-clip.ogv" type=\'video/ogg\' />' +
               '    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>' +
               '</video>',

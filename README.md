@@ -27,9 +27,14 @@ Few thing you will need:
     It must be compiled for desired platform to run properly:
 ```
     sudo npm install nw-gyp -g
-    cd application/
-    ( NODE_WEBKIT_VERSION="0.8.6" )
-    sudo npm install sqlite3 --build-from-source --runtime=node-webkit --target_arch=ia32 --target=$(NODE_WEBKIT_VERSION)
+    sudo npm install sqlite3 --build-from-source --runtime=node-webkit --target_arch=ia32 --target="0.10.3"
+    sqlite3 package.json: "module_path": "./lib/binding/node-webkit-v0.10.3-linux-ia32" FIX
+```
+```
+    Current ver:
+    Node v0.11.13,
+    Chromium 35.0.1916.157
+    nodewebkit v0.10.3
 ```
 
 Dependencies from package.json

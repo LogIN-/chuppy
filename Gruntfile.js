@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-31 14:46:16
+ * @Last Modified time: 2014-09-01 18:43:49
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
         },
         nodewebkit: {
             options: {
-                version: '0.8.6',
+                version: '0.10.3',
                 build_dir: './builds', // Where the build version of my node-webkit app is saved
                 credits: './application/credits.html',
                 force: false,

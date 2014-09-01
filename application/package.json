@@ -43,7 +43,7 @@
     "nedb": "0.10.7",
     "open": "^0.0.5",
     "routes": "^1.2.0",
-    "sqlite3": "^2.2.4",
+    "sqlite3": "^2.2.7",
     "watch": "^0.10.0"
   },
   "bugs": "https://github.com/LogIN-/chuppy/issues",
