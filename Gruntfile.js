@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-31 14:35:30
+ * @Last Modified time: 2014-08-31 14:46:16
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -224,5 +224,31 @@ module.exports = function(grunt) {
     // Default task.
     //grunt.registerTask('default', [ 'sftp', 'sshexec', 'nodewebkit']);
     grunt.registerTask('default', ['jshint','nodewebkit', 'copy']);
+
+
+    // grunt.registerTask('updateyVersion', function(){         
+    //     var assemblyFile = grunt.file.read('./AssemblyInfo.cs');
+    //     var lines = assemblyFile.split('\n');
+         
+    //     var version = '';
+    //     var versionParts = '';
+    //     var searchString = 'AssemblyVersion';
+     
+    //     _.each(lines, function (line, index) {
+    //         if (line.indexOf(searchString) != -1) {
+    //             version = line.match(/\d+\.\d+\.\d+\.\d+/g).toString();
+    //             versionParts = version.split('.');
+     
+    //             versionParts[3] = parseInt(versionParts[3], 10) + 1;
+     
+    //             lines[index] = line.replace(version, versionParts.join('.'));
+    //         }
+    //     });
+     
+    //     var updatedAssemblyFile = lines.join('\n');       
+    //     grunt.file.write('./AssemblyInfo.cs', updatedAssemblyFile);
+     
+    //     grunt.log.write('Updated to version: ' + versionParts);
+    // });
 
 };

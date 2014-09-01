@@ -79,4 +79,17 @@
         "html"
     ],
     "display": "iframe"
+}, {
+    "name-space": "com.videoViewer",
+    "name": "videoViewer",
+    "path": "apps/com.videoViewer/index.js",
+    "enabled": true,
+    "isDefault": false,
+    "order": 1,
+    "icon": "/lib/images/system-icons/system/holo_dark/10_device_access_storage/drawable-xhdpi/ic_action_storage.png",
+    "visible": false,
+    "supportedFileTypes": [
+        "mkv", "mp4", "m4v", "m4a", "mp3", "ogv", "ogm", "ogg", "oga", "webm", "wav", "amr", "avi", "flac", "3gp"   
+    ],
+    "display": "iframe"
 }]

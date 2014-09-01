@@ -7,7 +7,6 @@ install: npm install
 before_script: grunt --no-color
 env:
     --debug
-
 #notifications:
 #  irc:
 #    channels:
