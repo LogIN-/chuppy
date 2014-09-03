@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:45:42
+ * @Last Modified time: 2014-08-28 10:07:04
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,14 +28,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global alert */
-// The chuppySetUp View
+// The ChuppySetUp View
 // ---------------
-// Our overall **chuppySetUp** is run only at app frst run
-App.View.chuppySetUp = Backbone.View.extend({
+// Our overall **ChuppySetUp** is run only at app frst run 
+Chuppy.View.ChuppySetUp = Backbone.View.extend({
 
-    template: _.template(App.Utils.FileSystem.readFileLocal('lib/templates/setup.tpl', 'sync')),
+    template: _.template(Chuppy.Utils.FileSystem.readFileLocal('lib/templates/setup.tpl', 'sync')),
     // Bind to the existing skeleton of
     // the App already present in the HTML.
     el: $("body"),
@@ -62,7 +63,7 @@ App.View.chuppySetUp = Backbone.View.extend({
     initialize: function() {
         // if debugging let us notify about firstRun init
         if (isDebug) {
-            console.log("initialized: App.View.chuppySetUp");
+            console.log("initialized: Chuppy.View.chuppySetUp");
         }
         this.render();
     },
@@ -85,7 +86,7 @@ App.View.chuppySetUp = Backbone.View.extend({
     initializeValidator: function() {
         $(this.setupForm).bootstrapValidator({
             container: 'tooltip',
-            message: 'This value is not valid',
+            message: i18n.__('This value is not valid'),
             live: 'enabled',
             excluded: [':disabled', ':hidden', ':not(:visible)'],
             feedbackIcons: {
@@ -194,15 +195,15 @@ App.View.chuppySetUp = Backbone.View.extend({
         }
         switch (parseInt(actionType, 10)) {
             case 0: // data-id 0 user clicked Quit
-                App.Utils.Helpers.exitDelay("body", 3000);
+                Chuppy.Utils.Helpers.exitDelay("body", 3000);
                 break;
             case 1: // data-id 1 create stand alone user and finish process!
                 // Check input fields ??
                 // Save in local storage that app is initiated
-                // App.Settings.setLocal('firstRun', 1);
+                // Chuppy.Settings.setLocal('firstRun', 1);
                 // Description: Encode a set of form elements as an array of names and values.
-                var submitedUserData = App.Utils.Functions.serilizeObject($("#userSetupForm"));
-                App.Utils.User.createUser(submitedUserData, self);
+                var submitedUserData = Chuppy.Utils.Functions.serilizeObject($("#userSetupForm"));
+                Chuppy.Utils.User.createUser(submitedUserData, self);
                 break;
             case 2: // data-id 2 Create new organization
                 console.log("Create new organization");
@@ -226,14 +227,14 @@ App.View.chuppySetUp = Backbone.View.extend({
         var file = event.target.files[0];
         // Check if file type is allowed
         if (file.type !== "image/png" && file.type !== "image/jpeg" && file.type !== "image/jpg") {
-            App.Utils.Template.globalNotify('info', i18n.__(
+            Chuppy.Utils.Template.globalNotify('info', i18n.__(
                     'The selected file is not valid. Only .jpeg, .jpg and .png extensions are allowed with maximum size of 1MB'), 'body', '',
                 '', 10000);
             return;
         }
         // Check if file is larger then 1MB let them know!!
         if (file.size > 1024 * 1024) {
-            App.Utils.Template.globalNotify('info', i18n.__(
+            Chuppy.Utils.Template.globalNotify('info', i18n.__(
                     'The selected file is not valid. Only .jpeg, .jpg and .png extensions are allowed with maximum size of 1MB'), 'body', '',
                 '', 10000);
             return;
@@ -245,7 +246,7 @@ App.View.chuppySetUp = Backbone.View.extend({
             image.onload = function() {
                 // lets check if avatar image is in allowed size limits
                 if (this.width > 128 || this.height > 128) {
-                    App.Utils.Template.globalNotify('info', i18n.__('Maximum avatar dimensions are 128x128px!'), 'body', '', '', 10000);
+                    Chuppy.Utils.Template.globalNotify('info', i18n.__('Maximum avatar dimensions are 128x128px!'), 'body', '', '', 10000);
                     // Clear a File Input
                     input.replaceWith(input.val('').clone(true));
                     // TODO:
@@ -352,7 +353,7 @@ App.View.chuppySetUp = Backbone.View.extend({
                         console.log('System, Template: webkitGetUserMedia, could not connect webRTCStream');
                     });
                 } else {
-                    App.Utils.Template.globalNotify('info', i18n.__('Sorry it seems we cant detect your camera!'), 'body', '', '', 10000);
+                    Chuppy.Utils.Template.globalNotify('info', i18n.__('Sorry it seems we can\'t detect your camera!'), 'body', '', '', 10000);
                 }
                 break;
             default: // defoult use default server and remove server input URL
@@ -374,19 +375,19 @@ App.View.chuppySetUp = Backbone.View.extend({
     },
     removeView: function() {
         var self = this;
-        App.Utils.Template.globalNotify('info', i18n.__('Hello, you have successfully setup Chuppy!'), 'body', '', '', 3000);
+        Chuppy.Utils.Template.globalNotify('info', i18n.__('Hello, you have successfully setup Chuppy!'), 'body', '', '', 3000);
         // Remove modal dialog from DOM
         $("#chuppy-firstrun").modal('hide');
         $('#chuppy-firstrun').on('hidden.bs.modal', function(e) {
             // Remove modal element from DOM
             $("#chuppy-firstrun").remove();
             self.undelegateEvents();
-            //App.Utils.Helpers.exitDelay("body", 3000);
+            //Chuppy.Utils.Helpers.exitDelay("body", 3000);
             console.log("SYSTEM: Chuppy Started from Setup Interface");
 
             // On first application run create database and SCHEMA
-            if (!App.Settings.getLocal('firstRun') || App.Settings.getLocal('firstRun') === "0") {
-                App.Settings.setLocal('firstRun', "1");
+            if (!Chuppy.Settings.getLocal('firstRun') || Chuppy.Settings.getLocal('firstRun') === "0") {
+                Chuppy.Settings.setLocal('firstRun', "1");
             }
         });
     }

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:48:02
+ * @Last Modified time: 2014-08-28 10:06:19
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 
 /**
  * Desktop notifications UI
- * @name App.Utils.Notify
+ * @name Chuppy.Utils.Notify
  * @doc object
  * @constructor
  * @param {object} notifyOpts - Notification options
@@ -40,7 +41,7 @@
  * @description Use this object to construct native UI
  * notifications.
  * EXAMPLE:
- * new App.Utils.Notify({
+ * new Chuppy.Utils.Notify({
  *     icon: "/lib/images/icon.png",
  *     title: "Incoming call!",
  *     content: "Please answer call from: xyz",
@@ -58,7 +59,7 @@
  *         onDrain: function () { console.log("Missed call!"); }
  *     }).render();
  */
-App.Utils.Notify = function(notifyOpts, winOpts) {
+Chuppy.Utils.Notify = function(notifyOpts, winOpts) {
 
     var self = this;
     self.uuid = null;
@@ -104,7 +105,7 @@ App.Utils.Notify = function(notifyOpts, winOpts) {
     self.render = function() {
         // First Generate unique ID for action
         // self.uuid = self.genUUID();
-        self.uuid = App.Utils.Helpers.genUUID();
+        self.uuid = Chuppy.Utils.Helpers.genUUID();
 
         console.log("UUID", self.uuid);
 
@@ -225,7 +226,7 @@ App.Utils.Notify = function(notifyOpts, winOpts) {
     };
 };
 
-App.Utils.Notify.prototype.makeNotificationMarkup = function() {
+Chuppy.Utils.Notify.prototype.makeNotificationMarkup = function() {
     var self = this;
 
     self.notification[self.uuid].win_options.elementID = self.uuid;
@@ -246,7 +247,7 @@ App.Utils.Notify.prototype.makeNotificationMarkup = function() {
     }
 
 };
-App.Utils.Notify.prototype.displayNotificationWindow = function() {
+Chuppy.Utils.Notify.prototype.displayNotificationWindow = function() {
     var self = this;
 
     var y = self.getYPos();
@@ -274,7 +275,7 @@ App.Utils.Notify.prototype.displayNotificationWindow = function() {
 
 };
 
-// App.Utils.Notify.prototype.genUUID = function() {
+// Chuppy.Utils.Notify.prototype.genUUID = function() {
 //     var d = new Date().getTime();
 //     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 //         var r = (d + Math.random()*16)%16 | 0;
@@ -284,7 +285,7 @@ App.Utils.Notify.prototype.displayNotificationWindow = function() {
 //     return uuid;
 // };
 
-App.Utils.Notify.prototype.getXPos = function() {
+Chuppy.Utils.Notify.prototype.getXPos = function() {
     var x = 0;
 
     console.log(this.notification[this.uuid].main_options.possition);
@@ -304,7 +305,7 @@ App.Utils.Notify.prototype.getXPos = function() {
     }
     return x;
 };
-App.Utils.Notify.prototype.getYPos = function() {
+Chuppy.Utils.Notify.prototype.getYPos = function() {
     var y = 0;
     // BOTTOM
     if (this.notification[this.uuid].main_options.possition === "bottom-right" || this.notification[this.uuid].main_options.possition === "bottom-left" || this.notification[this.uuid].main_options.possition === "bottom-center") {
@@ -327,7 +328,7 @@ App.Utils.Notify.prototype.getYPos = function() {
     return y;
 };
 
-App.Utils.Notify.prototype.truncate = function(str, size) {
+Chuppy.Utils.Notify.prototype.truncate = function(str, size) {
     str = $.trim(str);
     if (str.length > size) {
         return $.trim(str.substr(0, size)) + '...';

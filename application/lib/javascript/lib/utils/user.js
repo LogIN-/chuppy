@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:07
+ * @Last Modified time: 2014-08-28 10:05:25
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,12 +28,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/* global bcrypt */
+// Set global variable for Jslint
+/* global bcrypt, Chuppy */
 
 // Global application user related operations
-App.Utils.User = {
-
+Chuppy.Utils.User = {
+ 
     user: {},
 
     // Create new user in system with associated details
@@ -44,7 +44,7 @@ App.Utils.User = {
         self.user.password_hash = bcrypt.hashSync(self.user["configuration-user-password"]);
 
         // 1. Create user in main user details table
-        new App.Database.User({
+        new Chuppy.Database.User({
             username: self.user["configuration-user-username"],
             password: self.user.password_hash
         }).save().then(function(user) {
@@ -56,16 +56,16 @@ App.Utils.User = {
 
             self.user.id = user.get('id');
             // 2. Create user details in user_details_table
-            new App.Database.UserDetails({
+            new Chuppy.Database.UserDetails({
                 uid: self.user.id,
-                first_name: self.user["configuration-user-firstname"],
-                last_name: self.user["configuration-user-lastname"],
+                first_name: self.user["configuration-user-firstname"] || 'John',
+                last_name: self.user["configuration-user-lastname"] || 'Doe',
                 email: self.user["configuration-user-email"],
                 profile_picture: self.user["configuration-user-avatar-base64"],
                 phone_number: self.user["configuration-user-phone"],
                 usage_type: self.user["configuration-user-usage"],
-                encryption: self.user["configuration-user-encryption"],
-                password_login: self.user["configuration-user-autologin"],
+                encryption: self.user["configuration-user-encryption"] || 0,
+                autologin: self.user["configuration-user-autologin"] || 0,
                 root_folder: self.user["configuration-user-root-folder"]
             }).save().then(function(userDetails) {
 
@@ -78,13 +78,13 @@ App.Utils.User = {
                 self.loginUser(self.user["configuration-user-username"], self.user["configuration-user-password"], loginView);
 
                 if (isDebug) {
-                    console.log("System, App.Utils.User.createUser: ", self.user.details_id);
+                    console.log("System, Chuppy.Utils.User.createUser: ", self.user.details_id);
                 }
 
             });
 
             if (isDebug) {
-                console.log("System, App.Utils.User.createUser: ", self.user.id);
+                console.log("System, Chuppy.Utils.User.createUser: ", self.user.id);
             }
             return true;
         });
@@ -93,12 +93,14 @@ App.Utils.User = {
     loginUser: function(username, password, loginView) {
         loginView = typeof loginView !== 'undefined' ? loginView : null;
         var self = this;
-        self.user["configuration-user-username"] = username;
-        self.user["configuration-user-password"] = password;
+        self.user.username = username;
+        self.user.password = password;
         // Select user by Username
-        new App.Database.User({
-            username: self.user["configuration-user-username"]
-        }).fetch().then(function(model) {
+        new Chuppy.Database.User({
+            username: self.user.username
+        }).fetch({
+            withRelated: ['userDetails']
+        }).then(function(model) {
 
             if (model === null) {
                 self.loginStatus(false, "Wrong credentials! Please try again!", loginView);
@@ -106,39 +108,35 @@ App.Utils.User = {
             }
             self.user.id = model.get('id');
             self.user.password_hash = model.get('password');
-            self.user["configuration-user-autologin"] = model.get('password_login');
+            self.user.autologin = model.related('userDetails').get('autologin');
 
             // Load hash from DB and compare it
-            bcrypt.compare(self.user["configuration-user-password"], self.user.password_hash, function(err, res) {
-
+            bcrypt.compare(self.user.password, self.user.password_hash, function(err, res) {
+                // Password compare successful
                 if (res === true) {
                     // Initialize userDetails object
                     self.userDetails();
                     // Login is successful so remove view
-                    self.loginStatus(true, "Welcome " + self.user["configuration-user-username"] + "!", loginView);
-
-
-                    console.log("System: App.Utils.User.loginUser SUCCESS", self.user["configuration-user-username"]);
+                    self.loginStatus(true, "Welcome " + self.user.username + "!", loginView);
+                    console.log("System: Chuppy.Utils.User.loginUser SUCCESS", self.user.username);
 
                 } else {
-                    // If user set that he doesn't wont password login lets automatically login him
-                    if (self.user["configuration-user-autologin"] === 2) {
+                    // Check if user has auto-login feature?
+                    if (self.user.autologin === 1) {
                         // Initialize userDetails object
                         self.userDetails();
                         // Login is successful so remove view
                         self.loginStatus(true, "Welcome " + self.user.username + "!", loginView);
-
-                        console.log("System: App.Utils.User.loginUser SUCCESS", self.user.username);
+                        console.log("System: Chuppy.Utils.User.loginUser SUCCESS", self.user.username);
 
                     } else {
-                        App.Public.User.setUserKeys({
+                        Chuppy.Public.User.setUserKeys({
                             username: self.user.username,
                             login_attempts: 1
                         });
                         self.loginStatus(false, "Wrong credentials! Please try again!", loginView);
-
-                        console.log("System: App.Utils.User.loginUser FAILED", self.user.username);
-
+                        console.log("System: Chuppy.Utils.User.loginUser FAILED");
+                        console.log(self.user);
                     }
                 }
             });
@@ -151,17 +149,17 @@ App.Utils.User = {
             loginView.removeView();
         }
         if (message) {
-            App.Utils.Template.globalNotify('info', i18n.__(message), 'body', '', '', 2000);
+            Chuppy.Utils.Template.globalNotify('info', i18n.__(message), 'body', '', '', 2000);
         }
 
     },
     /* Fetch userDetails from database and activate user object
-     * Function is called upon successful login it sets all user details from DB to public class App.Public.User
+     * Function is called upon successful login it sets all user details from DB to public class Chuppy.Public.User
      */
     userDetails: function() {
         var self = this;
         // Select user details by Username
-        new App.Database.User({
+        new Chuppy.Database.User({
             id: self.user.id
         }).fetch({
             withRelated: ['userDetails', 'userOrganizations']
@@ -183,16 +181,16 @@ App.Utils.User = {
                 userOrganizations: userOrganizationsData
             };
 
-            App.Public.User.setUserKeys(userData);
+            Chuppy.Public.User.setUserKeys(userData);
 
-            console.log("System: App.Utils.User.activateUserObject SUCCESS", self.user.id);
+            console.log("System: Chuppy.Utils.User.activateUserObject SUCCESS", self.user.id);
 
             if (isDebug) {
-                console.log("System: App.Utils.User.userDetails SUCCESS", self.user.id);
+                console.log("System: Chuppy.Utils.User.userDetails SUCCESS", self.user.id);
             }
 
             // After user activation lets init system
-            App.Public.System.initilize();
+            Chuppy.Public.System.initilize();
 
         });
     }

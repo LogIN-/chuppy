@@ -1,3 +1,4 @@
+/* global crypt */
 /* 
 * @Author: LogIN
 * @Date:   2014-08-22 12:04:30
@@ -28,33 +29,27 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+// Set global variable for Jslint
+/* global Chuppy */
 
-/* global crypt */
-App.Apps.App["com.files"].Main.Utils.Actions = {
+// Files application core functions
 
-    // TODO: support for large dires with > 400k files
-    indexDirectory: function(dir, dbPath) {
+Chuppy.Apps.App["com.files"].Main.Utils.Actions = { 
 
+    // Index directory contents to directory index database
+    // @param {string} dir Absolute path to directory to index
+    // @param {string} dbPath Absolute path to directory to index database
+    // @param {function} callback Callback function returns {err} @optional, if not defined default action is used
+    // TODO: support for large dirs with > 400k files
+    indexDirectory: function(dir, dbPath, callback) {
+        // Reference to this
         var self = this;
-
-        console.log("Indexing directory");
+        console.log("Indexing directory"); 
         console.log("DIR: ", dir);
         console.log("BD : ", dbPath);
 
-        // If database index exist that mens we forced index reload with reload_index = true
-        // Otherwise this function wouldn't be called
-        if (fs.existsSync(dbPath)) {
-            console.log("INDEX DELETED");
-            App.Utils.FileSystem.rmFileSync([dbPath]);
-            App.Apps.App["com.files"].Main.Public.Init.setKeys({
-                system: {
-                    reloadIndex: false
-                }
-            });
-        }
-
         // Read current directory
-        fs.readdir(dir, function(err, files) {
+        Chuppy.Utils.FileSystem.readdir(dir, function(err, files) {
             // File details array to insert into database
             var files_details = [];
             // Directory info inserted as Last record in DB
@@ -79,14 +74,12 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
             directory_details.total_count = total;
             files_details.push(directory_details);
 
-            App.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, true);
+            // Save directory info into database
+            // And make default action if callback() isn't defined
+            Chuppy.Apps.App["com.files"].Main.Public.Database.populateFolderIndex(dbPath, files_details, callback);            
 
         });
 
-    },
-    readDirectorySync: function(dir) {
-        console.log("Reading directory SYNC: ", dir);
-        return (fs.readdirSync(dir));
     },
     // Create file details object to save in directory index database
     fileDetailsInfo: function(currDir, item) {
@@ -108,15 +101,15 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
         } else {
             details.fileType = 0;
             // Read and display size only for files:
-            // details.file_stats.size_human = App.Utils.Functions.humanSize(details.file_stats.size);
+            // details.file_stats.size_human = Chuppy.Utils.Functions.humanSize(details.file_stats.size);
         }
         // UID: MD5 hash : name - size - fileType - created_time
 
         var uid = item + file_stats.size + details.fileType + file_stats.ctime.toString();
         details.uid = crypt.createHash('md5').update(uid).digest('hex');
 
-        // details.extension = App.Utils.Functions.findExtension(item);
-        // details.icon = App.Utils.Functions.findExtensionIcon(details.extension, details.fileType);
+        // details.extension = Chuppy.Utils.Functions.findExtension(item);
+        // details.icon = Chuppy.Utils.Functions.findExtensionIcon(details.extension, details.fileType);
 
         return details;
     },
@@ -138,7 +131,7 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
                 res.path = res.path + "/";
             }
             pre_items = pre_items + "/" + item + "/";
-            res.id = crypt.createHash('md5').update(res.path).digest('hex');
+            res.uid = crypt.createHash('md5').update(res.path).digest('hex');
             res.name = item;
             results.push(res);
         });
@@ -147,7 +140,7 @@ App.Apps.App["com.files"].Main.Utils.Actions = {
     }
 };
 
-App.Apps.App["com.files"].Main.Utils.Operations = {
+Chuppy.Apps.App["com.files"].Main.Utils.Operations = {
 
     openFolder: function() {
         console.log(this.data);

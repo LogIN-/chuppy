@@ -37,7 +37,7 @@
         "resizeTimeout": true,
         "moveTimeout": true,
         "isMaximizationEvent": true,
-        "App": true
+        "Chuppy": true
         
     }
 }

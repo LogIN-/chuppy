@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 14:20:32
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:30
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-29 15:04:31
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,19 +28,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // Global application template related operations
-App.Utils.Template = {
+Chuppy.Utils.Template = {
     loadTemplate: function(path, readType) {
         var template = "";
         var path_system = path;
-        var current_theme = App.Settings.getLocal('theme');
+        var current_theme = Chuppy.Settings.getLocal('theme');
         // If user doesn't has Theme defined in Settings lets use default template
         if (typeof current_theme === 'undefined') {
-            template = App.Utils.FileSystem.readFileLocal(path_system, readType);
+            template = Chuppy.Utils.FileSystem.readFileLocal(path_system, readType);
         } else {
             var path_theme = path_system.replace('lib', 'themes/' + current_theme);
-            template = App.Utils.FileSystem.readFileLocal(path_theme, readType);
+            template = Chuppy.Utils.FileSystem.readFileLocal(path_theme, readType);
         }
         return template;
     },
@@ -58,7 +60,7 @@ App.Utils.Template = {
         var dialogSound = "dialog-information.oga";
         // If CSS class of alter box isn't given lets generate random "uuid" for it as class reference
         if (alert_class === "") {
-            alert_class = App.Utils.Helpers.genUUID();
+            alert_class = Chuppy.Utils.Helpers.genUUID();
         }
         // Assign element to its css class
         alertElement = "." + alert_class;
@@ -71,7 +73,7 @@ App.Utils.Template = {
             dialogSound = "dialog-warning.oga";
         }
         // play desired sound
-        App.Utils.Functions.doPlaySound('/lib/sounds/' + dialogSound);
+        Chuppy.Utils.Functions.doPlaySound('lib/sounds/' + dialogSound);
 
         // Default is show action
         if (action === "") {
@@ -112,10 +114,9 @@ App.Utils.Template = {
      * {parm} {string} {dialogTitle} Title of dialog box
      * {parm} {string} {dialogContent} Html content for dialog box
      * {parm} {array} {dialogButtons} Elements of array must be an object defining the attributes and event handlers to set on the button.
-     * {returns} {void}
      */
     confirmDialog: function(dialogTitle, dialogContent, dialogButtons) {
-        var dialogClass = App.Utils.Helpers.genUUID();
+        var dialogClass = Chuppy.Utils.Helpers.genUUID();
         var html = '<div class="dialogNotificationBox ' + dialogClass + '">' + dialogContent + '</div>';
         $(html).appendTo('body');
 
@@ -134,18 +135,18 @@ App.Utils.Template = {
                 duration: 500
             },
             open: function(event, ui) {
-                App.Utils.Functions.doPlaySound('/lib/sounds/dialog-information.oga');
+                Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
             },
             title: dialogTitle,
             buttons: dialogButtons
         });
-        // Clean up dialogs after 60sec if dialog isn't closed
+        // Clean up dialogs after 120sec if dialog isn't closed
         setTimeout(function() {
             if ($('.' + dialogClass).length > 0) {
                 $('.' + dialogClass).dialog("destroy");
                 $('.' + dialogClass).remove();
             }
-        }, 60000);
+        }, 120000);
     },
     // Main/apps application activity loading screen
     // action - 1 - start loading screen
@@ -169,42 +170,144 @@ App.Utils.Template = {
 
     },
     /* Appends script or style tags to document body
-     * @parm {string} data
-     * @parm {string} dataID
-     * @parm {string} dataType
+     * @parm {string} data - URI to script/style tag
+     * @parm {string} app - app options object
+     * @parm {string} dataType - script | style
      */
-    createHTMLTag: function(data, dataID, dataType) {
-        if (data.length > 0 && dataID.length > 0 && dataType.length > 0) {
-            if (dataType === "script") {
+    createHTMLTag: function(data, app, dataType) {
+        if (data.length > 0 && app["name-space"].length > 0 && dataType.length > 0) {
 
+            if (dataType === "script") {
+                console.info("Including script on page", data);
+                // Check if script is already included in page
+                if ($("script[src='" + data + "']").length) {
+                    console.log("Script is already included, skipping...", data);
+                    return;
+                }
                 var script = document.createElement("script");
                 script.type = "text/javascript";
                 script.async = false;
                 script.src = data;
 
                 var script_type = document.createAttribute("data-id");
-                script_type.value = dataID;
+                script_type.value = app["name-space"];                
 
-                document.getElementsByTagName("head")[0].appendChild(script).setAttributeNode(script_type);
+                var script_uniqueID = document.createAttribute("data-uid");
+                script_uniqueID.value = app.uid || 'system';  
+
+                script.setAttributeNode(script_type);
+                script.setAttributeNode(script_uniqueID);
+                document.getElementsByTagName("head")[0].appendChild(script);
 
             } else if (dataType === "style") {
-
+                console.info("Including style on page", data);
+                // Check if style is already included in page
+                if ($("link[href='" + data + "']").length) {
+                    console.log("Style is already included, skipping...", data);
+                    return;
+                }
                 var style = document.createElement("link");
                 style.type = "text/css";
                 style.rel = "stylesheet";
                 style.href = data;
 
                 var style_type = document.createAttribute("data-id");
-                style_type.value = dataID;
+                style_type.value = app["name-space"];   
 
-                document.getElementsByTagName("head")[0].appendChild(style).setAttributeNode(style_type);
+                var style_uniqueID = document.createAttribute("data-uid");
+                style_uniqueID.value = app.uid || 'system';  
+
+                style.setAttributeNode(style_type);
+                style.setAttributeNode(style_uniqueID);
+                document.getElementsByTagName("head")[0].appendChild(style);
             }
         } else {
-            console.log("SYSTEM: App.Utils.Template.createHTMLTag invalid size");
+            console.log("SYSTEM: Chuppy.Utils.Template.createHTMLTag invalid function inputs");
+            console.log(data);
+            console.log(app);
+            console.log(dataType);
         }
     },
-    removeHTMLTag: function() {
+    multipleActionDialogChooser: function(dialogTitle, supportedActions, callback) {
+        var response = {};
+        var dialog = {};
+        var err = null;
 
+        dialog.content = '<ul class="multipleActionDialogChooser">';
+        dialog.buttons = null;
+        response.action = null;
+
+        var actionDetails;
+        var template = '<li class="pull-left" data-id="<%- app["name-space"] %>"' +
+                       'onclick="this.className ? this.className = \'\' : this.className = \'actionSelected\';">' +
+                       '<% if(app.supportedFileTypes) { %>' +
+                       '<div class="pull-left">' +
+                       '    <img ' +
+                       '    onerror="$(this).avatar();" ' +
+                       '    data-fontSize="13"' +
+                       '    data-name="<%- app.name %>"' +
+                       '    data-width="18" ' +
+                       '    data-height="18" ' +
+                       '    width="18" ' +
+                       '    height="18" ' +
+                       '    src="lib/images/system-icons/extensions/<%- app.supportedFileTypes[0] %>.png" ' +
+                       '    alt="<%- app.name %>" ' +
+                       '    class="animated swing img-circle" />' +
+                       '</div>' +
+                       '<% } %>' + 
+                       '<span class="titleText pull-left"><%= i18n.__(app.name) %></span></li>';
+        
+        _.each(supportedActions, function(action) {
+            actionDetails = Chuppy.Apps.Public.getUserAppDetails(action);
+            dialog.content += _.template(template, actionDetails, {
+                variable: 'app'
+            });
+        });
+
+        dialog.content += '</ul>';
+
+        dialog.buttons = [{
+            text: i18n.__('Ok'),
+            click: function() {
+                var selectedActions = $('.multipleActionDialogChooser li.actionSelected');
+                if (selectedActions.length !== 1) {
+                    console.log("Please select one action!");
+                    return;
+                } else {
+                    response.action = true;
+                    // play confirmation sound
+                    Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-information.oga');
+                    // Destroy dialog
+                    $(this).dialog("close");
+                    $(this).remove();
+
+                    response.options = Chuppy.Apps.Public.getUserAppDetails(selectedActions.attr('data-id'));
+                    // If callback function inst defined lets do default action
+                    if (callback && typeof(callback) === "function") {
+                        callback.apply(this, [err, response]);
+                    } else {
+                        console.log("No callback defined!");
+                    }
+                }
+            }
+        }, {
+            text: i18n.__('Cancel'),
+            click: function() {
+                response.action = true;
+                // play warning sound
+                Chuppy.Utils.Functions.doPlaySound('lib/sounds/dialog-warning.oga');
+                // Destroy dialog
+                $(this).dialog("close");
+                $(this).remove();
+
+                // If callback function inst defined lets do default action
+                if (callback && typeof(callback) === "function") {
+                    callback.apply(this, [err, response]);
+                } else {
+                    console.log("No callback defined!");
+                }
+            }
+        }];
+        Chuppy.Utils.Template.confirmDialog(dialogTitle, dialog.content, dialog.buttons);
     }
-
 };

@@ -28,11 +28,13 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
+// Set global variable for Jslint
+/* global Chuppy */
 
-App.Apps.App["com.files"].Main.Model.BreadCrumbItems = Backbone.Model.extend({
+Chuppy.Apps.App["com.files"].Main.Model.BreadCrumbItems = Backbone.Model.extend({
     //default values for the function
     defaults: {
-        id: null,
+        uid: null,
         name: null,
         path: null
     }

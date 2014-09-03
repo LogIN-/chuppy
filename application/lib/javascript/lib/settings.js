@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 19:49:09
+ * @Last Modified time: 2014-08-28 10:04:38
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,13 +28,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 /**
  * Handles configuration variables for the Chuppy.
  * Closely tied to the update process, uses localStorage for everything
  */
 
-App.Settings = {
+Chuppy.Settings = {
 
     _defaultSettings: {
         // Default to the first beta -- application version
@@ -53,9 +55,9 @@ App.Settings = {
         // Checks if installation is necessary 
         "firstRun": "0", // 0- program is not setup jet, 1 - first run is already made
         // little hashing / salting helpers/tokens
-        "install_uuid": App.Utils.Helpers.genUUID(),
-        "token": App.Utils.Helpers.genUUID(),
-        "salt": App.Utils.Helpers.genUUID()
+        "install_uuid": Chuppy.Utils.Helpers.genUUID(),
+        "token": Chuppy.Utils.Helpers.genUUID(),
+        "salt": Chuppy.Utils.Helpers.genUUID()
     },
 
     setup: function(forceReset) {
@@ -66,25 +68,25 @@ App.Settings = {
         }
 
         // If there's no version, assume it's a new install
-        if (typeof App.Settings.getLocal('version') === 'undefined') {
+        if (typeof Chuppy.Settings.getLocal('version') === 'undefined') {
             window.__isNewInstall = true;
         }
         // Set default values
-        for (var key in App.Settings._defaultSettings) {
+        for (var key in Chuppy.Settings._defaultSettings) {
             // Create new settings if necessary
-            if (typeof App.Settings.getLocal(key) === 'undefined' || (forceReset === true)) {
-                App.Settings.setLocal(key, App.Settings._defaultSettings[key]);
+            if (typeof Chuppy.Settings.getLocal(key) === 'undefined' || (forceReset === true)) {
+                Chuppy.Settings.setLocal(key, Chuppy.Settings._defaultSettings[key]);
             }
         }
 
-        App.Settings.performUpgrade();
+        Chuppy.Settings.performUpgrade();
     },
 
     performUpgrade: function() {
 
         var currentVersion = gui.App.manifest.version;
 
-        if (currentVersion > App.Settings.getLocal('version')) {
+        if (currentVersion > Chuppy.Settings.getLocal('version')) {
             // Nuke the DB if there's a newer version
             // Todo: Make this nicer so we don't lose all the cached data
             // var cacheDb = openDatabase('cachedb', '1.0', 'Cache database', 50 * 1024 * 1024);
@@ -96,7 +98,7 @@ App.Settings = {
             window.__isUpgradeInstall = true;
         }
 
-        App.Settings.setLocal('version', currentVersion);
+        Chuppy.Settings.setLocal('version', currentVersion);
     },
     getLocal: function(varName) {
         return localStorage['settings_' + varName];
@@ -110,4 +112,4 @@ App.Settings = {
 
 };
 
-App.Settings.setup(false);
+Chuppy.Settings.setup(false);

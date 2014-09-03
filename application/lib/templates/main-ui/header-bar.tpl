@@ -33,10 +33,10 @@
             <div class="btn-group" style="padding-left: 0px;">
               <button data-toggle="dropdown" type="button" class="dropdown-toggle"><span class="caret"></span></button>
               <ul id="header-user-panel" role="menu" class="dropdown-menu dropdown-menu-right">
-                <li><a data-id="2" href="#">Settings</a></li>
+                <li><a data-id="2" href="#"><%= i18n.__('Settings') %></a></li>
                 <li class="divider"></li>
-                <li><a data-id="1"href="#">Logout</a></li>
-                <li><a data-id="0"href="#">Exit</a></li>
+                <li><a data-id="1"href="#"><%= i18n.__('Logout') %></a></li>
+                <li><a data-id="0"href="#"><%= i18n.__('Exit') %></a></li>
               </ul>
             </div>
         </div>

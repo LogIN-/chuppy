@@ -3,8 +3,8 @@
  * @Date:   2014-07-15 11:26:04
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:50
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:04:30
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,19 +28,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
-App.Utils.Updater = {
+Chuppy.Utils.Updater = {
 
     checkForUpdates: function() {
         var http = require('http');
 
-        var currentOs = App.Utils.Helpers.getOperatingSystem();
+        var currentOs = Chuppy.Utils.Helpers.getOperatingSystem();
         // We may want to change this in case the detection fails
         if (!currentOs) {
             return;
         }
 
-        http.get(App.Settings.getLocal('updateNotificationUrl'), function(res) {
+        http.get(Chuppy.Settings.getLocal('updateNotificationUrl'), function(res) {
             var data = '';
             res.on('data', function(chunk) {
                 data += chunk;
@@ -58,7 +60,7 @@ App.Utils.Updater = {
                     return;
                 }
 
-                if (updateInfo[currentOs].version > App.Settings.getLocal('version')) {
+                if (updateInfo[currentOs].version > Chuppy.Settings.getLocal('version')) {
                     // Check if there's a newer version and show the update notification
                     $('#notification').html(
                         i18n.__('UpgradeVersionDescription', updateInfo[currentOs].versionName) +

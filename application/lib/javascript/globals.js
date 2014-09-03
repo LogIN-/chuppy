@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 13:13:50
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:49:18
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-31 13:25:54
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -28,7 +28,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+ 
 var
 // Configuration variable
     applicationRoot = './',
@@ -57,7 +57,7 @@ var
     // http module
     http = require('http'),
     // Our templates container object
-    template = {},
+    // template = {},
     // Native implementation of bcrypt for NodeJS
     bcrypt = require('bcrypt-nodejs'),
     // Native node crypto module
@@ -74,7 +74,7 @@ var
     Datastore = require('nedb'),
     // localtunnel exposes your localhost to the world
     localtunnel = require('localtunnel'),
-    // Get free port
+    // Get free port number as reference to start server
     freeport = require('freeport'),
     // Simple featureless FTP server
     ftpd = require('ftp-server'),
@@ -82,8 +82,6 @@ var
     util = require('util'),
     // URL resolution and parsing
     url = require("url"),
-    // async flow management module
-    async = require("async"),
     // URL route matching 
     urlRoute = require('routes'),
     // Pure JavaScript implementation for zip
@@ -91,7 +89,11 @@ var
     // Time/Data JS manipulation
     moment = require('moment'),
     // GeoIP native JS module
-    geoip = require('geoip-lite');
+    geoip = require('geoip-lite'),
+    // Signed and unsigned cookies based on Keygrip
+    Cookies = require('cookies'),
+    // Module for signing and verifying data through a rotating credential system
+    Keygrip = require('keygrip');
 
 // window state preservation across platforms
 // - /lib/javascript/lib/winstate.js
@@ -107,8 +109,8 @@ var
     // resize maximized window, so it's no longer maximized
     isMaximizationEvent = false;
 
-// Global App object for application skeleton structure
-var App = {
+// Global Chuppy object for application skeleton structure
+var Chuppy = {
     // Our main application router
     Router: null,
     // All backbone collections will be initialized in this context
@@ -128,9 +130,9 @@ var App = {
     // Configuration variables for our app 
     // - /lib/javascript/lib/settings.js
     Settings: {},
-    // Object with apps configuration
-    // - /apps/config.js
+    // Object with system apps configuration and runtime
     Apps: {
+        Configuration : require('./apps/config.json'),
         App: []
     },
     // Public object class that will hold our current user etc...

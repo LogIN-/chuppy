@@ -3,8 +3,8 @@
  * @Date:   2014-08-01 18:05:41
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:45:11
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:07:23
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,14 +28,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
-// The Application window bar 
-// ---------------
-
+// The Application window bar
 // Our overall **AppView** is the top-level piece of UI.
 
-App.View.windowBar = Backbone.View.extend({
-    template: _.template(App.Utils.Template.loadTemplate('lib/templates/main-ui/windows-bar.tpl', 'sync'), {}),
+Chuppy.View.WindowBar = Backbone.View.extend({
+    template: _.template(Chuppy.Utils.Template.loadTemplate('lib/templates/main-ui/windows-bar.tpl', 'sync'), {}),
     // Bind to the existing skeleton of
     // the App already present in the HTML.
     el: $("#top-headers"),
@@ -51,7 +51,7 @@ App.View.windowBar = Backbone.View.extend({
     initialize: function() {
         // if debugging let us notify about firstRun init
         if (isDebug) {
-            console.log("initialized: App.View.windowBar");
+            console.log("initialized: Chuppy.View.WindowBar");
         }
         // Ensure our methods keep the `this` reference to the view itself
         _.bindAll(this, 'render');
@@ -69,32 +69,32 @@ App.View.windowBar = Backbone.View.extend({
 
         switch (parseInt(actionType, 10)) {
             case 0: // data-id 0 minimize window action
-                App.Utils.Window.action(0);
+                Chuppy.Utils.Window.action(0);
                 break;
             case 1: // data-id 1 maximize window action
-                App.Utils.Window.action(1);
+                Chuppy.Utils.Window.action(1);
                 buttonImage.removeClass('glyphicon-chevron-up');
                 buttonImage.addClass('glyphicon-collapse-down');
                 $(e.currentTarget).attr("data-id", "2");
                 break;
             case 2: // data-id 2 unmaximize window action
-                App.Utils.Window.action(2);
+                Chuppy.Utils.Window.action(2);
                 buttonImage.removeClass('glyphicon-collapse-down');
                 buttonImage.addClass('glyphicon-chevron-up');
                 $(e.currentTarget).attr("data-id", "1");
                 break;
             case 3: // data-id 3 shutdown window action
-                App.Utils.Helpers.exitDelay("#overlay", 1500);
-                // App.Utils.Window.action(3);
+                Chuppy.Utils.Helpers.exitDelay(null, 1500);
+                // Chuppy.Utils.Window.action(3);
                 break;
             default: // defoult action is to maximize window
-                App.Utils.Window.action(1);
+                Chuppy.Utils.Window.action(1);
                 buttonImage.removeClass('glyphicon-chevron-up');
                 buttonImage.addClass('glyphicon-collapse-down');
                 $(e.currentTarget).attr("data-id", "2");
         }
         if (isDebug) {
-            console.log('System, App.View.windowBar: windowResizeActions: ', actionType);
+            console.log('System, Chuppy.View.WindowBar: windowResizeActions: ', actionType);
         }
 
     }

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:46:54
+ * @Last Modified time: 2014-08-28 10:06:57
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,20 +28,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/* Our user class unique per login session
+// Set global variable for Jslint
+/* global Chuppy */
+/* Our user class, unique per login session
  * all user main details are saved here
  * STRUCTURE of user object:
  *      userMain: userMainData,
  *      userDetails: userDetailsData,
- *      userOrganizations: userOrganizationsData
+ *      userOrganizations: userOrganizationsData  
  */
 
-App.Private.User = function() {
+Chuppy.Private.User = function() {
     var self = this;
     self.user = {};
 
-    var defoult_values = {
+    self.defaultValues = {
         userMain: {
             logged_in: false,
             login_attempts: 0
@@ -51,7 +52,7 @@ App.Private.User = function() {
 
     };
 
-    self.user = _.extend(self.user, defoult_values);
+    self.user = _.extend(self.user, self.defaultValues);
 
     // Extends current user properties
     // _.extend({name: 'moe'}, {age: 50});
@@ -76,13 +77,16 @@ App.Private.User = function() {
         return results;
 
     };
-
+    /* Reset user values to its defaults
+     * usage: logout
+     */
     self.resetValues = function() {
         if (isDebug === 5) {
             console.log("USER PUBLIC: resetValues");
         }
-        self.user = _.extend(self.user, defoult_values);
+        self.user = {};
+        self.user = _.extend(self.user, self.defaultValues);
     };
 };
 
-App.Public.User = new App.Private.User();
+Chuppy.Public.User = new Chuppy.Private.User();

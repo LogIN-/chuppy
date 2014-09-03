@@ -5,19 +5,14 @@ SpeechSynthesisUtterance
 https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html
  and https://www.talater.com/annyang/
 
-
-https://github.com/pbojinov/nodeifications
-
 // Image Editor in JS
 https://code.google.com/p/paintweb/
 
 // Interface CSS
 http://almsaeedstudio.com/AdminLTE/
 
-
 // Screen Sharing
 https://html5-demos.appspot.com/static/getusermedia/screenshare.html
-
 https://www.webrtc-experiment.com/
 
 //Conversation.js is inspired by skype; and it provides simple events-like API to manage conversations, enable/disable media devices; add/download files; and do anything supported by Skype.
@@ -26,30 +21,19 @@ https://github.com/muaz-khan/WebRTC-Experiment/tree/master/Conversation.js
 // TogetherJS is a free, open source JavaScript library by Mozilla that adds collaboration features and tools to your website.
 https://togetherjs.com/
 
-
 http://webrtchacks.com/own-phoneco-with-webrtc/
 http://www.rtcmulticonnection.org/
 https://github.com/muaz-khan/WebRTC-Experiment
 
-https://github.com/travishorn/node-desktop-notifications
 https://github.com/airbob/sizeChecker
 https://github.com/webdevleo/webplayer/blob/master/trunk/dev/js/main.js
 
 https://gist.github.com/xdenser/817dc03dd5d36a9004fe
 
-
-"chromium-args": "--disable-threaded-animation --enable-threaded-compositing --enable-usermedia-screen-capturing --log-level=0 --enable-logging=stderr --v=1 --js-flags='--trace_opt_verbose --expose_debug_as --trace'"
-
-
 https://github.com/c9/vfs
-
 http://usejsdoc.org/about-getting-started.html
 http://grunt-docular.com/
 http://stackoverflow.com/questions/24963426/how-to-run-grunt-docular-server
-
-
-/usr/bin/killall -q -e Chuppy
-
 
 https://www.npmjs.org/package/file-encryptor
 
@@ -57,13 +41,11 @@ http://strongloop.com/node-js/controller/
 
 https://github.com/kaepora/miniLock
 
-[![Code Climate](https://codeclimate.com/github/LogIN-/chuppy.png)](https://codeclimate.com/github/LogIN-/chuppy)
-
 https://github.com/peers/peerjs-server
 
 http://cuemol.sourceforge.jp/en/
 
 ## Start server 
 pm2 -i max --name "Chuppy Tunnel" -e tunnel-err.log -o tunnel-out.log start ./bin/server -- --port 8085
-
 cloc  --exclude-dir=builds,tools,temp,node_modules,vendor ./
+"chromium-args": "--disable-threaded-animation --enable-threaded-compositing --enable-usermedia-screen-capturing --log-level=0 --enable-logging=stderr --v=1 --js-flags='--trace_opt_verbose --expose_debug_as --trace'"

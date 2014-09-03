@@ -1,40 +1,43 @@
 {
-    "name": "Chuppy",
-    "description": "Grunt automated Chuppy building app",
-    "version": "0.1.0",
-    "homepage": "https://github.com/LogIN-/chuppy",
-    "author": {
-        "name": "LogIN",
-        "email": "info@ivantomic.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/LogIN-/chuppy.git"
-    },
-    "bugs": {
-        "url": "https://github.com/LogIN-/chuppy/issues"
-    },
-    "licenses": [{
-        "type": "The MIT License (MIT)",
-        "url": "https://github.com/LogIN-/chuppy/blob/master/LICENSE"
-    }],
-    "main": "Gruntfile.js",
-    "engines": {
-        "node": ">= 0.8.0"
-    },
-    "devDependencies": {
-        "grunt": "^0.4.5",
-        "grunt-contrib-csslint": "^0.2.0",
-        "grunt-contrib-jshint": "~0.6.4",
-        "grunt-contrib-nodeunit": "~0.2.0",
-        "grunt-contrib-watch": "~0.5.3",
-        "grunt-docular": "^0.1.2",
-        "grunt-node-webkit-builder": "^0.1.21",
-        "grunt-nodemon": "^0.3.0",
-        "grunt-ssh": "^0.11.2"
-    },
-    "peerDependencies": {
-        "grunt": "^0.4.5"
-    },
-    "keywords": []
+  "name": "Chuppy",
+  "description": "Grunt automated Chuppy building app",
+  "version": "0.1.0",
+  "homepage": "https://github.com/LogIN-/chuppy",
+  "author": {
+    "name": "LogIN",
+    "email": "info@ivantomic.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/LogIN-/chuppy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LogIN-/chuppy/issues"
+  },
+  "licenses": [
+    {
+      "type": "The MIT License (MIT)",
+      "url": "https://github.com/LogIN-/chuppy/blob/master/LICENSE"
+    }
+  ],
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-csslint": "^0.2.0",
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-docular": "^0.1.2",
+    "grunt-node-webkit-builder": "^0.1.21",
+    "grunt-nodemon": "^0.3.0",
+    "grunt-ssh": "^0.11.2"
+  },
+  "peerDependencies": {
+    "grunt": "^0.4.5"
+  },
+  "keywords": []
 }

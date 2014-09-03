@@ -3,8 +3,8 @@
  * @Date:   2014-08-22 10:39:49
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:47:02
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-08-28 13:59:42
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-/* global dumpWindowState, restoreWindowState, openExternal */
+// Set global variable for Jslint
+/* global dumpWindowState, restoreWindowState, openExternal, Chuppy */
 
 // Global window behaver functions
-App.Utils.Window = {
+Chuppy.Utils.Window = {
     // Maximize current window
     minimize: function() {
         win.minimize();
@@ -53,19 +53,19 @@ App.Utils.Window = {
     action: function(action_type) {
         switch (action_type) {
             case 0: // data-id 0 minimize window action
-                App.Utils.Window.minimize();
+                Chuppy.Utils.Window.minimize();
                 break;
             case 1: // data-id 1 maximize window action
-                App.Utils.Window.maximize();
+                Chuppy.Utils.Window.maximize();
                 break;
             case 2: // data-id 2 unmaximize window action
-                App.Utils.Window.unmaximize();
+                Chuppy.Utils.Window.unmaximize();
                 break;
             case 3: // data-id 3 shutdown window action
-                App.Utils.Helpers.exit();
+                Chuppy.Utils.Helpers.exit();
                 break;
             default: // defoult action is to maximize window
-                App.Utils.Window.maximize();
+                Chuppy.Utils.Window.maximize();
 
         }
 
@@ -82,18 +82,25 @@ App.Utils.Window = {
 
             // Give it a menu
             var menu = new gui.Menu();
+            
             menu.append(new gui.MenuItem({
                 type: "normal",
-                label: 'Exit',
-                icon: "lib/images/icon.png",
+                label: 'About',
+                icon: "lib/images/system-icons/system/holo_light/13_extra_actions_about/drawable-xhdpi/ic_action_about.png",
                 click: function() {
-                    // win.hide();
-                    // console.log("We're closing...");
-                    // win.close(true);
-                    // Quit current app
-                    App.Utils.Helpers.exit();
+                    console.log("About");
                 }
             }));
+
+            menu.append(new gui.MenuItem({
+                type: "normal",
+                label: 'Quit',
+                icon: "lib/images/system-icons/system/holo_light/12_alerts_and_states_error/drawable-xhdpi/ic_action_error.png",
+                click: function() {
+                    Chuppy.Utils.Helpers.exit();
+                }
+            }));            
+
             tray.menu = menu;
         }
         // Show window and remove tray when clicked

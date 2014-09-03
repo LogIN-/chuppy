@@ -3,8 +3,8 @@
  * @Date:   2014-08-21 18:22:30
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:26
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:06:04
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,9 +28,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global localtunnel, ftpd, staticWeb, http, util, crypt, async, freeport */
-App.Utils.Share.LocalTunel = {
+Chuppy.Utils.Share.LocalTunel = {
 
     /* Creates local tunnel 
      * {parm} host - upstream server providing forwarding
@@ -48,21 +49,21 @@ App.Utils.Share.LocalTunel = {
         };
         localtunnel(port, opt, function(err, tunnel) {
             if (err) {
-                App.Utils.Template.globalNotify('error', i18n.__('Error: Chuppy could not share {{name}}. Please report bug.', {
+                Chuppy.Utils.Template.globalNotify('error', i18n.__('Error: Chuppy could not share {{name}}. Please report bug.', {
                     name: 'Other'
                 }), 'body', '', '', 30000);
                 console.log(err);
                 // Stop activated server
-                App.Apps.App["com.files"].Main.Public.Webserver.stopServer(port);
+                Chuppy.Apps.App["com.files"].Main.Public.Webserver.stopServer(port);
             } else {
                 // the assigned public url for your tunnel
                 // {"_closed":false,"_opt":{"port":42756,"host":"https://localtunnel.me"},"url":"https://tjbsdobkwh.localtunnel.me","tunnel_cluster":{"_opt":{"remote_host":"localtunnel.me","remote_port":34255,"name":"tjbsdobkwh","url":"https://tjbsdobkwh.localtunnel.me","max_conn":10,"local_host":null,"local_port":42756},"domain":null,"_events":{"open":[{"listener":{}},{}],"dead":{}},"_maxListeners":10}}
-                App.Utils.Template.globalNotify('success', i18n.__('Public share {{name}} is publicly accessible from: <br /> {{link}}', {
+                Chuppy.Utils.Template.globalNotify('success', i18n.__('Public share {{name}} is publicly accessible from: <br /> {{link}}', {
                     name: 'Other',
                     link: tunnel.url
                 }), 'body', '', '', 30000);
                 // Set active URL in current web-server object
-                App.Apps.App["com.files"].Main.Public.Webserver.setKeys(tunnel._opt.port, {
+                Chuppy.Apps.App["com.files"].Main.Public.Webserver.setKeys(tunnel._opt.port, {
                     system: {
                         publicURL: tunnel.url
                     }
@@ -80,14 +81,14 @@ App.Utils.Share.LocalTunel = {
     },
     // Start web server and server directory contains
     startHttpServer: function(itemPath, port) {
-        App.Apps.App["com.files"].Main.Public.Webserver.createServer(itemPath, port);
+        Chuppy.Apps.App["com.files"].Main.Public.Webserver.createServer(itemPath, port);
     },
     registerShare: function(itemPath) {
         // Get first free port and start server
         freeport(function(er, port) {
-            App.Utils.Share.LocalTunel.startHttpServer(itemPath, port);
+            Chuppy.Utils.Share.LocalTunel.startHttpServer(itemPath, port);
             // Create tunnel to this service
-            App.Utils.Share.LocalTunel.createTunnel('http://chuppy.cu.cc', port, 'localhost', null);
+            Chuppy.Utils.Share.LocalTunel.createTunnel('http://chuppy.cu.cc', port, 'localhost', null);
         });
     }
 

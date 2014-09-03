@@ -1,22 +1,43 @@
+/* 
+* @Author: LogIN
+* @Date:   2014-08-24 13:46:46
+* @Email:  unicoart@gmail.com
+* @URL:    https://github.com/LogIN-/chuppy
+* @Last Modified by:   LogIN
+* @Last Modified time: 2014-08-29 15:02:30
+* Use of this source code is governed by a license: 
+* The MIT License (MIT)
+* 
+* Copyright (c) 2014-08-24 13:46:46 The Chuppy Authors
+* 
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+* 
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+* 
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*/
+
 @charset "UTF-8";
 
-/* Disable user select in app */
-
-* {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none; 
-    -ms-user-select: none;
-    user-select: none;
-}
 ::selection {
-    background: greenyellow;
-    color: rgba(53, 47, 47, 0.63); 
+    background-color: rgb(171, 171, 171);
+    color: rgb(255, 255, 255);
 }
 ::-moz-selection {
-    background: greenyellow;
-    color: rgba(53, 47, 47, 0.63);
+    background-color: rgb(171, 171, 171);
+    color: rgb(255, 255, 255);
 }
 html {
     margin: 0;
@@ -109,7 +130,9 @@ header {
     outline: 0;
 }
 /* Our main header */
-
+#top-headers {
+    -webkit-user-select: none;
+}
 #header-bar {
     height: 85px;
     background-color: #F5F5F5;
@@ -124,6 +147,9 @@ header {
     line-height: 85px;
     text-align: center;
     width: 100%;
+    font-family: cursive;
+    font-weight: bold;
+    color: #3D3D3D;
 }
 #header-bar-content {
     height: 85px;
@@ -179,7 +205,7 @@ header {
 #header-bar-content > #header-user-home .btn-group button {
     width: 30px;
     height: 30px;
-    background-image: url(/lib/images/system-icons/system/holo_light/13_extra_actions_settings/drawable-xhdpi/ic_action_settings.png);
+    background-image: url(../images/system-icons/system/holo_light/13_extra_actions_settings/drawable-xhdpi/ic_action_settings.png);
     background-color: transparent;
     background-size: 30px;
     background-position: center;
@@ -224,7 +250,9 @@ footer {
     z-index: 10;
     color: #999;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+    -webkit-user-select: none;
     -webkit-app-region: drag;
+    cursor: default;
 }
 footer > .small {
     font-size: 13px;
@@ -232,7 +260,7 @@ footer > .small {
 }
 /* First run declaimer */
 
-#chuppy-firstrun {} .quitting:before {
+#chuppy-firstrun  .quitting:before {
     color: #ffffff;
     content: "Quitting application....";
     display: inline-block;
@@ -317,10 +345,11 @@ footer > .small {
 .loading_screen {
     background-color: #000000;
     background-color: rgba(0, 0, 0, 0.9);
-    min-height: 100%;
-    min-width: 100%;
+    height: calc(100% - 50px);
+    width: 100%;
     position: absolute;
     z-index: 10;
+    top: 20px;
 }
 /* LOGIN FORM */
 
@@ -336,6 +365,8 @@ footer > .small {
     padding: 0;
     background-color: rgba(0, 0, 0, 0.9);
     z-index: 10;
+    -webkit-user-select: none;
+    cursor: default;
 }
 #loginBox .container_row {
     min-height: 60%;
@@ -349,7 +380,7 @@ footer > .small {
 }
 #loginBox h4 {
     text-align: center;
-    color: #ababab;
+    color: #555;
     font-size: 32px;
     font-weight: bold;
     height: 75px;
@@ -479,8 +510,11 @@ footer > .small {
     margin: 0;
     background-color: white;
     position: relative;
-    min-height: 100%;
+    min-height: calc(100% - 135px);
     float: right;
+    clear: both;
+    height: 100%;
+    max-height: calc(100% - 135px);
 }
 
 /* Start of left content menu */
@@ -505,8 +539,8 @@ footer > .small {
     padding-left: 0;
     float: left;
     height: 100%;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
     background-color: #F5F5F5;
+    -webkit-user-select: none;
 }
 #left-navigation .sidebar-nav .navbar .navbar-collapse {
     padding: 0;
@@ -530,7 +564,7 @@ footer > .small {
     cursor: pointer;
     -moz-user-select: none;
     width: 100%;
-    border-bottom: 1px solid whitesmoke;
+    box-shadow: 0 -1px 0 #FFF;
 }
 #left-navigation .navbar li.active {
     background-color: #555;
@@ -548,10 +582,137 @@ footer > .small {
 .menuItemName {
     width: 70%;
     height: 50px;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     -webkit-font-smoothing: antialiased;
+    padding-left: 10px;
+}
+.menuItemName:first-letter {
+    text-transform: uppercase;
 }
 /* left side navigation */
+
+
+
+/* TABS CONTENT STYLES  resets */
+div#application-tabs {
+    padding: 0;
+    border: none;
+    background: transparent;
+    min-height: 100%;
+    max-height: 100%;
+    height: 100%;
+}
+#application-tabs .ui-tabs-nav {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    border: none;
+    background: transparent;
+    max-height: 25px;
+    float: left;
+    width: 100%;
+    top: 80px;
+    overflow: hidden;
+    height: 25px;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li {
+    float: left;
+    margin: 0;
+    height: 25px;
+    line-height: 25px;
+    clear: right;
+    padding: 0;
+    border: 1px solid rgb(0, 0, 0);
+    border-bottom: 0;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    margin-right: 2px;
+    width: 115px;
+    max-width: 115px;
+}
+
+#application-tabs.ui-tabs .ui-tabs-nav li a {
+    padding: 0;
+    padding-left: 10px;
+    text-decoration: none;
+    padding-right: 15px;
+    font-size: 12px;
+    -webkit-user-select: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li a span.glyphicon.glyphicon-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 9px;
+    font-weight: bold;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-hover {   
+    color: #333 !important;
+    cursor: pointer !important;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-active {
+    background: #FFFFFF !important;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-default {
+    background: #555;
+}
+
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-default a, #application-tabs.ui-tabs .ui-tabs-nav li.ui-state-default a span.glyphicon.glyphicon-remove {
+    color: #ffffff !important;
+}
+#application-tabs.ui-tabs .ui-tabs-nav li.ui-state-active a, #application-tabs.ui-tabs .ui-tabs-nav li.ui-state-active a span.glyphicon.glyphicon-remove {
+    color: #333 !important;
+}
+
+#application-tabs.ui-tabs .ui-tabs-panel {
+    display: block;
+    border-width: 0;
+    padding: 0;
+    background: none;
+}
+
+#application-tabs.ui-tabs > div.ui-tabs-panel.ui-widget-content {
+    height: 100%;
+    max-height: 100%;
+    min-height: 100%;
+}
+/* SUPPORT FOR IFRAME VIEWS */
+
+.iframeViewer {
+    width: 100%;
+    height: 100%;
+    border-width: 0;
+}
+
+ul.multipleActionDialogChooser {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+ul.multipleActionDialogChooser li {
+    height: 35px;
+    line-height: 35px;
+    width: 100%;
+    margin: 5px;
+    cursor: pointer;
+    --webkit-user-select: none;
+}
+ul.multipleActionDialogChooser li span.titleText.pull-left {
+    padding-left: 10px;
+}
+ul.multipleActionDialogChooser li.actionSelected {
+    outline: 2px dashed rgb(85, 85, 85);
+} 
+ul.multipleActionDialogChooser li div img {
+    margin-left: 5px;
+}

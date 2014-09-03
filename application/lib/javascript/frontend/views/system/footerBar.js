@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:45:30
+ * @Last Modified time: 2014-08-28 10:07:44
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,10 +28,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // The Application footer bar 
-// Our overall **App.View.** is the top-level piece of UI.
-App.View.footerBar = Backbone.View.extend({
+// Our overall **Chuppy.View.** is the top-level piece of UI.
+
+Chuppy.View.footerBar = Backbone.View.extend({
     template: null,
     // Bind to the existing skeleton of
     // the App already present in the HTML.
@@ -46,9 +49,9 @@ App.View.footerBar = Backbone.View.extend({
 
     // At initialization we bind to the relevant events
     initialize: function() {
-        console.log("initialized: App.View.footerBar");
+        console.log("initialized: Chuppy.View.footerBar");
 
-        this.template = _.template(App.Utils.Template.loadTemplate('lib/templates/main-ui/footer.tpl', 'sync'), {});
+        this.template = _.template(Chuppy.Utils.Template.loadTemplate('lib/templates/main-ui/footer.tpl', 'sync'), {});
         // Ensure our methods keep the `this` reference to the view itself
         _.bindAll(this, 'render');
         this.render();
@@ -62,6 +65,6 @@ App.View.footerBar = Backbone.View.extend({
     removeView: function() {
         $(this.el).empty();
         this.undelegateEvents();
-        console.log("SYSTEM: App.View.footerBar removeView");
+        console.log("SYSTEM: Chuppy.View.footerBar removeView");
     }
 });

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:47:13
+ * @Last Modified time: 2014-08-31 13:43:51
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,9 +28,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
+// Set global variable for Jslint
+/* global Chuppy */
 // Common functions
-App.Utils.Functions = {
+Chuppy.Utils.Functions = {
     //  Converts form elements to a valid JSON object 
     serilizeObject: function(form) {
         "use strict";
@@ -74,7 +75,7 @@ App.Utils.Functions = {
             icon = "lib/images/system-icons/extensions/" + extension + ".png";
             iconDefault = "file";
         }
-        if (type === 0 && fs.existsSync(icon)) {
+        if (type === 0 && Chuppy.Utils.FileSystem.existsSync(icon)) {
             return extension;
         } else {
             return iconDefault;
@@ -121,7 +122,7 @@ App.Utils.Functions = {
      */
     doPlaySound: function(file, volume) {
         if (typeof volume === 'undefined') {
-            volume = 1.0;
+            volume = 1;
         }
         console.info('doPlaySound()', file);
         var audio = new Audio(file);

@@ -3,9 +3,9 @@
  * @Date:   2014-07-30 11:41:37
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-22 16:48:36
- * Use of this source code is governed by a license:
+ * @Last Modified by:   login
+ * @Last Modified time: 2014-08-28 10:04:26
+ * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  *
  * Copyright (c) 2014-07-30 11:41:37 The Chuppy Authors
@@ -27,9 +27,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- */
-
-/**
+ *
  * Cross-platform window state preservation.
  * Yes this code is quite complicated, but this is the best I came up with for
  * current state of node-webkit Window API (v0.7.3 and later).
@@ -50,6 +48,8 @@
  * - Repared workaround (from 2013-12-01) behaviour when use frameless window.
  *   Now it works correctly.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // extra height added in linux x64 gnome-shell env, use it as workaround
 var deltaHeight = (function() {
@@ -100,7 +100,7 @@ function dumpWindowState() {
 }
 
 function initWindowState() {
-    winState = JSON.parse(App.Settings.getLocal('windowState') || 'null');
+    winState = JSON.parse(Chuppy.Settings.getLocal('windowState') || 'null');
 
     if (winState) {
         currWinMode = winState.mode;
@@ -122,7 +122,7 @@ function initWindowState() {
 
 function saveWindowState() {
     dumpWindowState();
-    App.Settings.setLocal('windowState', JSON.stringify(winState));
+    Chuppy.Settings.setLocal('windowState', JSON.stringify(winState));
 }
 initWindowState();
 

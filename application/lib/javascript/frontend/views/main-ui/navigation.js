@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   login
- * @Last Modified time: 2014-08-22 16:45:04
+ * @Last Modified time: 2014-08-28 10:07:50
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -28,11 +28,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+// Set global variable for Jslint
+/* global Chuppy */
 
 // The Application navigation bar 
-// Our overall **App.View.** is the top-level piece of UI.
+// Our overall **Chuppy.View.** is the top-level piece of UI.
 
-App.View.navigation = Backbone.View.extend({
+Chuppy.View.navigation = Backbone.View.extend({
     apps: null,
     template: null,
     // Bind to the existing skeleton of
@@ -48,10 +50,10 @@ App.View.navigation = Backbone.View.extend({
     initialize: function(options) {
         var self = this;
 
-        console.log("initialized: App.View.navigation");
+        console.log("initialized: Chuppy.View.navigation");
         // list of apps with details
         self.apps = options.menuItems;
-        self.template = _.template(App.Utils.Template.loadTemplate('lib/templates/main-ui/left-navigation.tpl', 'sync'), self.apps, {
+        self.template = _.template(Chuppy.Utils.Template.loadTemplate('lib/templates/main-ui/left-navigation.tpl', 'sync'), self.apps, {
             variable: 'menuItems'
         });
         self.render();
@@ -66,12 +68,12 @@ App.View.navigation = Backbone.View.extend({
         var element = $(e.currentTarget);
         var appID = element.attr('data-href');
         // load and start application
-        App.Public.System.startApp(appID);
+        Chuppy.Public.System.startApp(appID);
     },
     removeView: function() {
         var self = this;
         $("#left-navigation").remove();
         self.undelegateEvents();
-        console.log("SYSTEM: App.View.navigation removeView");
+        console.log("SYSTEM: Chuppy.View.navigation removeView");
     }
 });

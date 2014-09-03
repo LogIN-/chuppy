@@ -28,15 +28,17 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-
+// Set global variable for Jslint
+/* global Chuppy */
 /* global dbORM:true, knex:true */
 
 // Define our app starting objects
 // others are defined in lib/globals.js
-App.Apps.App["com.files"] = {Main: {}, Setup: null};
+Chuppy.Apps.App["com.files"] = {Main: {}, Setup: null};
 
-App.Apps.App["com.files"].Setup = function(options){
+Chuppy.Apps.App["com.files"].Setup = function(options){
     var self = this;
+    self.FilesMain = null;
 
     self.options = {
         "name-space": "com.files",
@@ -48,20 +50,29 @@ App.Apps.App["com.files"].Setup = function(options){
         "enabled": true,
         "default": true,
         "order": 0,
-        "icon": "/apps/com.files/lib/images/favicon.png",
-        "init": false,
+        "icon": "apps/com.files/lib/images/favicon.png",
+        // ID of parent application css container added dynamically from ApplicationBody.js main view
+        // {container: "#application-tabs-" + uid}
+        // But will always have #application-tabs[data-namespace='app.namespace']
+        "uid": null,
+        // Path to File/Directory if needed
+        "filePath": null,
+        // Path to File/Directory if needed
+        "workspaceRoot": null
     };
-    self.options = _.extend( this.options, options);
+    self.options = _.extend(this.options, options);
+    console.info("App defaults initialized!");
+    console.info(self.options);
 
     // Setup needed database for app and include needed files (js/css)
-    // All include JS and Css files must have app prefix exp. 
-    // JS: App.Apps.App["com.files"].Utils 
+    // All include JS and CSS files must have app prefix exp. 
+    // JS: Chuppy.Apps.App["com.files"].Utils 
     // CSS: #my-files-app .someclass
     self.setupDependencies = function () {
-        
+        console.info("Setting up app dependencies");
         // main application template
-        var template = _.template(App.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/main.tpl', 'sync'));
-        $("#application-body").html(template);
+        var template = _.template(Chuppy.Utils.FileSystem.readFileLocal('apps/com.files/lib/templates/main.tpl', 'sync'));
+        $("#application-tabs-" + self.options.uid).html(template);
 
         self.setupDatabase();
         self.setupIncludes();
@@ -70,36 +81,40 @@ App.Apps.App["com.files"].Setup = function(options){
     // After successful app init this function is called
     // Here is a place where magic should happen
     self.initilizeAppUI = function () {
-        if(self.options.init === false){
-            // Little Hack to display loading while waiting async operations
-            var interval = setInterval(function() {
-                if (typeof App.Apps.App["com.files"].Main.Private.Init === "function") {                     
+        var counter = 0;
+        // Little Hack to display loading while waiting async operations
+        var interval = setInterval(function() {
+            if(counter === 100){
+                console.log("App loading canceled");
+                clearInterval(interval);
+                return;
+            }
+            if (typeof Chuppy.Apps.App["com.files"].Main.Private !== "undefined") {     
+                 if (typeof Chuppy.Apps.App["com.files"].Main.Private.Init === "function") {         
                     clearInterval(interval);
                     // Create our application object
-                    App.Apps.App["com.files"].Main.Public.Init = new App.Apps.App["com.files"].Main.Private.Init();
+                    self.FilesMain = new Chuppy.Apps.App["com.files"].Main.Private.Init(self.options);
                     // Render application
-                    App.Apps.App["com.files"].Main.Public.Init.initialize();
+                    self.FilesMain.initialize();
                 }else{
-                    console.log("Loading application data");
+                    console.log("com.files Private.Init undefined");
                 }
-            }, 100);
-
-        }else{
-            console.log("App.Apps.Com.files already initialized");
-        }
-
-        self.options.init = true;       
-
+            }else{
+                counter++;
+                console.log("Loading application data");
+            }
+        }, 100);
     };
     // Remove current app dependencies 
-    // Called from App.Utils.Apps
+    // Called from Chuppy.Utils.Apps
     self.removeView = function () {
         // Remove all HTML tags/includes by data-id
-        App.Utils.Apps.resetValues(['com.files']);
+        Chuppy.Utils.Apps.resetValues([self.options]);
     };
 
 };
-App.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
+// Any app database tables that should be created
+Chuppy.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
     // Check if table is already in DB
     dbORM.knex.schema.hasTable('apps_files').then(function(exists) {
         if (!exists) {
@@ -120,36 +135,39 @@ App.Apps.App["com.files"].Setup.prototype.setupDatabase = function(){
     });
 };
 
-App.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
+// Any app scripts(depencies), CCS files that should be included in body
+Chuppy.Apps.App["com.files"].Setup.prototype.setupIncludes = function(){
 
     var self = this;
+    // Needed scripts
     var scripts = [
-        '/apps/com.files/lib/javascript/globals.js',
-        '/apps/com.files/lib/javascript/lib/utils/database.js',
-        '/apps/com.files/lib/javascript/lib/utils/filesystem.js',        
-        '/apps/com.files/lib/javascript/lib/utils/webserver.js',        
-        '/apps/com.files/lib/javascript/frontend/models/explorer.items.js',
-        '/apps/com.files/lib/javascript/frontend/models/breadcrumb.items.js',
-        '/apps/com.files/lib/javascript/frontend/collections/explorer.collection.js',
-        '/apps/com.files/lib/javascript/frontend/collections/breadcrumb.collection.js',
-        '/apps/com.files/lib/javascript/frontend/views/breadcrumb.js',
-        '/apps/com.files/lib/javascript/frontend/views/explorer.js',
-        '/apps/com.files/lib/javascript/main.js'
+        'apps/com.files/lib/javascript/globals.js',
+        'apps/com.files/lib/javascript/lib/utils/database.js',
+        'apps/com.files/lib/javascript/lib/utils/filesystem.js',        
+        'apps/com.files/lib/javascript/lib/utils/webserver.js',        
+        'apps/com.files/lib/javascript/frontend/models/explorer.items.js',
+        'apps/com.files/lib/javascript/frontend/models/breadcrumb.items.js',
+        'apps/com.files/lib/javascript/frontend/collections/explorer.collection.js',
+        'apps/com.files/lib/javascript/frontend/collections/breadcrumb.collection.js',
+        'apps/com.files/lib/javascript/frontend/views/breadcrumb.js',
+        'apps/com.files/lib/javascript/frontend/views/explorer.js',
+        'apps/com.files/lib/javascript/main.js'
     ];
+    // Needed Styles
     var styles = [
-        '/apps/com.files/lib/stylesheets/main.css'
+        'apps/com.files/lib/stylesheets/main.css'
     ];
-
+    // Actually include them:
     if(scripts.length > 0){ 
         // Create external script tags
         _.each(scripts, function(script){
-            App.Utils.Template.createHTMLTag(script, self.options["name-space"], "script");
+            Chuppy.Utils.Template.createHTMLTag(script, self.options, "script");
         });
     }
     if(styles.length > 0){ 
         // Create external style tags
         _.each(styles, function(style){
-            App.Utils.Template.createHTMLTag(style, self.options["name-space"], "style");
+            Chuppy.Utils.Template.createHTMLTag(style, self.options, "style");
         });
     }
 
