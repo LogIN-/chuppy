@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-08-28 10:06:41
+ * @Last Modified time: 2014-09-26 10:42:29
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -70,8 +70,8 @@ Chuppy.Utils.Developer = {
             developerSubmenu.append(exitItem);
             win.menu = menubar;
 
-            Chuppy.Utils.FileSystem.rmdirSync('/home/login/documents/apps/science/builds/debug');
-            gui.App.setCrashDumpDir('/home/login/documents/apps/science/builds/debug');
+            // Chuppy.Utils.FileSystem.rmdirSync('/home/login/documents/repos/chuppy/builds/debug');
+            gui.App.setCrashDumpDir('/home/login/documents/repos/chuppy/builds/debug');
         }
         // F12 Opens DevTools
         Mousetrap.bindGlobal('f12', function() {

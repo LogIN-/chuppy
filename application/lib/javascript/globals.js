@@ -3,8 +3,8 @@
  * @Date:   2014-08-20 13:13:50
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
- * @Last Modified by:   login
- * @Last Modified time: 2014-08-31 13:25:54
+ * @Last Modified by:   LogIN
+ * @Last Modified time: 2014-09-26 12:19:32
  * Use of this source code is governed by a license: 
  * The MIT License (MIT)
  * 
@@ -77,7 +77,7 @@ var
     // Get free port number as reference to start server
     freeport = require('freeport'),
     // Simple featureless FTP server
-    ftpd = require('ftp-server'),
+    // ftpd = require('ftp-server'),
     // node util module
     util = require('util'),
     // URL resolution and parsing

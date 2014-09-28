@@ -28,24 +28,27 @@ For view management its heavily uses backbonejs
 ### How to run Chuppy source code?
 Chuppy is not yet ready for compiling and running, this is developer release!
 but if you wont give it a shoot use (dev) branch and:
-Few thing you will need:
+Few thing you will need: 
 * NodeJS - http://nodejs.org/
 * Grunt - http://gruntjs.com/installing-grunt
 * node-sqlite3 - https://github.com/mapbox/node-sqlite3
     It must be compiled for desired platform to run properly:
 ```
-    1. nodejs: [installing guide](http://bit.ly/1pHkjRW)
+    1. nodejs(v0.11.14-pre): [installing guide](http://bit.ly/1pHkjRW)
     2. [Grunt](http://gruntjs.com/getting-started) : sudo npm install -g grunt-cli
     3. [nw-gyp](https://github.com/rogerwang/nw-gyp): sudo npm install nw-gyp -g
     4. Install deps from main package.json file - npm install
     5. Install deps from app package.json file  - cd application/ && npm install
     6. Compile [sqlite3](https://github.com/mapbox/node-sqlite3#building-for-node-webkit) for your platform: 
-       sudo npm install sqlite3 --build-from-source --runtime=node-webkit --target_arch=ia32 --target="0.10.3"
-       In case of error: sqlite3 -> package.json -> replace "module_path": "./lib/binding/node-webkit-v0.10.3-linux-ia32"
-    7. Edit: node_modules/grunt-node-webkit-builder/tasks/node_webkit_builder.js Edit: L:49-77 ["files"] add missing file(s) like icudt.dat
-    8. Add grunt.sublime-build as build system in Sublime or just run grunt from shell. If everything is correctly set `Chuppy` should run.
+       npm install sqlite3 --runtime=node-webkit --target_arch=ia32 --target=0.10.3
+       (Rename ./application/node_modules/sqlite3/lib/binding/node-webkit-v0.10.3-linux-ia32 to node-webkit-v14-linux-ia32 )
+       http://node-webkit.s3.amazonaws.com/v0.10.4/nw-headers-v0.10.3.tar.gz
+    7. Add grunt.sublime-build as build system in Sublime or just run grunt from shell. If everything is correctly set `Chuppy` should run.
+    8. Download http://dl.node-webkit.org/v0.10.3/ and unpack in ./builds/cache/0.10.3/linux32/
+    8. Run basic build script: sh ./build.sh
+    9. Build (exe) is now: ./builds/Chuppy/linux32/Chuppy
     Current versions:
-    - Node          v0.11.13
+    - Node          v0.11.14-pre
     - Chromium      35.0.1916.157
     - node-webkit   v0.10.3
 ```

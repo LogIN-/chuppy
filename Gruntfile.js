@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-09-01 18:43:49
+ * @Last Modified time: 2014-09-26 11:41:06
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -85,41 +85,45 @@ module.exports = function(grunt) {
                 tasks: ['jshint:test', 'nodeunit']
             },
         },
-        nodewebkit: {
-            options: {
-                version: '0.10.3',
-                build_dir: './builds', // Where the build version of my node-webkit app is saved
-                credits: './application/credits.html',
-                force: false,
-                mac_icns: './application/icon.icns', // Path to the Mac icon file
-                mac: false, // We don't need mac
-                win: false, // We don't need win
-                linux32: true, // We want to build it for lin32
-                linux64: false // We don't need linux64
-            },
-            src: './application/**/*' // node-webkit app
-        },
-        copy: {
-            main: {
-                files: [{
-                    src: 'libraries/win/ffmpegsumo.dll',
-                    dest: 'builds/releases/Chuppy/win/Chuppy/ffmpegsumo.dll',
-                    flatten: true
-                }, {
-                    src: 'libraries/mac/ffmpegsumo.so',
-                    dest: 'builds/releases/Chuppy/mac/Chuppy.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/ffmpegsumo.so',
-                    flatten: true
-                }, {
-                    src: 'libraries/linux64/ffmpegsumo.so',
-                    dest: 'builds/releases/Chuppy/linux64/Chuppy/libffmpegsumo.so',
-                    flatten: true
-                }, {
-                    src: 'libraries/linux32/ffmpegsumo.so',
-                    dest: 'builds/releases/Chuppy/linux32/Chuppy/libffmpegsumo.so',
-                    flatten: true
-                }]
-            }
-        },
+        // DEPRICIATED
+        //nodewebkit: {
+        //    options: {
+        //        version: '0.10.1',
+        //        buildDir: './builds', // Where the build version of my node-webkit app is saved
+        //        cacheDir: './builds/cache',
+        //        macCredits: './application/credits.html',
+        //        forceDownload: false,
+        //        macIcns: './application/icon.icns', // Path to the Mac icon file
+        //        platforms: ['linux32'],
+        //        // mac: false, // We don't need mac
+        //        // win: false, // We don't need win
+        //        // linux32: true, // We want to build it for lin32
+        //        // linux64: false // We don't need linux64
+        //    },
+        //    src: ['./application/**/*'] // node-webkit app
+        //},
+        // DEPRICIATED
+        // copy: {
+        //     main: {
+        //         files: [{
+        //             src: 'libraries/win/ffmpegsumo.dll',
+        //             dest: 'builds/Chuppy/win/Chuppy/ffmpegsumo.dll',
+        //             flatten: true
+        //         }, {
+        //             src: 'libraries/mac/ffmpegsumo.so',
+        //             dest: 'builds/Chuppy/mac/Chuppy.app/Contents/Frameworks/node-webkit Framework.framework/Libraries/ffmpegsumo.so',
+        //             flatten: true
+        //         }, {
+        //             src: 'libraries/linux64/ffmpegsumo.so',
+        //             dest: 'builds/Chuppy/linux64/Chuppy/libffmpegsumo.so',
+        //             flatten: true
+        //         }, {
+        //             src: 'libraries/linux32/ffmpegsumo.so',
+        //             dest: 'builds/Chuppy/linux32/Chuppy/libffmpegsumo.so',
+        //             flatten: true
+        //         }]
+        //     }
+        // },
         nodemon: {
             dev: {
                 script: './server/index.js',
@@ -214,41 +218,49 @@ module.exports = function(grunt) {
     // These plugins provide necessary tasks.
     // grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-csslint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-node-webkit-builder');
-    grunt.loadNpmTasks('grunt-nodemon');
-    grunt.loadNpmTasks('grunt-docular');
-    grunt.loadNpmTasks('grunt-ssh');
-    grunt.loadNpmTasks('grunt-contrib-copy');
+    // npm install grunt-contrib-csslint --save-dev
+    
+    //grunt.loadNpmTasks('grunt-contrib-csslint');
+    //grunt.loadNpmTasks('grunt-contrib-watch');
+    //grunt.loadNpmTasks('grunt-node-webkit-builder');
+    //grunt.loadNpmTasks('grunt-nodemon');
+    //grunt.loadNpmTasks('grunt-docular');
+    //grunt.loadNpmTasks('grunt-contrib-copy');
+    //grunt.loadNpmTasks('grunt-ssh');   
+
     // Default task.
     //grunt.registerTask('default', [ 'sftp', 'sshexec', 'nodewebkit']);
-    grunt.registerTask('default', ['jshint','nodewebkit', 'copy']);
+    grunt.registerTask('default', ['jshint']);
 
 
-    // grunt.registerTask('updateyVersion', function(){         
-    //     var assemblyFile = grunt.file.read('./AssemblyInfo.cs');
-    //     var lines = assemblyFile.split('\n');
-         
-    //     var version = '';
-    //     var versionParts = '';
-    //     var searchString = 'AssemblyVersion';
-     
-    //     _.each(lines, function (line, index) {
-    //         if (line.indexOf(searchString) != -1) {
-    //             version = line.match(/\d+\.\d+\.\d+\.\d+/g).toString();
-    //             versionParts = version.split('.');
-     
-    //             versionParts[3] = parseInt(versionParts[3], 10) + 1;
-     
-    //             lines[index] = line.replace(version, versionParts.join('.'));
-    //         }
-    //     });
-     
-    //     var updatedAssemblyFile = lines.join('\n');       
-    //     grunt.file.write('./AssemblyInfo.cs', updatedAssemblyFile);
-     
-    //     grunt.log.write('Updated to version: ' + versionParts);
-    // });
+//    grunt.registerTask('updateyVersion', 'A sample task that logs build number.' function() {
+//        var versionFilePath = './version.json';
+//        var versionFile = grunt.file.readJSON(versionFilePath) || null;
+//        // DEFOULTS
+//        /* Root version number: 0.1 */
+//        var mainVersionNumber = versionFile.mainVersion || "0.1";
+//        /* Sub Version number: 0 */
+//        var subVersionNumber = versionFile.subVersion || "0";
+//        /* Build number: 78 */
+//        var buildNumber = versionFile.buildNumber || "0";
+//        /* Full version number: 0.1.0 */
+//        var version =  versionFile.version || "0.1.0";
+//
+//        buildNumber = buildNumber + 1;
+//        if(buildNumber % 10 === 0){
+//            subVersionNumber = subVersionNumber + 1;
+//            buildNumber = 0;
+//            version = version.substring(0, string.lastIndexOf('.')) + "." + subVersionNumber;
+//        }
+//        versionFile = {
+//            "version" : version,
+//            "mainVersion" : mainVersionNumber,
+//            "subVersion" : subVersionNumber,
+//            "buildNumber" : buildNumber,
+//        };
+//
+//        grunt.file.write(versionFilePath, JSON.stringify(versionFile));
+//        grunt.log.write('Updated to version: ' + version + ' build: ' + buildNumber);
+//    });
 
 };

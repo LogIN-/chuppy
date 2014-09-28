@@ -1,5 +1,5 @@
 {
-    "cmd": ["grunt --no-color && ${project_path}/builds/releases/Chuppy/linux32/Chuppy/Chuppy --debug"],
+    "cmd": ["grunt --no-color && /bin/sh ${project_path}/build.sh && ${project_path}/builds/Chuppy/linux32/Chuppy --debug"],
     "selector": ["Gruntfile.js"],
     "path": "/usr/local/bin",
     "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",

@@ -4,7 +4,7 @@
  * @Email:  unicoart@gmail.com
  * @URL:    https://github.com/LogIN-/chuppy
  * @Last Modified by:   LogIN
- * @Last Modified time: 2014-09-01 19:06:41
+ * @Last Modified time: 2014-09-26 10:45:27
  * Use of this source code is governed by a license:
  * The MIT License (MIT)
  *
@@ -135,7 +135,7 @@ Chuppy.Database.createSchema = function() {
                 users_apps.boolean('enabled');
                 users_apps.timestamps(); // created_at and updated_at
             }).then(function() {
-                console.log('Database: users_details table created!');
+                console.log('Database: users_apps table created!');
             }).catch(function(err) {
                 console.log('Database: ERROR: ', err);
             });
